@@ -159,6 +159,10 @@ export async function GET(request: NextRequest) {
   }
 
   let html = await readFile(join(process.cwd(), "community-pages", filename), "utf8")
+  // Track the content document once. The outer shell only hosts the iframe.
+  if (process.env.NODE_ENV === "production") {
+    html = html.replace("</head>", '<script defer src="/_vercel/insights/script.js"></script>\n</head>')
+  }
   if (staffMode && (filename === "staff.html" || staffEditor || staffHeight)) html = html.replace("<body>", '<body data-staff-mode="true">')
   html = html.replace("<head>", '<head>\n<link rel="stylesheet" href="/community/rnc/save-progress.css?v=collection-20261105-v1">\n<script src="/community/rnc/save-progress.js?v=collection-20261105-v1" defer></script>\n<script src="/community/rnc/frame-art.js" defer></script>')
   html = html.replace("</head>", '<link rel="stylesheet" href="/community/rnc/staff-entry.css">' + "\n</head>")
