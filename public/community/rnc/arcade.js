@@ -25,6 +25,7 @@
       description: "กระโดดสองจังหวะหลบเหล่ามอนสเตอร์ แล้ววิ่งไปให้ไกลที่สุดเท่าที่จะทำได้!", url: "/community/rnc/arcade/labuu-run",
       status: "[ SYSTEM : RUNNING... ]",
       quote: "\" ระวังข้างหน้าด้วยนะคะ! อ๊ะ...โดดดด! (>▽<) \"",
+      seeds: "/community/rnc/labuu-run-leaderboard-seeds.json",
       scoreLocale: "en",
     },
     ...[3, 4, 5].map(slot => ({ title: "ตู้ " + String(slot).padStart(2, "0"), marquee: "FILE NO. 00" + slot, description: "ตู้เกมนี้ยังไม่เปิดให้เล่น" })),
