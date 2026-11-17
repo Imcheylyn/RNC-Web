@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Script from "next/script"
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import "./site-cursor.css"
 
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="h-full">
         {children}
         <Script src="/community/rnc/site-cursor.js?v=site-cursor-recovery-20261116-v6" strategy="afterInteractive" />
+        <Analytics />
       </body>
     </html>
   )
