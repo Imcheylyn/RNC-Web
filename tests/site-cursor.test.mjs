@@ -140,12 +140,13 @@ test('unlocked staff keep the RNC cursor on public pages and the native pointer 
     'next/server':{NextResponse},
     '@/lib/community-auth':{getCommunitySession:async()=>({session:staffSession}),hasStaffUnlock:()=>true},
     '@/lib/community-management':{getCommunityContent:async()=>({})},
+    '@/lib/community-gallery':{listCommunityGallery:async()=>[]},
     '@/lib/db':{prisma:{communityRole:{findMany:async()=>[]},communityUser:{findMany:async()=>[]}}},
     '@/lib/community-collection':{listCharacterThemeSongs:async()=>[]},
     '@/lib/community-characters':{listCommunityCharacters:async()=>[],findCommunityCharacter:async()=>null},
   };
   const api={exports:{}};
-  vm.runInNewContext(compiled,{exports:api.exports,require:name=>dependencies[name],URL,Response,process:{cwd:()=>'/web'},console});
+  vm.runInNewContext(compiled,{exports:api.exports,require:name=>dependencies[name],URL,Response,process:{cwd:()=>'/web',env:{NODE_ENV:'test'}},console});
   for(const [path,staffTool] of [
     ['/community/rnc',false],['/community/rnc/character',false],['/community/rnc/editor',false],
     ['/community/staff',true],['/community/rnc/editor?staff=1',true],['/community/staff/height',true],

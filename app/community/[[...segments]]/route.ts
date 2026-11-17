@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 import { getCommunitySession, hasStaffUnlock } from "@/lib/community-auth"
 import { getCommunityContent } from "@/lib/community-management"
+import { listCommunityGallery } from "@/lib/community-gallery"
 import { prisma } from "@/lib/db"
 import { listCharacterThemeSongs } from "@/lib/community-collection"
 import {
@@ -125,8 +126,10 @@ export async function GET(request: NextRequest) {
     try {
       const id = url.searchParams.get("id")
       const storedCharacter = (filename === "character.html" || filename === "editor.html") && id && !id.startsWith("oc-")
-      const charactersTask = filename === "profiles.html" || filename === "height.html"
-        ? listCommunityCharacters(result.session.userId, staffHeight)
+      const charactersTask = filename === "profiles.html"
+        ? listCommunityGallery(result.session.userId)
+        : filename === "height.html"
+          ? listCommunityCharacters(result.session.userId, staffHeight)
         : storedCharacter
           ? findCommunityCharacter(id, result.session.userId, filename === "editor.html" ? staffEditor : staffMode)
             .then(character => character ? [character] : [])

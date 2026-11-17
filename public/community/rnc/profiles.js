@@ -124,7 +124,7 @@ function makeCharacterCard(character) {
 
   const art = element("span", "card-art");
   art.style.setProperty("--portrait-position", character.art || "0%");
-  const galleryArt = isEnemy ? character.image || character.detailImage || character.galleryImage : character.galleryImage || character.image;
+  const galleryArt = character.cardImage || (isEnemy ? character.image || character.detailImage || character.galleryImage : character.galleryImage || character.image);
   const detailArt = character.image || character.detailImage;
   let portraitPreload;
   let portraitReady;
@@ -297,7 +297,7 @@ function renderSlots() {
     button.type = "button";
     const art = element("span", "card-art");
     art.style.setProperty("--portrait-position", character.art || "0%");
-    const galleryArt = character.galleryImage || character.image;
+    const galleryArt = character.cardImage || character.galleryImage || character.image;
     if (!galleryArt) art.classList.add("empty-portrait");
     if (galleryArt) {
       art.style.backgroundImage = "url(" + JSON.stringify(galleryArt) + ")";
@@ -581,8 +581,11 @@ window.addEventListener("pageshow", function() {
   document.querySelectorAll(".is-opening").forEach(function(item) { item.classList.remove("is-opening"); });
 });
 
-fetch("/api/community/session", { credentials: "same-origin" })
-  .then(function(response) { return response.json(); })
+const galleryMember = window.__RNC_BOOTSTRAP__?.currentUser;
+const gallerySession = galleryMember
+  ? Promise.resolve({ ...galleryMember, authenticated: true })
+  : fetch("/api/community/session", { credentials: "same-origin" }).then(function(response) { return response.json(); });
+gallerySession
   .then(async function(session) {
     if (!session.authenticated) { location.replace("/community"); return; }
     await applyMemberSession(session);
