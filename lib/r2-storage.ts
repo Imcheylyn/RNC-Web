@@ -169,6 +169,34 @@ export async function uploadR2Asset(
   return { bucket, key }
 }
 
+export function signedR2ImageUrl(bucket: string, key: string): string | null {
+  const config = readConfig()
+  if (!config || bucket !== config.publicBucket) return null
+  validateObjectKey(key)
+  if (["employee-card", "employee-signature"].includes(key.split("/")[1])) return null
+
+  const now = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "")
+  const date = now.slice(0, 8)
+  const scope = date + "/auto/s3/aws4_request"
+  const url = new URL(config.endpoint.origin + "/" + [bucket, ...key.split("/")].map(encodedSegment).join("/"))
+  const parameters = {
+    "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+    "X-Amz-Credential": config.accessKeyId + "/" + scope,
+    "X-Amz-Date": now,
+    "X-Amz-Expires": "900",
+    "X-Amz-SignedHeaders": "host",
+  }
+  const query = Object.entries(parameters).sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, value]) => encodedSegment(name) + "=" + encodedSegment(value)).join("&")
+  const canonical = ["GET", url.pathname, query, "host:" + url.host + "\n", "host", "UNSIGNED-PAYLOAD"].join("\n")
+  const signingKey = hmac(hmac(hmac(hmac("AWS4" + config.secretAccessKey, date), "auto"), "s3"), "aws4_request")
+  const signature = createHmac("sha256", signingKey)
+    .update(["AWS4-HMAC-SHA256", now, scope, createHash("sha256").update(canonical).digest("hex")].join("\n"))
+    .digest("hex")
+  url.search = query + "&X-Amz-Signature=" + signature
+  return url.href
+}
+
 export async function readR2Asset(bucket: string, key: string): Promise<Uint8Array | null> {
   const response = await requestObject("GET", bucket, key)
   return response ? new Uint8Array(await response.arrayBuffer()) : null

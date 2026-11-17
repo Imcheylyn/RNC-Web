@@ -24,6 +24,12 @@ export function communityAssetUrl(asset: ImageAsset | undefined | null, fallback
   return "/api/community/assets/" + encodeURIComponent(asset.id) + (version ? "?v=" + version : "")
 }
 
+// Gallery backgrounds can follow an authenticated redirect without reading pixels into a canvas.
+export function communityAssetDisplayUrl(asset: ImageAsset | undefined | null, fallback?: Date | null): string {
+  const url = communityAssetUrl(asset, fallback)
+  return url && asset?.storageBucket && asset.storageKey ? url + "&display=1" : url
+}
+
 export function communityAssetReferenceId(value: string): string | null {
   return /^\/api\/community\/assets\/([A-Za-z0-9_-]+)(?:\?v=[A-Za-z0-9_-]+)?$/.exec(value)?.[1] || null
 }

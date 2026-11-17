@@ -4,6 +4,7 @@ import { getCommunitySession, hasStaffUnlock } from "@/lib/community-auth"
 import { prisma } from "@/lib/db"
 import { communityAssetSelect, communityAssetUrl } from "@/lib/community-asset-urls"
 import { visibleCharacterWhere } from "@/lib/community-policy"
+import { listCommunityGallery } from "@/lib/community-gallery"
 import {
   CharacterInputError,
   CharacterStorageError,
@@ -20,6 +21,12 @@ export async function GET(request: NextRequest) {
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 })
 
   try {
+    if (request.nextUrl.searchParams.get("view") === "gallery") {
+      return NextResponse.json(
+        { characters: await listCommunityGallery(session.userId) },
+        { headers: { "Cache-Control": "no-store" } },
+      )
+    }
     if (request.nextUrl.searchParams.get("view") === "relationships") {
       const staff = session.isStaff && hasStaffUnlock(request, session)
       const characters = await prisma.communityCharacter.findMany({
