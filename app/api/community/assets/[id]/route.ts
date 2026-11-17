@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server"
 import { createHash } from "node:crypto"
 import { getCommunitySession, hasStaffUnlock } from "@/lib/community-auth"
-import { readR2Asset } from "@/lib/r2-storage"
+import { readR2Asset, signedR2ImageUrl } from "@/lib/r2-storage"
 import { visibleCharacterWhere } from "@/lib/community-policy"
 import { prisma } from "@/lib/db"
 import { communityAssetVersion } from "@/lib/community-asset-urls"
@@ -18,10 +18,11 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
   try {
     const { id } = await context.params
+    const display = request.nextUrl.searchParams.get("display") === "1"
     const asset = await prisma.communityCharacterAsset.findFirst({
       where: { id, character: isUnlockedStaff ? {} : visibleCharacterWhere(session.userId) },
       select: {
-        data: true,
+        data: !display,
         contentType: true,
         kind: true,
         storageBucket: true,
@@ -40,6 +41,13 @@ export async function GET(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: "unsupported-image" }, { status: 415 })
     }
     const remote = Boolean(asset.storageBucket && asset.storageKey)
+    if (display && !remote) {
+      const inline = await prisma.communityCharacterAsset.findFirst({
+        where: { id, character: isUnlockedStaff ? {} : visibleCharacterWhere(session.userId) },
+        select: { data: true },
+      })
+      asset.data = inline?.data || null
+    }
     if (!remote && !asset.data) return NextResponse.json({ error: "not-found" }, { status: 404 })
     // New uploads use new R2 keys. Check access before reusing browser bytes.
     const version = remote
@@ -58,6 +66,14 @@ export async function GET(request: NextRequest, context: RouteContext) {
       "X-Content-Type-Options": "nosniff",
     })
     if (cookie) headers.append("Set-Cookie", cookie)
+    if (display && remote && asset.character.publicationState === "PUBLISHED"
+      && !["employee-card", "employee-signature"].includes(asset.kind)) {
+      const location = signedR2ImageUrl(asset.storageBucket!, asset.storageKey!)
+      if (location) {
+        headers.set("Location", location)
+        return new Response(null, { status: 307, headers })
+      }
+    }
     const matches = request.headers.get("if-none-match")?.split(",")
       .some(value => value.trim() === "*" || value.trim().replace(/^W\//, "") === etag)
     if (matches) return new Response(null, { status: 304, headers })
