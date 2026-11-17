@@ -17,7 +17,7 @@
   try { language = localStorage.getItem("rnc-wardrobe-language") === "th" ? "th" : "en"; } catch {}
   let skins = [{id:"default",name:"Default",description:character.quote || "",image:character.image || "",thumbnail:character.galleryImage || character.image || "",chibi:"",medium:"",updatedAt:null,isDefault:true}];
   let activeId = "default", canEdit = false, ready = false, loading = null, loadError = "", artworkError = "";
-  let canHaveMedium = ["Character", "Arcanist", "Acranist"].includes(character.characterType);
+  let canHaveMedium = false;
   let signatureConfirmed = Boolean(character.employeeCardSigned || character.employeeCardSignature);
   let applyToken = 0, layoutFrame = 0, signatureStampJob = 0, signatureStampUrl = "";
   const activeSkin = () => skins.find(skin => skin.id === activeId) || skins[0];

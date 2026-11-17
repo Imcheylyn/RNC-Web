@@ -1,10 +1,11 @@
 import { randomInt, randomUUID } from "node:crypto"
 import { CollectionError } from "@/lib/community-collection-policy"
+import { ARCADE_LEADERBOARD_LIMIT, rankArcadeScores } from "@/lib/community-arcade-leaderboard"
 import { prisma } from "@/lib/db"
 import { communityAssetSelect, communityAssetUrl } from "@/lib/community-asset-urls"
 import { MAX_TICKS, MONSTER_RULES_VERSION, FORMATION_RULES_VERSION, EXPANDED_RULES_VERSION, RUNNER_RULES_VERSION, STEP_MS, replayRun } from "@/public/community/rnc/labuu-run-core.mjs"
+import seedScores from "@/public/community/rnc/labuu-run-leaderboard-seeds.json"
 
-const LEADERBOARD_LIMIT = 10
 const ROUND_EXPIRY_MS = 60 * 60_000
 const CLOCK_TOLERANCE_MS = 1000
 const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/
@@ -30,10 +31,10 @@ export async function labuuRunLeaderboard(guildId: string, userId: string) {
       ranked."userId" = ${userId} AS "isMine"
     FROM ranked
     JOIN "CommunityUser" player ON player.id = ranked."userId"
-    WHERE ranked.rank <= ${LEADERBOARD_LIMIT} OR ranked."userId" = ${userId}
+    WHERE ranked.rank <= ${ARCADE_LEADERBOARD_LIMIT} OR ranked."userId" = ${userId}
     ORDER BY ranked.rank
   `
-  return { top: entries.filter(entry => entry.rank <= LEADERBOARD_LIMIT), personal: entries.find(entry => entry.isMine) ?? null }
+  return rankArcadeScores(entries, seedScores)
 }
 
 async function listRunnerMonsters() {

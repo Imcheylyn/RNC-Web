@@ -32,7 +32,7 @@
     wardrobe: {
       style: "wardrobe.css?v=wardrobe-accessory-layout-20261117-v1",
       dependencies: [],
-      script: "wardrobe.js?v=wardrobe-image-reselect-20261117-v1",
+      script: "wardrobe.js?v=wardrobe-medium-roles-20261117-v1",
     },
     employeeCard: {
       style: "employee-card.css?v=signature-clean-ui-20261030-v5",

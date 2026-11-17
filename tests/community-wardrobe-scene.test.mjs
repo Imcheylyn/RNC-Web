@@ -57,7 +57,7 @@ function fixture(options={}) {
   const context=vm.createContext({window,document,location,history,URL,URLSearchParams,Image,Blob,File,FormData,AbortController,Uint8Array,console,
     innerWidth:390,innerHeight:844,crypto:{randomUUID:()=>"new-outfit"},
     localStorage:{getItem:key=>saved.get(key),setItem:(key,value)=>saved.set(key,value)},
-    fetch:async(url,init)=>{fetched.push({url,init});if(options.response)return options.response();return {ok:true,json:async()=>({canEdit:true,canHaveMedium:character.characterType==="Character",skins,savedId:init.method ? "outfit" : undefined})};},
+    fetch:async(url,init)=>{fetched.push({url,init});if(options.response)return options.response();return {ok:true,json:async()=>({canEdit:true,canHaveMedium:options.mediumAllowed??character.characterType==="Character",skins,savedId:init.method ? "outfit" : undefined})};},
     matchMedia:()=>({matches:true}),getComputedStyle:()=>({animationName:"none"}),
     ResizeObserver:class {observe(){}},setTimeout,clearTimeout,
     requestAnimationFrame:fn=>options.runFrames ? queueMicrotask(fn) : frameCallbacks.push(fn),cancelAnimationFrame(){},
@@ -90,6 +90,17 @@ test("opening the lazy UI reuses loaded data, follows skin changes and keeps edi
   await h.get("editWardrobeSkin").fire("click");
   assert.equal(h.get("wardrobeSkinDialog").open,true);assert.equal(h.get("wardrobeSkinName").value,"Outfit");
   assert.equal(h.get("wardrobeMediumPreview").src,"/outfit-medium.png");
+});
+
+test("wardrobe and character scene follow Medium eligibility from the server",async()=>{
+  for (const [type,mediumAllowed] of [["NPC",true],["President",true],["Director",true],["NPC",false]]) {
+    const h=fixture({type,mediumAllowed});
+    await h.core.loadWardrobe();
+    assert.equal(h.get("sceneMediumButton").hidden,!mediumAllowed,type);
+    h.loadUi().open();
+    await h.get("editWardrobeSkin").fire("click");
+    assert.equal(h.get("wardrobeMediumSection").hidden,!mediumAllowed,type);
+  }
 });
 
 test("remove and reselect companion artwork without clearing the title, description, framing or other images",async()=>{

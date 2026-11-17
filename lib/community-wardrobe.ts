@@ -8,7 +8,7 @@ import { audit } from "@/lib/community-staff"
 import { deleteR2Asset, isR2StorageConfigured, uploadR2Asset, type StoredR2Asset } from "@/lib/r2-storage"
 import { assertWardrobeVersion, canHaveWardrobeMedium, canManageWardrobe, WardrobeError, wardrobeAssetKind, wardrobeFields, wardrobeImageOffsetX, wardrobeImageOffsetY, wardrobeImageScale, wardrobeImageType, wardrobeProfileFraming, wardrobeSkinId } from "@/lib/community-wardrobe-policy"
 
-const accessSelect = { id:true, ownerId:true, characterType:true, publicationState:true } as const
+const accessSelect = { id:true, ownerId:true, characterType:true, race:true, publicationState:true } as const
 
 function assertAccess(character: { ownerId:string | null; characterType:string; publicationState:string } | null, actor: CommunitySession, staff: boolean) {
   if (!character) throw new WardrobeError("ไม่พบตัวละคร", 404)
@@ -35,6 +35,7 @@ export async function listCharacterWardrobe(characterId: string, actor: Communit
     },
   })
   if (!character) throw new WardrobeError("ไม่พบตัวละคร", 404)
+  const canHaveMedium = canHaveWardrobeMedium(character)
   const base = character.wardrobeSkins.find(skin => skin.id === "default")
   const serialize = (skin: { id:string; name:string; description:string; imageScale:number; imageOffsetX:number; imageOffsetY:number; applyFramingToProfile:boolean | null; updatedAt:Date } | undefined, defaultSkin = false) => {
     const id = defaultSkin ? "default" : skin!.id
@@ -53,14 +54,14 @@ export async function listCharacterWardrobe(characterId: string, actor: Communit
       image:assetUrl(wardrobeAssetKind(id, "image")),
       thumbnail:assetUrl(wardrobeAssetKind(id, "image")),
       chibi:assetUrl(wardrobeAssetKind(id, "chibi")),
-      medium:canHaveWardrobeMedium(character.characterType) ? assetUrl(wardrobeAssetKind(id, "medium")) : "",
+      medium:canHaveMedium ? assetUrl(wardrobeAssetKind(id, "medium")) : "",
       updatedAt:skin?.updatedAt.toISOString() || null,
       isDefault:defaultSkin,
     }
   }
   return {
     canEdit:canManageWardrobe(actor.userId, staff, character),
-    canHaveMedium:canHaveWardrobeMedium(character.characterType),
+    canHaveMedium,
     characterName:character.name,
     skins:[serialize(base, true), ...character.wardrobeSkins.filter(skin => skin.id !== "default").map(skin => serialize(skin))],
   }
@@ -86,7 +87,7 @@ export async function saveCharacterSkin(characterId: string, requestedId: string
   const changesMedium = form.has("medium") || removeMedium
   const character = await prisma.communityCharacter.findUnique({where:{id:characterId},select:accessSelect})
   assertAccess(character, actor, staff)
-  if (changesMedium && !canHaveWardrobeMedium(character!.characterType)) throw new WardrobeError("เพิ่มรูป Medium ได้เฉพาะตัวละคร Arcanist")
+  if (changesMedium && !canHaveWardrobeMedium(character!)) throw new WardrobeError("ตัวละครนี้ไม่สามารถเพิ่มหรือลบรูป Medium ได้")
   const initial = await prisma.communityCharacterSkin.findUnique({where:{characterId_id:{characterId,id}}})
   if (create && initial) throw new WardrobeError("สกินนี้ถูกบันทึกแล้ว กรุณาเปิดตู้เสื้อผ้าใหม่",409)
   if (!create && id !== "default" && !initial) throw new WardrobeError("ไม่พบสกินนี้",404)
@@ -116,7 +117,7 @@ export async function saveCharacterSkin(characterId: string, requestedId: string
       await transaction.$queryRaw`SELECT "id" FROM "CommunityCharacter" WHERE "id" = ${characterId} FOR UPDATE`
       const currentCharacter = await transaction.communityCharacter.findUnique({where:{id:characterId},select:accessSelect})
       assertAccess(currentCharacter, actor, staff)
-      if (changesMedium && !canHaveWardrobeMedium(currentCharacter!.characterType)) throw new WardrobeError("เพิ่มรูป Medium ได้เฉพาะตัวละคร Arcanist")
+      if (changesMedium && !canHaveWardrobeMedium(currentCharacter!)) throw new WardrobeError("ตัวละครนี้ไม่สามารถเพิ่มหรือลบรูป Medium ได้")
       const key = {characterId,id}
       const existing = await transaction.communityCharacterSkin.findUnique({where:{characterId_id:key}})
       if (create && existing) throw new WardrobeError("สกินนี้ถูกบันทึกแล้ว กรุณาเปิดตู้เสื้อผ้าใหม่", 409)

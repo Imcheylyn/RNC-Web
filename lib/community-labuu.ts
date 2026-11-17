@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto"
 import { CollectionError } from "@/lib/community-collection-policy"
+import { ARCADE_LEADERBOARD_LIMIT, rankArcadeScores } from "@/lib/community-arcade-leaderboard"
 import { prisma } from "@/lib/db"
 import seedScores from "@/public/community/rnc/labuu-leaderboard-seeds.json"
 
@@ -9,7 +10,6 @@ const ROUND_EXPIRY_MS = 5 * 60_000
 const REAL_TARGETS = 7
 const DECOY_TARGETS = 2
 const MAX_CLICKS = 100
-const LEADERBOARD_LIMIT = 10
 const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/
 
 type RankingEntry = {
@@ -35,24 +35,10 @@ export async function labuuLeaderboard(guildId: string, userId: string) {
       ranked."userId" = ${userId} AS "isMine"
     FROM ranked
     JOIN "CommunityUser" player ON player.id = ranked."userId"
-    WHERE ranked.rank <= ${LEADERBOARD_LIMIT} OR ranked."userId" = ${userId}
+    WHERE ranked.rank <= ${ARCADE_LEADERBOARD_LIMIT} OR ranked."userId" = ${userId}
     ORDER BY ranked.rank
   `
-  const players = entries.filter(entry => entry.rank <= LEADERBOARD_LIMIT)
-  const seeded = seedScores.map(entry => ({ ...entry, remainingMs: 0, isMine: false, isSeed: true }))
-  // Players keep their database tie order and place above a seeded score on a tie.
-  const top = [...players, ...seeded]
-    .sort((left, right) => right.score - left.score)
-    .slice(0, LEADERBOARD_LIMIT)
-    .map((entry, index) => ({ ...entry, rank: index + 1 }))
-
-  const savedScore = entries.find(entry => entry.isMine)
-  const personal = savedScore ? {
-    ...savedScore,
-    rank: savedScore.rank + seedScores.filter(entry => entry.score > savedScore.score).length,
-  } : null
-
-  return { top, personal }
+  return rankArcadeScores(entries, seedScores.map(entry => ({ ...entry, remainingMs: 0 })))
 }
 
 export async function startLabuuRound(guildId: string, userId: string) {
