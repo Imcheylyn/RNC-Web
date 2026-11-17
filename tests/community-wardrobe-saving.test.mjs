@@ -16,7 +16,7 @@ const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 
 function fixture(id = skinId) {
   let tick = Date.parse("2026-11-03T12:00:00Z");
-  const character = {id:"local-test",name:"CG fixture",quote:"Original",ownerId:"owner",characterType:"Human",publicationState:"PUBLISHED",updatedAt:new Date(tick)};
+  const character = {id:"local-test",name:"CG fixture",quote:"Original",ownerId:"owner",characterType:"Human",race:"Human",publicationState:"PUBLISHED",updatedAt:new Date(tick)};
   const skins = [{characterId:character.id,id,name:id === "default" ? "Default" : "Original outfit",description:"Original story",imageScale:150,imageOffsetX:10.5,imageOffsetY:-8.25,sortOrder:0,createdAt:new Date(tick),updatedAt:new Date(tick)}];
   const kind = slot => policy.exports.wardrobeAssetKind(id,slot);
   const assets = [
@@ -56,7 +56,7 @@ function fixture(id = skinId) {
   const module = {exports:{}};
   vm.runInNewContext(source,{module,exports:module.exports,require:name=>{assert.ok(dependencies[name],name);return dependencies[name];},File,Buffer,console});
   const form = (scale = "200") => {const body=new FormData();body.set("name",skins[0].name);body.set("description",skins[0].description);body.set("expectedUpdatedAt",skins[0].updatedAt.toISOString());if(scale != null)body.set("imageScale",scale);return body;};
-  const save = (body,actor={userId:"owner"}) => module.exports.saveCharacterSkin(character.id,id === "default" ? undefined : id,body,actor,false);
+  const save = (body,actor={userId:"owner"},staff=false) => module.exports.saveCharacterSkin(character.id,id === "default" ? undefined : id,body,actor,staff);
   const list = () => module.exports.listCharacterWardrobe(character.id,{userId:"owner"},false);
   const remove = () => module.exports.deleteCharacterSkin(character.id,id,skins[0].updatedAt.toISOString(),{userId:"owner"},false);
   return {skins,assets,uploads,deleted,audits,form,save,list,remove,id,kind,character};
@@ -139,6 +139,35 @@ test("Arcanist Medium uploads, persists for older clients, replaces and removes 
   assert.equal(state.assets.length,2);
   assert.equal((await state.list()).skins.find(skin=>skin.id === state.id).medium,"");
   assert.equal(state.assets[0].id,"art");assert.equal(state.assets[1].id,"chibi");
+});
+
+test("Staff can save and reload Medium for non-Human NPCs, Presidents and Directors",async()=>{
+  for (const [characterType, race] of [["NPC","The Cursed"],["President","Pure blood"],["Director","The Awaken"]]) {
+    const state=fixture("default");
+    Object.assign(state.character,{characterType,race});
+    const body=state.form();
+    body.set("skinId","default");
+    body.set("medium",new File([image],"medium.png",{type:"image/png"}));
+    await assert.rejects(state.save(body),error=>error.status === 403);
+    assert.equal(state.uploads.length,0);
+    await state.save(body,{userId:"staff"},true);
+    const reloaded=await state.list();
+    assert.equal(reloaded.canHaveMedium,true,characterType);
+    assert.match(reloaded.skins[0].medium,/^\/api\/community\/assets\//);
+    assert.equal(state.uploads.length,1);
+  }
+});
+
+test("Staff cannot upload Medium for Human NPCs or NPCs without a race",async()=>{
+  for (const race of ["Human",""]) {
+    const state=fixture();
+    Object.assign(state.character,{characterType:"NPC",race});
+    const body=state.form();
+    body.set("medium",new File([image],"medium.png",{type:"image/png"}));
+    await assert.rejects(state.save(body,{userId:"staff"},true),error=>error.status === 400);
+    assert.equal((await state.list()).canHaveMedium,false);
+    assert.equal(state.uploads.length,0);
+  }
 });
 
 test("Human cannot add or remove Medium and does not receive a Medium image",async()=>{

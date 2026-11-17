@@ -72,7 +72,7 @@
   const t = key => labels[language][key] || key;
   let skins = [{id:"default",name:"Default",description:character.quote || "",image:character.image || "",thumbnail:character.galleryImage || character.image || "",chibi:"",updatedAt:null,isDefault:true}];
   let activeId = "default", canEdit = false, ready = false, busy = false, opened = false;
-  let canHaveMedium = ["Character", "Arcanist", "Acranist"].includes(character.characterType);
+  let canHaveMedium;
   let signatureConfirmed = Boolean(character.employeeCardSigned || character.employeeCardSignature);
   let signatureMode = "draw", pendingSignature = null, signaturePreviewUrl = "", signatureBusy = false, signatureGatePending = false, signatureInk = 0, signaturePointer = null, signatureLastPoint = null, signatureTransformPointer = null;
   let signatureDirty = false, signatureSaving = false, signaturePurpose = "wardrobe", signatureToastTimer = 0;

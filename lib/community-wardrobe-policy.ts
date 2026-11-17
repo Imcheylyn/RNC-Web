@@ -18,8 +18,10 @@ export function isWardrobeAssetKind(kind: string): boolean {
   return /^wardrobe-(?:default|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})-(?:portrait|chibi|medium)$/i.test(kind)
 }
 
-export function canHaveWardrobeMedium(characterType: string): boolean {
-  return ["Character", "Arcanist", "Acranist"].includes(characterType)
+export function canHaveWardrobeMedium(character: { characterType: string; race: string }): boolean {
+  if (["Character", "Arcanist", "Acranist", "President", "Director"].includes(character.characterType)) return true
+  const race = character.race.trim().toLowerCase()
+  return character.characterType === "NPC" && race !== "" && race !== "human"
 }
 
 export function canManageWardrobe(userId: string, unlockedStaff: boolean, character: { ownerId: string | null; characterType: string; publicationState: string }): boolean {
