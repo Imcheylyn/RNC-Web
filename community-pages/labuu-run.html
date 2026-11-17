@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="runner-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Labuu Run | Reverse : Noir Chronicle</title>
+  <link rel="stylesheet" href="/community/rnc/labuu-run.css?v=13">
+  <script src="/community/rnc/labuu-run.mjs?v=12" type="module"></script>
+</head>
+<body class="runner-page">
+  <main class="runner-shell" inert>
+    <h1 class="runner-visually-hidden">Labuu Run</h1>
+    <div class="runner-stage" id="runner-stage" tabindex="-1" role="group" aria-label="Labuu Run track. Press Space or Up, or tap the track to jump. Press again in the air to double jump.">
+      <canvas id="runner-canvas" width="760" height="300" aria-hidden="true"></canvas>
+      <div class="runner-scores">
+        <span class="runner-hi"><abbr title="High score">HI</abbr> <b id="runner-best">—</b></span>
+        <span><span class="runner-visually-hidden">Current score</span><b id="runner-score">00000</b></span>
+      </div>
+      <button id="runner-pause" class="runner-pause" type="button" aria-label="Pause" title="Pause (Esc)" hidden><span aria-hidden="true"></span></button>
+      <div class="runner-prompt" id="runner-prompt">
+        <h2 id="runner-state" hidden>Paused</h2>
+        <p id="runner-loading" role="status" hidden>Loading run…</p>
+        <button id="runner-start" class="runner-action" type="button" aria-keyshortcuts="Space">
+          <span class="runner-keyboard-start">Press Space to start</span>
+          <span class="runner-touch-start">Tap to start</span>
+        </button>
+      </div>
+      <section class="runner-result" id="runner-result" aria-labelledby="runner-result-title" hidden>
+        <h2 id="runner-result-title">GAME OVER</h2>
+        <button class="runner-restart" id="runner-restart" type="button" aria-label="Restart" aria-keyshortcuts="Space" title="Restart">
+          <span aria-hidden="true"></span>
+        </button>
+        <div class="runner-result-actions">
+          <a id="runner-leaderboard" href="/community/rnc/arcade?game=labuu-run&amp;scores=1" hidden>Leaderboard</a>
+          <a href="/community/rnc/arcade?game=labuu-run">Exit to Arcade</a>
+          <button id="runner-retry" class="runner-action" type="button" hidden>Retry saving</button>
+        </div>
+        <p id="runner-status" role="status"></p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

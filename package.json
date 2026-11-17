@@ -1,0 +1,38 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "prisma generate --schema=prisma/schema.prisma --generator client",
+    "dev": "next dev --port 3002",
+    "build": "prisma generate --schema=prisma/schema.prisma --generator client && next build",
+    "db:migrate:deploy": "prisma migrate deploy --config=prisma.config.ts --schema=prisma/schema.prisma",
+    "db:migrate:r2-assets": "node scripts/migrate-r2-assets.mjs",
+    "start": "next start",
+    "test:cursor": "node --test tests/site-cursor.test.mjs",
+    "test:staff": "node --test tests/community-policy.test.mjs",
+    "test:collection": "node --test tests/community-collection.test.mjs tests/community-media-player.test.mjs tests/community-relationship-map-layout.test.mjs",
+    "test:collection:local": "node --test tests/community-collection.integration.test.mjs",
+    "test:media:r2": "node --test tests/community-media-r2.integration.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.2",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "dotenv": "^17.4.2",
+    "framer-motion": "^12.40.0",
+    "next": "16.2.7",
+    "pg": "^8.21.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "prisma": "^7.8.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

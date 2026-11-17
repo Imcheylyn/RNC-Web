@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Add Character Slot | Reverse : Noir Chronicle</title>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/editor.css?v=enemy-gallery-layout-20261111-v2">
+  <script src="/community/rnc/character-data.js?v=height-weight-20261023" defer></script>
+  <script src="/community/rnc/employee-editor.js?v=nationality-demonym-20261107" defer></script>
+  <script src="/community/rnc/image-layout.js?v=relationships-20261107-v1" defer></script>
+  <script src="/community/rnc/employee-photo.js?v=face-default-20261027" defer></script>
+  <link rel="stylesheet" href="/community/rnc/character-collection.css?v=voice-credit-20261110-v1">
+  <script src="/community/rnc/character-media.js?v=upload-stability-20261116-v1" defer></script>
+  <script src="/community/rnc/theme-editor.js?v=theme-song-clean-20261106-v5" defer></script>
+  <script src="/community/rnc/skill-image-crop.js?v=skill-pan-manual-zoom-20261110-v4" defer></script>
+  <script src="/community/rnc/editor.js?v=character-editor-audit-20261117-v1" defer></script>
+  <script src="/community/rnc/feature-loader.js?v=lazy-features-20261117-v1" defer></script>
+  <script src="/community/rnc/character-features.js?v=lazy-features-20261117-v1" defer></script>
+</head>
+<body>
+  <nav class="top-nav" aria-label="เมนูหลัก">
+    <a class="community-brand" href="/community/rnc" aria-label="RNC - Reverse : Noir Chronicle"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links">
+      <a href="/community/rnc">ARCHIVE</a>
+      <a class="hide-small" href="https://docs.google.com/document/d/1yL9UAzhE4H2L6t0bjRZRbtq90enrofSSXoSLqfeIWaA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">WORLD</a>
+      <button class="hide-small community-trigger" type="button" data-community-open aria-haspopup="dialog" aria-controls="communityAnnouncement" aria-label="COMMUNITY" aria-expanded="false">COMMUNITY<span class="community-notification-mark" data-community-notification role="img" aria-label="New staff notice" hidden><img src="/assets/RNCelement/Number%20Star.png" alt=""></span></button>
+      <a class="labuu-nav-mark" href="/community/rnc/arcade" aria-label="Arcade" title="Arcade">!</a>
+    </div>
+  </nav>
+
+  <main class="editor-stage">
+    <form id="characterForm" class="editor-shell">
+      <aside class="editor-sidebar">
+        <a href="/community/rnc" class="editor-back">◁ &nbsp; กลับไปหน้าแกลเลอรี</a>
+        <p class="editor-kicker">CHARACTER RECORD</p>
+        <h1 id="editorHeading">Add Slot</h1>
+        <p class="editor-help">กรอกข้อมูลตามช่องของเทมเพลต R:NC แล้วดูผลในหน้าประวัติตัวละครแบบเต็ม</p>
+        <label class="portrait-preview" for="portraitFile"><span class="portrait-preview-art" id="portraitPreviewArt"></span><span>UPLOAD PORTRAIT</span></label>
+        <div class="portrait-controls">
+          <label class="portrait-file-action" for="portraitFile">เลือกรูปจากเครื่อง</label>
+          <input id="portraitFile" class="portrait-file-input" type="file" accept="image/*,.heic,.heif,.avif">
+          <button class="remove-portrait" id="removePortrait" type="button">เอารูปออก</button>
+          <button class="crop-portrait" id="cropPortrait" type="button" disabled>จัดภาพสำหรับ Gallery</button>
+          <small>รูปจะบันทึกพร้อมข้อมูลตัวละครเมื่อกดบันทึก</small>
+        </div>
+        <section class="image-layout-editor" aria-labelledby="imageLayoutHeading" hidden>
+          <h2 id="imageLayoutHeading">จัดวางภาพในแต่ละหน้า</h2>
+          <p>ปรับซูมและจุดโฟกัสแยกตามหน้าที่ใช้งาน ค่าจะถูกใช้กับตัวละครนี้อัตโนมัติ</p>
+          <label class="image-layout-view-label" for="imageLayoutContext">ดูตัวอย่างหน้า</label>
+          <select id="imageLayoutContext">
+            <option value="galleryDesktop">Gallery · เดสก์ท็อป</option>
+            <option value="galleryMobile">Gallery · มือถือ</option>
+            <option value="profile">หน้าโปรไฟล์</option>
+            <option value="staffCard">การ์ด Staff</option>
+            <option value="staffId">บัตรประจำตัว Staff</option>
+            <option value="relationships">Relationships · ใบหน้าบนกระดาน</option>
+          </select>
+          <div class="image-layout-preview" id="imageLayoutPreview" data-view="galleryDesktop">
+            <img id="imageLayoutPreviewImage" alt="" hidden>
+            <div id="relationshipImageLayoutPreview" class="relationship-image-layout-preview" hidden></div>
+            <span id="imageLayoutPreviewEmpty">เลือกรูปตัวละครเพื่อดูตัวอย่าง</span>
+          </div>
+          <label class="image-layout-range">ขนาดภาพ <output id="imageLayoutScaleOutput">100%</output><input id="imageLayoutScale" type="range" min="50" max="200" step="1" value="100"></label>
+          <label class="image-layout-range">จุดโฟกัสแนวนอน <output id="imageLayoutXOutput">50%</output><input id="imageLayoutX" type="range" min="0" max="100" step="1" value="50"></label>
+          <label class="image-layout-range">จุดโฟกัสแนวตั้ง <output id="imageLayoutYOutput">50%</output><input id="imageLayoutY" type="range" min="0" max="100" step="1" value="50"></label>
+          <button id="imageLayoutReset" type="button">คืนค่าเริ่มต้นของหน้านี้</button>
+          <small id="relationshipImageLayoutHint" hidden>ใช้กับภาพบนกระดานและรายงานทุกแฟ้ม · คืนค่าเริ่มต้นเพื่อจัดอัตโนมัติ</small>
+          <small>ปุ่มจัดภาพ Gallery แบบลากรูปและซูมยังใช้ได้เหมือนเดิม</small>
+        </section>
+        <nav class="editor-sections" aria-label="หมวดข้อมูล">
+          <a href="#identity">01 &nbsp; ข้อมูลพื้นฐาน</a>
+          <a href="#stats" id="statsSectionLink">02 &nbsp; ค่าสถานะ</a>
+          <a href="#medium" id="skillsSectionLink">03 &nbsp; Skills & Equipment</a>
+          <a href="#personality">04 &nbsp; ความชอบและอุปนิสัย</a>
+          <a href="#history" hidden>05 &nbsp; ประวัติส่วนตัว</a>
+          <a href="#contact">06 &nbsp; ข้อมูลติดต่อ</a>
+          <a href="#themeSong">07 &nbsp; Theme Song</a>
+        </nav>
+        <p class="editor-storage-note">บันทึกข้อมูลแล้วกลับมาแก้ไขต่อได้จากบัญชี Discord ของคุณ</p>
+      </aside>
+
+      <div class="editor-form-content">
+        <header class="editor-form-header"><span>Reverse : Noir Chronicle</span><div class="editor-header-tools"><button class="editor-collection-open" id="openCharacterCollection" type="button" aria-label="เปิด Relationships และ Voice Line" aria-haspopup="dialog" hidden>Relationships · Voice Line</button><span id="editorMode">NEW CHARACTER FILE</span></div></header>
+        <section class="editor-section" id="identity">
+          <div class="section-heading"><span>01</span><div><p>Identity</p><h2>ข้อมูลพื้นฐาน</h2></div></div>
+          <div class="form-grid">
+            <label class="wide"><span>Name – Surname <strong>*</strong></span><input name="name" required maxlength="80" placeholder="ชื่อ – นามสกุลของตัวละคร"></label>
+            <label>Nickname<input name="nickname" maxlength="60" placeholder="ชื่อเล่น"></label>
+            <label>Era<span class="era-input"><span class="era-prefix" aria-hidden="true">Era -</span><input name="era" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="0000" title="กรอกตัวเลข 4 หลัก"></span></label>
+            <label class="wide">คำโปรย<textarea name="quote" rows="4" maxlength="1000" placeholder="คำโปรยของตัวละคร"></textarea></label>
+            <label>Age<input name="age" maxlength="45" placeholder="อายุ"></label>
+            <label>Gender<select name="gender"><option value="">เลือกเพศ</option><option value="ชาย">ชาย</option><option value="หญิง">หญิง</option><option value="อื่น ๆ">อื่น ๆ</option><option value="ไม่ระบุ">ไม่ระบุ</option></select></label>
+            <div class="measurement-fields">
+              <label>Nationality<span class="country-picker"><input name="nationality" maxlength="80" placeholder="ค้นหาประเทศ / สัญชาติ / Country / Code" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="nationalityOptions" autocomplete="off"><input type="hidden" name="nationalityCode"><span class="country-options" id="nationalityOptions" role="listbox" aria-label="ประเทศ" hidden></span></span></label>
+              <label>Height<input name="height" maxlength="40" placeholder="e.g. 170 cm"></label>
+              <label>Weight<input name="weight" maxlength="40" placeholder="e.g. 60 kg"></label>
+            </div>
+            <label>Race<select name="race" required><option value="">เลือกเผ่าพันธุ์</option><option value="Pure blood">Pure blood</option><option value="The Mixed">The Mixed</option><option value="The Awaken">The Awaken</option><option value="The Cursed">The Cursed</option><option value="Human">Human</option></select></label>
+            <label>Position<select name="position"><option value="">เลือกตำแหน่ง</option><option value="Timekeeper">Timekeeper</option><option value="Researcher">Researcher</option><option value="Medic">Medic</option><option value="Intern">Intern</option></select></label>
+            <div class="employee-fields">
+              <label class="npc-employee-option" hidden><input type="checkbox" name="employeeEnabled"><span>มีรหัสพนักงาน</span></label>
+              <div class="employee-preview" id="employeePreview" hidden><output id="employeeIdPreview" aria-label="รหัสพนักงาน" aria-live="polite"><span class="employee-id-segment" data-employee-part="department">--</span> <span class="employee-id-segment" data-employee-part="era">----</span> <span class="employee-id-segment" data-employee-part="number">----</span> <span class="employee-id-segment" data-employee-part="country">XX</span></output></div>
+            </div>
+            <div class="form-subheading">การแสดงผลในคลังตัวละคร <small>ข้อมูลเสริมสำหรับหน้าแกลเลอรี</small></div>
+            <label class="wide">สมญา / คำโปรยบนการ์ด (ไม่บังคับ)<input name="byname" maxlength="80" placeholder="เช่น The Pale Witness"></label>
+            <fieldset class="arcana-picker">
+              <legend>ธาตุ / Arcana</legend>
+              <div class="arcana-options" id="arcanaOptions">
+                <label class="arcana-option"><input type="radio" name="arcana" value="SPIRIT" checked><img src="/assets/RNCelement/Spirit%20Full.png" alt=""><span>Spirit</span></label>
+                <label class="arcana-option"><input type="radio" name="arcana" value="BEAST"><img src="/assets/RNCelement/Beast%20Full.png" alt=""><span>Beast</span></label>
+                <label class="arcana-option"><input type="radio" name="arcana" value="PLANT"><img src="/assets/RNCelement/Plant%20Full.png" alt=""><span>Plant</span></label>
+                <label class="arcana-option"><input type="radio" name="arcana" value="STAR"><img src="/assets/RNCelement/Star%20Full.png" alt=""><span>Star</span></label>
+                <label class="arcana-option"><input type="radio" name="arcana" value="MINERAL"><img src="/assets/RNCelement/Mineral%20Full.png" alt=""><span>Mineral</span></label>
+                <label class="arcana-option"><input type="radio" name="arcana" value="INTELLECT"><img src="/assets/RNCelement/Intel%20Full.png" alt=""><span>Intellect</span></label>
+                <label class="arcana-option natural-option" hidden><input type="radio" name="arcana" value="NATURAL" disabled><img src="/assets/RNCelement/Neutral%20Full.png" alt=""><span>Natural</span></label>
+                <label class="arcana-option unknown-option" hidden><input type="radio" name="arcana" value="UNKNOWN" disabled><img src="/assets/RNCelement/Spirit_Unknown.png" alt=""><span>Unknown</span></label>
+              </div>
+              <label class="arcana-override" hidden><input type="checkbox" id="presidentOtherArcana" aria-controls="arcanaOptions" disabled><span>เลือกธาตุอื่น</span></label>
+            </fieldset>
+          </div>
+        </section>
+
+        <section class="editor-section" id="stats">
+          <div class="section-heading"><span>02</span><div><p id="statsSectionKicker">Base Stats</p><h2 id="statsSectionTitle">ค่าสถานะ</h2></div></div>
+          <p class="section-description" id="statsSectionDescription">กรอก COR, MNF, RFX, SCR และ DEF ตามตัวละคร ยอดรวมจะคำนวณให้อัตโนมัติ</p>
+          <div class="stats-inputs" id="characterStatsFields">
+            <label>COR<input name="COR" type="number" min="0" step="1" value="0"></label>
+            <label>MNF<input name="MNF" type="number" min="0" step="1" value="0"></label>
+            <label>RFX<input name="RFX" type="number" min="0" step="1" value="0"></label>
+            <label>SCR<input name="SCR" type="number" min="0" step="1" value="0"></label>
+            <label>DEF<input name="DEF" type="number" min="0" step="1" value="0"></label>
+            <output id="statsTotal">TOTAL 0</output>
+          </div>
+          <div class="human-weapons-editor" id="humanWeaponsEditor" hidden>
+            <div class="human-weapons-list" id="humanWeaponsList"></div>
+            <div class="human-weapons-actions"><span id="humanWeaponCount">0 / 2 อาวุธ</span><button type="button" id="addHumanWeapon">+ เพิ่มอาวุธ</button></div>
+          </div>
+        </section>
+
+        <section class="editor-section" id="medium">
+          <div class="section-heading"><span>03</span><div><p>CHARACTER SKILLS</p><h2>สกิลตัวละคร</h2></div></div>
+          <div class="skill-upload-grid" role="group" aria-label="Ultimate and Arcane skills">
+            <div class="skill-upload-card ultimate-skill-upload-card">
+              <button class="skill-upload-preview" type="button" data-skill-upload-trigger="2" aria-label="Choose Ultimate image">
+                <span class="skill-art-window skill-upload-art-window" data-skill-editor-window="2" hidden><img class="skill-upload-art" data-skill-editor-art="2" alt=""></span>
+                <img class="skill-upload-frame" src="/assets/RNCelement/Ult.png" alt="" aria-hidden="true">
+                <span class="skill-upload-name">ULTIMATE</span>
+              </button>
+              <input class="skill-file-input" id="skillFile2" data-skill-editor-input="2" type="file" accept="image/png,image/jpeg,image/webp">
+              <label class="skill-inline-zoom" data-skill-zoom-control="2" hidden><span>ซูมภาพ <output data-skill-zoom-output="2">100%</output></span><input type="range" min="100" max="300" step="1" value="100" data-skill-zoom="2" aria-label="ซูมภาพสกิล"></label>
+              <button class="skill-remove" type="button" data-skill-editor-remove="2" aria-label="Remove Ultimate image">Remove image</button>
+              <label class="skill-field">Skill name<input type="text" data-skill-detail-name="ultimate" maxlength="120" placeholder="ชื่อ Skill สุดเจ๋ง"></label>
+              <label class="skill-field">Details<textarea data-skill-detail-description="ultimate" rows="4" maxlength="5000" placeholder="คำอธิบายสกิลสุดมหัศจรรย์"></textarea></label>
+            </div>
+            <div class="skill-upload-card">
+              <button class="skill-upload-preview" type="button" data-skill-upload-trigger="0" aria-label="Choose Arcane Skill 1 image">
+                <span class="skill-art-window skill-upload-art-window" data-skill-editor-window="0" hidden><img class="skill-upload-art" data-skill-editor-art="0" alt=""></span>
+                <img class="skill-upload-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true">
+                <span class="skill-upload-name">ARCANE SKILL I</span>
+              </button>
+              <input class="skill-file-input" id="skillFile0" data-skill-editor-input="0" type="file" accept="image/png,image/jpeg,image/webp">
+              <label class="skill-inline-zoom" data-skill-zoom-control="0" hidden><span>ซูมภาพ <output data-skill-zoom-output="0">100%</output></span><input type="range" min="100" max="300" step="1" value="100" data-skill-zoom="0" aria-label="ซูมภาพสกิล"></label>
+              <button class="skill-remove" type="button" data-skill-editor-remove="0" aria-label="Remove Arcane Skill 1 image">Remove image</button>
+              <label class="skill-field">Skill name<input type="text" data-skill-detail-name="arcane1" maxlength="120" placeholder="ชื่อ Skill สุดเจ๋ง"></label>
+              <label class="skill-field">Details<textarea data-skill-detail-description="arcane1" rows="4" maxlength="5000" placeholder="คำอธิบายสกิลสุดมหัศจรรย์"></textarea></label>
+            </div>
+            <div class="skill-upload-card">
+              <button class="skill-upload-preview" type="button" data-skill-upload-trigger="1" aria-label="Choose Arcane Skill 2 image">
+                <span class="skill-art-window skill-upload-art-window" data-skill-editor-window="1" hidden><img class="skill-upload-art" data-skill-editor-art="1" alt=""></span>
+                <img class="skill-upload-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true">
+                <span class="skill-upload-name">ARCANE SKILL II</span>
+              </button>
+              <input class="skill-file-input" id="skillFile1" data-skill-editor-input="1" type="file" accept="image/png,image/jpeg,image/webp">
+              <label class="skill-inline-zoom" data-skill-zoom-control="1" hidden><span>ซูมภาพ <output data-skill-zoom-output="1">100%</output></span><input type="range" min="100" max="300" step="1" value="100" data-skill-zoom="1" aria-label="ซูมภาพสกิล"></label>
+              <button class="skill-remove" type="button" data-skill-editor-remove="1" aria-label="Remove Arcane Skill 2 image">Remove image</button>
+              <label class="skill-field">Skill name<input type="text" data-skill-detail-name="arcane2" maxlength="120" placeholder="ชื่อ Skill สุดเจ๋ง"></label>
+              <label class="skill-field">Details<textarea data-skill-detail-description="arcane2" rows="4" maxlength="5000" placeholder="คำอธิบายสกิลสุดมหัศจรรย์"></textarea></label>
+            </div>
+            <div class="skill-upload-card">
+              <button class="skill-upload-preview" type="button" data-skill-upload-trigger="3" aria-label="Choose Arcane Skill 3 image">
+                <span class="skill-art-window skill-upload-art-window" data-skill-editor-window="3" hidden><img class="skill-upload-art" data-skill-editor-art="3" alt=""></span>
+                <img class="skill-upload-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true">
+                <span class="skill-upload-name">ARCANE SKILL III</span>
+              </button>
+              <input class="skill-file-input" id="skillFile3" data-skill-editor-input="3" type="file" accept="image/png,image/jpeg,image/webp">
+              <label class="skill-inline-zoom" data-skill-zoom-control="3" hidden><span>ซูมภาพ <output data-skill-zoom-output="3">100%</output></span><input type="range" min="100" max="300" step="1" value="100" data-skill-zoom="3" aria-label="ซูมภาพสกิล"></label>
+              <button class="skill-remove" type="button" data-skill-editor-remove="3" aria-label="Remove Arcane Skill 3 image">Remove image</button>
+              <label class="skill-field">Skill name<input type="text" data-skill-detail-name="arcane3" maxlength="120" placeholder="ชื่อ Skill สุดเจ๋ง"></label>
+              <label class="skill-field">Details<textarea data-skill-detail-description="arcane3" rows="4" maxlength="5000" placeholder="คำอธิบายสกิลสุดมหัศจรรย์"></textarea></label>
+            </div>
+          </div>
+          <div class="form-grid medium-fields">
+            <label class="wide">ชื่อ Medium<input name="mediumName" maxlength="120" placeholder="เช่น Display Unit 「 Cathode Ray Terminal 」"></label>
+            <label class="wide">รายละเอียด Medium<textarea name="mediumDescription" rows="3" placeholder="Medium ของตัวละครคืออะไร"></textarea></label>
+          </div>
+          <div class="form-grid ability-limitations-fields">
+            <label class="wide">ความสามารถ<textarea name="abilityDescription" rows="5" placeholder="อธิบายการใช้ความสามารถอาร์เคนัม"></textarea></label>
+            <label class="wide">ข้อจำกัด<textarea name="limitations" rows="3" placeholder="เงื่อนไขหรือข้อจำกัดของความสามารถ"></textarea></label>
+          </div>
+        </section>
+
+        <section class="editor-section" id="personality">
+          <div class="section-heading"><span>04</span><div><p>Personal Record</p><h2>ความชอบและอุปนิสัย</h2></div></div>
+          <div class="form-grid">
+            <label class="wide">สิ่งที่ชอบ<textarea name="likes" rows="3"></textarea></label>
+            <label class="wide">สิ่งที่ไม่ชอบ<textarea name="dislikes" rows="3"></textarea></label>
+            <label class="wide">อุปนิสัย<textarea name="personality" rows="5"></textarea></label>
+          </div>
+        </section>
+
+        <section class="editor-section" id="history" hidden>
+          <div class="section-heading"><span>05</span><div><p>Personal History</p><h2>「 ประวัติส่วนตัว 」</h2></div></div>
+          <div class="form-grid">
+            <label class="wide">เรื่องราวของตัวละคร<textarea name="history" rows="12" placeholder="เล่าเรื่องราวความเป็นมาของตัวละคร"></textarea></label>
+          </div>
+        </section>
+
+        <section class="editor-section" id="contact">
+          <div class="section-heading"><span>06</span><div><p>Contact & Other</p><h2>ข้อมูลติดต่อ</h2></div></div>
+          <div class="form-grid">
+            <label>สายการเล่น<input name="playstyle" maxlength="80" placeholder="GL / HL / BL"></label>
+            <label>สถานะตัวละคร<input name="status" maxlength="80" placeholder="เช่น ยังมีชีวิต / บาดเจ็บ / สูญหาย / เสียชีวิต"></label>
+            <label>ช่องทางติดต่อ<input name="contact" maxlength="160" placeholder="ช่องทางที่สะดวก"></label>
+            <label>Discord<input name="discord" maxlength="80" placeholder="ชื่อ Discord สำหรับติดต่อ"></label>
+            <label class="wide">ข้อมูลอื่น ๆ<textarea name="other" rows="7"></textarea></label>
+          </div>
+        </section>
+        <div class="editor-actions"><p id="saveError" role="alert" hidden></p><a href="/community/rnc">ยกเลิก</a><button id="saveCharacter" type="submit">ลงทะเบียน</button></div>
+      </div>
+    </form>
+  </main>
+  <dialog class="crop-dialog" id="cropDialog" aria-labelledby="cropTitle">
+    <div class="crop-header"><div><p>GALLERY IMAGE</p><h2 id="cropTitle">จัดภาพสำหรับ Gallery</h2></div><button id="closeCrop" type="button" aria-label="ปิดหน้าครอป">×</button></div>
+    <p class="crop-help">ลากรูปเพื่อจัดตำแหน่ง แล้วปรับขนาดให้พอดีกับการ์ด รูปเต็มยังใช้บนหน้าตัวละคร</p>
+    <div class="crop-body">
+      <div class="crop-frame">
+        <canvas id="cropCanvas" width="308" height="712" aria-label="ตัวอย่างภาพบนการ์ด"></canvas>
+        <div class="enemy-crop-info" id="enemyCropInfo" aria-hidden="true" hidden>
+          <img id="enemyCropArcana" class="enemy-crop-arcana" alt="">
+          <span id="enemyCropBoss" class="enemy-crop-boss" hidden>BOSS</span>
+          <div class="enemy-crop-caption">
+            <span id="enemyCropSubtype"></span>
+            <strong id="enemyCropName"></strong>
+            <span id="enemyCropLocalName" hidden></span>
+            <span id="enemyCropHp" class="enemy-crop-hp"></span>
+          </div>
+        </div>
+      </div>
+      <div class="crop-controls">
+        <label class="crop-zoom"><span id="cropZoomLabel">Zoom</span><output id="cropZoomOutput" for="cropZoom" hidden>100%</output><input id="cropZoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+        <button id="resetEnemyCrop" class="crop-reset" type="button" hidden>คืนค่าภาพ</button>
+      </div>
+    </div>
+    <div class="crop-actions"><button id="cancelCrop" type="button">ยกเลิก</button><button id="applyCrop" type="button">ใช้ภาพนี้</button></div>
+  </dialog>
+  <dialog class="community-dialog" id="communityAnnouncement" aria-labelledby="communityDialogTitle" data-notice-unread="false" data-notice-id="latest">
+    <div class="community-dialog-shell">
+      <header class="community-dialog-header">
+        <div>
+          <p class="community-eyebrow">RNC / COMMUNITY NOTICE</p>
+          <h2 id="communityDialogTitle">Latest Staff Notice</h2>
+        </div>
+        <button class="community-dialog-close" type="button" data-community-close aria-label="Close announcements">&times;</button>
+      </header>
+      <div class="community-dialog-grid">
+        <section class="community-dialog-card" aria-label="Latest Staff Notice"><p class="card-kicker">LATEST FROM STAFF</p><p class="dialog-empty">No new staff announcements yet.</p></section>
+      </div>
+    </div>
+  </dialog>
+<script src="/community/rnc/community-popup.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+:root { color-scheme: dark; --dock-paper: #ede3d3; --dock-muted: #a99d8c; --dock-gold: #d3b17b; }
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #101112; color: var(--dock-paper); font-family: "Noto Sans Thai", Tahoma, sans-serif; }
+#rncAppFrame, .rnc-app-frame-pending, .rnc-app-frame-retiring { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #101112; }
+#rncAppFrame { z-index: 1; }
+.rnc-app-frame-pending { opacity: 0; pointer-events: none; }
+.rnc-app-frame-retiring { pointer-events: none; }
+.rnc-theme-dock { position: fixed; z-index: 2147483000; right: 24px; bottom: 22px; width: min(376px, calc(100vw - 24px)); }
+.rnc-theme-dock[hidden] { display: none; }
+.rnc-dock-panel { max-height: calc(100dvh - 44px); overflow-y: auto; overscroll-behavior: contain; padding: 14px 18px 12px; border: 1px solid #99826955; border-radius: 18px; background: linear-gradient(135deg, #282725f5, #151717fa 70%); box-shadow: 0 18px 60px #0008; backdrop-filter: blur(20px); }
+.rnc-dock-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; min-height: 27px; cursor: grab; touch-action: none; user-select: none; }
+.rnc-dock-head:active { cursor: grabbing; }
+.rnc-dock-head > div { display: flex; gap: 4px; }
+.rnc-dock-head button { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--dock-muted); font: 22px/1 sans-serif; cursor: pointer; }
+.rnc-dock-head button:hover { color: var(--dock-paper); background: #ffffff0b; }
+.rnc-dock-playing { display: flex; align-items: center; gap: 3px; color: var(--dock-gold); }
+.rnc-dock-playing > span { margin-left: 6px; font: 9px/1.2 Georgia, serif; letter-spacing: .16em; }
+.rnc-dock-playing i { width: 2px; height: 9px; border-radius: 2px; background: currentColor; transform: scaleY(.35); transform-origin: bottom; animation: rnc-level .85s ease-in-out infinite alternate; animation-play-state: paused; }
+.rnc-dock-playing i:nth-child(2) { animation-delay: -.3s; height: 13px; }
+.rnc-dock-playing i:nth-child(3) { animation-delay: -.6s; }
+.is-playing .rnc-dock-playing i { animation-play-state: running; }
+@keyframes rnc-level { to { transform: scaleY(1); } }
+.rnc-dock-content { display: flex; align-items: center; gap: 17px; min-width: 0; }
+.rnc-dock-art { position: relative; width: 150px; height: 112px; flex: 0 0 150px; }
+.rnc-dock-vinyl { position: absolute; right: 0; top: 0; width: 112px; }
+.rnc-dock-cover { position: absolute; left: 0; top: 7px; z-index: 1; display: grid; place-items: center; width: 98px; height: 98px; overflow: hidden; border: 1px solid #dfc8a34d; border-radius: 2px; background: linear-gradient(145deg, #484647, #282b2b); box-shadow: 3px 4px 12px #0008; color: #ead9bb; font: 18px Georgia, serif; letter-spacing: .1em; }
+.rnc-dock-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rnc-dock-copy { min-width: 0; flex: 1; }
+.rnc-dock-copy small { display: block; margin-bottom: 6px; overflow: hidden; color: var(--dock-gold); font: 9px/1.4 Georgia, serif; letter-spacing: .06em; text-overflow: ellipsis; white-space: nowrap; }
+.rnc-dock-copy h2 { display: -webkit-box; margin: 0; overflow: hidden; font: 500 18px/1.25 Georgia, "Noto Serif Thai", serif; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow-wrap: anywhere; }
+.rnc-dock-copy p { margin: 7px 0 0; overflow: hidden; color: var(--dock-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.rnc-theme-dock[data-state="queued"] .rnc-dock-content,
+.rnc-theme-dock[data-state="queued"] .rnc-dock-play,
+.rnc-theme-dock[data-state="queued"] .rnc-dock-progress,
+.rnc-theme-dock[data-state="queued"] .rnc-dock-controls:has(.rnc-dock-next[hidden]) { display: none; }
+.rnc-dock-controls { display: flex; align-items: center; gap: 10px; margin-top: 17px; }
+.rnc-theme-dock[data-state="queued"] .rnc-dock-controls { margin-top: 0; }
+.rnc-dock-play { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 36px; padding: 8px; border: 0; border-radius: 50%; background: var(--dock-gold); color: #231f1a; cursor: pointer; }
+.rnc-dock-play svg { width: 100%; height: 100%; }
+.rnc-dock-play:hover { background: #ead1a3; }
+.rnc-dock-next {
+  flex: none; width: 32px; height: 30px; padding: 0; border: 0;
+  border-radius: 6px; background: transparent; color: var(--dock-gold); cursor: pointer;
+}
+.rnc-dock-next svg { display: block; width: 17px; height: 17px; margin: auto; }
+.rnc-dock-next:hover { color: #ead1a3; }
+.rnc-dock-progress { min-width: 0; flex: 1; }
+.rnc-dock-progress input { display: block; width: 100%; height: 3px; margin: 5px 0 9px; border-radius: 2px; appearance: none; background: linear-gradient(to right, var(--dock-gold) var(--seek-progress, 0%), #ffffff20 var(--seek-progress, 0%)); cursor: pointer; }
+.rnc-dock-progress input::-webkit-slider-thumb { width: 9px; height: 9px; appearance: none; border-radius: 50%; background: var(--dock-paper); }
+.rnc-dock-progress input::-moz-range-thumb { width: 9px; height: 9px; border: 0; border-radius: 50%; background: var(--dock-paper); }
+.rnc-dock-progress > div { display: flex; justify-content: space-between; color: var(--dock-muted); font: 10px/1.2 monospace; font-variant-numeric: tabular-nums; }
+.rnc-dock-footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 8px;
+  margin-top: 10px; padding-top: 4px; border-top: 1px solid #ffffff12;
+}
+.rnc-dock-links { display: flex; align-items: center; gap: 12px; }
+.rnc-dock-links a, .rnc-dock-footer button, .rnc-dock-queue button {
+  display: inline-flex; align-items: center; min-height: 30px;
+  padding: 0; border: 0; border-radius: 3px; background: transparent;
+  color: var(--dock-muted); text-decoration: none; font: inherit; font-size: 11px; cursor: pointer;
+}
+.rnc-dock-links a:hover, .rnc-dock-footer button:hover:not(:disabled), .rnc-dock-queue button:hover:not(:disabled),
+.rnc-dock-links button[aria-expanded="true"] { color: var(--dock-gold); }
+.rnc-dock-links [data-dock-queue-count] { margin-inline-start: 5px; color: var(--dock-gold); font: 10px/1 monospace; }
+.rnc-dock-volume { display: grid; grid-template-columns: 26px 44px 26px 4ch; align-items: center; gap: 2px; margin-inline-start: auto; }
+.rnc-dock-volume:has(input:disabled) { display: none; }
+.rnc-dock-volume button { justify-content: center; color: var(--dock-gold); font: 15px/1 sans-serif; }
+.rnc-dock-volume button:disabled { opacity: .35; cursor: default; }
+.rnc-dock-volume input { appearance: none; width: 100%; height: 26px; margin: 0; background: transparent; cursor: pointer; }
+.rnc-dock-volume input::-webkit-slider-runnable-track {
+  height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--dock-gold) var(--volume-level, 100%), #ffffff30 var(--volume-level, 100%));
+}
+.rnc-dock-volume input::-webkit-slider-thumb {
+  appearance: none; width: 8px; height: 8px; margin-top: -3px; border-radius: 50%; background: var(--dock-paper);
+}
+.rnc-dock-volume input::-moz-range-track { height: 2px; border-radius: 2px; background: #ffffff30; }
+.rnc-dock-volume input::-moz-range-progress { height: 2px; border-radius: 2px; background: var(--dock-gold); }
+.rnc-dock-volume input::-moz-range-thumb { width: 8px; height: 8px; border: 0; border-radius: 50%; background: var(--dock-paper); }
+.rnc-dock-volume-value { text-align: right; color: var(--dock-muted); font: 10px/1 monospace; }
+.rnc-dock-volume-note, .rnc-dock-status { margin: 4px 0 0; color: var(--dock-muted); font-size: 10px; line-height: 1.4; }
+.rnc-dock-queue { margin-top: 4px; padding-top: 3px; border-top: 1px solid #ffffff12; }
+.rnc-dock-queue [hidden], .rnc-dock-footer [hidden] { display: none; }
+.rnc-dock-queue-list { max-height: min(150px, 25dvh); overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #806744 transparent; scrollbar-width: thin; }
+.rnc-dock-queue ol { margin: 0; padding-inline-start: 21px; color: var(--dock-muted); font: 10px/1 monospace; }
+.rnc-dock-queue li { padding-inline-end: 2px; }
+.rnc-dock-queue-entry { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.rnc-dock-queue-entry button:not(.rnc-dock-queue-song) { flex: none; min-width: 26px; justify-content: center; }
+.rnc-dock-queue .rnc-dock-queue-song {
+  display: block; flex: 1; min-width: 0; overflow: hidden; text-align: left;
+  text-overflow: ellipsis; white-space: nowrap; color: var(--dock-paper); font-family: "Noto Sans Thai", Tahoma, sans-serif;
+}
+.rnc-dock-queue-entry button:disabled { visibility: hidden; }
+.rnc-dock-queue-empty { margin: 6px 0 3px; color: var(--dock-muted); font-size: 11px; }
+.rnc-dock-status:empty { display: none; }
+.rnc-dock-mini { display: none; width: 84px; height: 84px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: grab; touch-action: none; filter: drop-shadow(0 7px 12px #0008); }
+.rnc-dock-mini:active { cursor: grabbing; }
+.rnc-dock-mini > .rnc-record { width: 100%; }
+.rnc-theme-dock.is-collapsed { width: 84px; }
+.rnc-theme-dock.is-collapsed .rnc-dock-panel { display: none; }
+.rnc-theme-dock.is-collapsed .rnc-dock-mini { display: block; }
+.rnc-theme-dock[data-state="loading"] .rnc-dock-mini { animation: rnc-dock-breathe 1.5s ease-in-out infinite alternate; }
+@keyframes rnc-dock-breathe { to { filter: drop-shadow(0 0 9px #d3b17b66); } }
+.rnc-dock-provider { position: fixed; left: -10000px; top: 0; width: 200px; height: 200px; overflow: hidden; opacity: 0; pointer-events: none; }
+.rnc-dock-provider iframe { width: 200px; height: 200px; border: 0; }
+.rnc-theme-dock button:focus-visible, .rnc-theme-dock a:focus-visible, .rnc-theme-dock input:focus-visible { outline: 2px solid var(--dock-gold); outline-offset: 4px; }
+@media (max-width: 520px) {
+  .rnc-theme-dock { right: 12px; bottom: 12px; }
+  .rnc-dock-panel { max-height: calc(100dvh - 24px); padding: 12px 15px 10px; }
+  .rnc-dock-art { width: 133px; height: 102px; flex-basis: 133px; }
+  .rnc-dock-vinyl { width: 102px; }
+  .rnc-dock-cover { width: 88px; height: 88px; }
+  .rnc-dock-content { gap: 13px; }
+  .rnc-dock-copy h2 { font-size: 17px; }
+  .rnc-theme-dock.is-collapsed, .rnc-dock-mini { width: 72px; height: 72px; }
+}
+@media (prefers-reduced-motion: reduce) { .rnc-dock-playing i, .rnc-theme-dock[data-state="loading"] .rnc-dock-mini { animation: none; } }

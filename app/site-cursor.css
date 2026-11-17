@@ -1,0 +1,95 @@
+body.has-site-cursor.site-cursor-visible,
+body.has-site-cursor.site-cursor-visible * {
+  cursor: none !important;
+}
+
+body.has-site-cursor.site-cursor-native,
+body.has-site-cursor.site-cursor-native * {
+  cursor: auto !important;
+}
+
+#cursor-dot,
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12000;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: opacity 0.18s ease, width 0.15s ease, height 0.15s ease,
+    border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+#cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: #c9a96e;
+  box-shadow: 0 0 8px rgba(201, 169, 110, 0.9), 0 0 22px rgba(201, 169, 110, 0.4);
+}
+
+#cursor-ring {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(201, 169, 110, 0.42);
+  box-shadow: 0 0 12px rgba(201, 169, 110, 0.08);
+}
+
+body.has-site-cursor.site-cursor-visible:not(.labuu-result-open) #cursor-dot,
+body.has-site-cursor.site-cursor-visible:not(.labuu-result-open) #cursor-ring {
+  opacity: 1;
+}
+
+body.has-site-cursor.site-cursor-hover:not(.labuu-result-open) #cursor-ring {
+  width: 38px;
+  height: 38px;
+  border-color: rgba(232, 145, 106, 0.9);
+  box-shadow: 0 0 18px rgba(232, 145, 106, 0.32);
+}
+
+body.has-site-cursor.site-cursor-pressed:not(.labuu-result-open) #cursor-dot {
+  width: 5px;
+  height: 5px;
+}
+
+body.has-site-cursor.site-cursor-native #cursor-dot,
+body.has-site-cursor.site-cursor-native #cursor-ring {
+  opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cursor-dot,
+  #cursor-ring {
+    transition: none;
+  }
+}
+
+body.has-site-cursor.site-cursor-fallback,
+body.has-site-cursor.site-cursor-fallback * {
+  cursor: revert !important;
+}
+
+body.has-site-cursor.site-cursor-fallback #cursor-dot,
+body.has-site-cursor.site-cursor-fallback #cursor-ring {
+  opacity: 0 !important;
+}
+
+
+#site-cursor-layer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  outline: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+}
+#site-cursor-layer::backdrop { display: none; pointer-events: none; }

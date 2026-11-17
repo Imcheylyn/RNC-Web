@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Character File | Reverse : Noir Chronicle</title>
+  <script>
+    try {
+      const galleryEntry = sessionStorage.getItem("rnc-gallery-entry");
+      const galleryVisual = sessionStorage.getItem("rnc-gallery-entry-visual");
+      sessionStorage.removeItem("rnc-gallery-entry");
+      sessionStorage.removeItem("rnc-gallery-entry-visual");
+      if (galleryEntry === new URLSearchParams(location.search).get("id")) {
+        document.documentElement.classList.add("from-gallery");
+        const visual = galleryVisual && JSON.parse(galleryVisual);
+        if (visual && visual.id === galleryEntry && visual.image !== "none"
+          && [visual.left, visual.top, visual.width, visual.height].every(Number.isFinite)) {
+          const root = document.documentElement;
+          root.classList.add("has-arrival-art");
+          root.style.setProperty("--arrival-left", visual.left + "px");
+          root.style.setProperty("--arrival-top", visual.top + "px");
+          root.style.setProperty("--arrival-width", visual.width + "px");
+          root.style.setProperty("--arrival-height", visual.height + "px");
+          root.style.setProperty("--arrival-image", visual.image);
+          root.style.setProperty("--arrival-size", visual.size);
+          root.style.setProperty("--arrival-position", visual.position);
+          root.style.setProperty("--arrival-filter", visual.filter);
+          root.style.setProperty("--arrival-edge", visual.edge);
+          window.RNCGalleryArrival = visual;
+        }
+      }
+    } catch {}
+  </script>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/character.css?v=wardrobe-profile-framing-20261113-v1">
+  <script src="/community/rnc/character-data.js?v=height-weight-20261023" defer></script>
+  <script src="/community/rnc/image-layout.js?v=relationships-20261107-v1" defer></script>
+  <script src="/community/rnc/skill-image-crop.js?v=skill-aperture-fit-20261110-v1" defer></script>
+  <link rel="stylesheet" href="/community/rnc/character-theme.css?v=lazy-features-20261117-v1">
+  <script src="/community/rnc/feature-loader.js?v=voice-notes-20261117-v2" defer></script>
+  <script src="/community/rnc/character.js?v=lazy-features-20261117-v1" defer></script>
+  <script src="/community/rnc/character-theme.js?v=lazy-features-20261117-v1" defer></script>
+  <script src="/community/rnc/character-features.js?v=lazy-features-20261117-v1" defer></script>
+  <link rel="stylesheet" href="/community/rnc/enemy.css?v=enemy-arrival-20261112-v1">
+  <link rel="stylesheet" href="/community/rnc/wardrobe-scene.css?v=wardrobe-lazy-20261117-v1">
+  <script src="/community/rnc/wardrobe-scene.js?v=wardrobe-lazy-20261117-v1" defer></script>
+
+</head>
+<body>
+  <main class="character-stage">
+    <article class="character-scene" id="characterScene">
+      <div class="scene-grain" aria-hidden="true"></div>
+      <div class="scene-portrait" id="scenePortrait" aria-hidden="true"><img class="scene-portrait-image" id="scenePortraitImage" alt="" hidden></div>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <button class="wardrobe-signature" id="cycleWardrobeSkin" type="button" aria-label="Switch skin" title="Switch skin"><img class="wardrobe-signature-stamp" id="wardrobeSignatureStamp" src="/assets/Sign.png" alt=""></button>
+      <div class="scene-outline" aria-hidden="true">ARCHIVE<br>NO. <span id="fileNumber">001</span></div>
+
+      <header class="scene-toolbar">
+        <div class="toolbar-left">
+          <a href="/community/rnc" class="scene-icon" aria-label="กลับไปแกลเลอรี">◁</a>
+          <button class="scene-icon scene-archive-icon" id="openCharacterCollection" type="button" aria-label="ความสัมพันธ์และ Voice Lines" aria-haspopup="dialog" title="Relationships / Voice Lines">▣</button>
+          <button class="scene-icon wardrobe-open-icon" id="openWardrobe" type="button" aria-label="เปิดตู้เสื้อผ้า" title="ตู้เสื้อผ้า"><svg viewBox="0 0 65 47" aria-hidden="true"><path fill-rule="evenodd" d="M24.00 1.75 L23.61 3.00 L23.60 7.00 L24.00 8.23 L25.00 8.71 L26.00 8.51 L26.45 8.00 L26.85 5.00 L28.00 4.45 L38.00 4.42 L38.89 5.00 L38.80 10.00 L38.00 10.53 L32.00 10.41 L31.19 11.00 L31.04 17.00 L30.21 19.00 L2.00 43.11 L1.50 44.00 L2.00 45.09 L63.00 45.10 L63.51 44.00 L63.00 42.35 L37.00 20.24 L34.57 18.00 L34.05 17.00 L34.00 14.81 L35.00 13.60 L41.00 13.44 L42.00 12.97 L42.29 3.00 L42.00 1.80 L40.00 1.37 L25.00 1.39Z M32.00 21.54 L10.43 40.00 L9.53 41.00 L9.90 42.00 L55.00 42.17 L56.00 41.74 L56.27 41.00 L55.43 40.00 L35.00 22.47 L33.00 21.07Z M27.00 30.86 L26.56 32.00 L26.99 33.00 L33.00 38.37 L38.83 33.00 L39.26 32.00 L38.00 30.19 L37.00 30.49 L33.00 33.88 L28.00 30.11Z"/></svg></button>
+          <button class="scene-icon scene-word-icon" id="openEmployeeCard" type="button" aria-label="บัตรพนักงาน" aria-haspopup="dialog" title="บัตรพนักงาน">ID</button>
+        </div>
+        <div class="toolbar-right character-community-brand"><img src="/assets/Title_White.png" width="1818" height="156" alt="Reverse : Noir Chronicle"><span>CHARACTER FILE</span></div>
+      </header>
+
+      <section class="scene-left" aria-label="ข้อมูลตัวละครและค่าสถานะ">
+        <div class="arcana-seal"><img id="arcanaIcon" src="" alt=""></div>
+        <div class="identity-panel">
+          <p class="scene-stars" id="rankStars"></p>
+          <h1 id="characterName"></h1>
+          <div class="identity-caption-row"><p class="identity-byname" id="characterByname"></p></div>
+          <div class="identity-meta">
+            <p class="identity-nickname" id="characterNickname"></p>
+            <div class="identity-era-row"><p class="identity-era" id="characterEra"></p><span class="mobile-signature-dock" id="mobileSignatureDock"></span></div>
+          </div>
+          <p class="identity-employee" id="characterEmployee" hidden><span>EMPLOYEE ID</span><strong id="characterEmployeeId"></strong></p>
+        </div>
+        <div class="role-tags" id="roleTags"></div>
+
+        <div class="stat-head"><span>Base Stats</span><span class="stat-total" id="statTotal"></span></div>
+        <div class="stat-grid" id="statGrid"></div>
+        <section class="human-weapons-display" id="humanWeaponsDisplay" aria-label="รายการอาวุธของ Human" hidden></section>
+        <p class="owner-line">CREATOR <span id="ownerName"></span></p>
+      </section>
+
+      <div class="scene-accessories" id="sceneAccessories" hidden>
+        <button class="scene-accessory scene-medium" id="sceneMediumButton" type="button" aria-label="ดูรูป Medium" aria-haspopup="dialog" aria-controls="wardrobeChibiDialog" hidden><img id="sceneMediumImage" alt="Medium ของชุดที่เลือก" decoding="async" hidden></button>
+        <button class="scene-accessory scene-chibi" id="sceneChibiButton" type="button" aria-label="ดูรูป Chibi" aria-haspopup="dialog" aria-controls="wardrobeChibiDialog" hidden><img id="sceneChibiImage" alt="Chibi ของชุดที่เลือก" decoding="async" hidden></button>
+      </div>
+      <section class="scene-right" aria-label="รายละเอียดตัวละคร">
+        <div class="detail-crest">
+          <button class="medium-info-trigger" id="mediumBadge" type="button" data-detail-section="medium" aria-label="อธิบายอาวุธประจำตัว" aria-controls="detailInfoPanel">
+            <img class="weapon-arcana-icon" id="weaponArcanaIcon" alt="" hidden>
+            <span class="medium-badge-name" id="mediumBadgeName">Medium</span>
+          </button>
+          <button class="skill-info-trigger" type="button" data-detail-section="ability" aria-label="อธิบาย Arcane Ability" aria-controls="detailInfoPanel">△</button>
+          <button class="skill-info-trigger" type="button" data-detail-section="limitations" aria-label="อธิบาย Limitations" aria-controls="detailInfoPanel">◬</button>
+          <div class="detail-info-panel" id="detailInfoPanel" role="tooltip" hidden>
+            <h2 id="mediumTooltipTitle">Medium</h2>
+            <div class="detail-info-scroll" tabindex="0" aria-label="รายละเอียด Medium อาวุธ และความสามารถ">
+              <section class="detail-info-entry" data-detail-entry="medium">
+                <span class="detail-info-mark detail-info-mark-medium" aria-hidden="true">M</span>
+                <div><h3>[Medium]</h3><p id="mediumTooltipText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="weapon" hidden>
+                <span class="detail-info-mark" aria-hidden="true">⚔</span>
+                <div><h3>[Weapon]</h3><p id="weaponTooltipText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="ability">
+                <span class="detail-info-mark" aria-hidden="true">△</span>
+                <div><h3>[Arcane Ability]</h3><p id="skillTooltipAbilityText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="limitations">
+                <span class="detail-info-mark" aria-hidden="true">◬</span>
+                <div><h3>[Limitations]</h3><p id="skillTooltipLimitationsText"></p></div>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div class="detail-cards" role="group" aria-label="Character skills">
+          <figure class="skill-card ultimate-skill-card" data-skill-card="2" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Ultimate skill details">
+            <span class="skill-art-window skill-card-art-window" hidden><img class="skill-card-art" alt=""></span><img class="skill-card-frame" src="/assets/RNCelement/Ult.png" alt="" aria-hidden="true"><figcaption>ULTIMATE</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="0" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 1 details">
+            <span class="skill-art-window skill-card-art-window" hidden><img class="skill-card-art" alt=""></span><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE I</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="1" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 2 details">
+            <span class="skill-art-window skill-card-art-window" hidden><img class="skill-card-art" alt=""></span><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE II</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="3" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 3 details">
+            <span class="skill-art-window skill-card-art-window" hidden><img class="skill-card-art" alt=""></span><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE III</figcaption>
+          </figure>
+        </div>
+        <div class="panel-tabs" role="tablist" aria-label="หมวดข้อมูลตัวละคร">
+          <button type="button" role="tab" data-panel="profile" aria-selected="true">Profile</button>
+          <button type="button" role="tab" data-panel="contact" aria-selected="false">Contact</button>
+        </div>
+        <div class="detail-paper">
+          <section class="detail-pane" id="panel-profile" role="tabpanel">
+            <p class="paper-kicker">PERSONAL RECORD</p>
+            <p class="profile-quote" id="characterQuote"></p>
+            <div class="paper-rule"></div>
+            <dl class="identity-facts" id="identityFacts"></dl>
+            <div class="paper-rule"></div>
+            <h3>สิ่งที่ชอบ</h3><p id="likes"></p>
+            <h3>สิ่งที่ไม่ชอบ</h3><p id="dislikes"></p>
+            <h3>อุปนิสัย</h3><p id="personality"></p>
+          </section>
+          <section class="detail-pane" id="panel-story" role="tabpanel" hidden inert>
+            <p class="paper-kicker">PERSONAL HISTORY</p>
+            <h2>「 ประวัติส่วนตัว 」</h2>
+            <div class="paper-rule"></div>
+            <p class="story-text" id="history"></p>
+          </section>
+          <section class="detail-pane" id="panel-contact" role="tabpanel" hidden>
+            <p class="paper-kicker">CONTACT & OTHER</p>
+            <h2>「 Contact 」</h2>
+            <div class="paper-rule"></div>
+            <dl class="identity-facts" id="contactFacts"></dl>
+            <h3>ข้อมูลอื่น ๆ</h3><p id="other"></p>
+            <div class="character-edit-actions">
+              <a class="edit-character" id="editCharacter" href="#" hidden>แก้ไขตัวละครของฉัน</a>
+              <button class="edit-character edit-character-signature" id="editCharacterSignature" type="button" aria-haspopup="dialog" aria-controls="wardrobeSignatureDialog" hidden>แก้ไขลายเซ็น</button>
+            </div>
+            <p class="character-signature-status" id="characterSignatureStatus" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+    </article>
+    <dialog class="skill-read-dialog" id="skillReadDialog" aria-labelledby="skillReadTitle" aria-describedby="skillReadDescription">
+      <article class="skill-read-sheet">
+        <button class="skill-read-close" type="button" aria-label="ปิดรายละเอียดสกิล">×</button>
+        <div class="skill-read-art" aria-hidden="true">
+          <span class="skill-art-window skill-read-window" hidden><img id="skillReadArtwork" class="skill-read-artwork" alt=""></span>
+          <img id="skillReadFrame" class="skill-read-frame" alt="">
+        </div>
+        <p class="skill-read-kicker" id="skillReadKind">ULTIMATE</p>
+        <h2 id="skillReadTitle">Ultimate</h2>
+        <div class="skill-read-rule" aria-hidden="true"></div>
+        <p class="skill-read-description" id="skillReadDescription"></p>
+      </article>
+    </dialog>
+    <dialog class="skill-read-dialog weapon-read-dialog" id="weaponReadDialog" aria-labelledby="weaponReadTitle" aria-describedby="weaponReadDescription">
+      <article class="skill-read-sheet">
+        <button class="skill-read-close" type="button" aria-label="ปิดรายละเอียดอาวุธ">×</button>
+        <div class="weapon-read-art" id="weaponReadArt" aria-hidden="true" hidden>
+          <img id="weaponReadArtwork" alt="" hidden>
+        </div>
+        <div class="weapon-read-heading">
+          <img id="weaponReadElementIcon" alt="" hidden>
+          <h2 id="weaponReadTitle">Weapon</h2>
+        </div>
+        <blockquote class="weapon-read-quote">
+          <span class="weapon-quote-mark weapon-quote-open" aria-hidden="true">“</span>
+          <p class="skill-read-description" id="weaponReadDescription"></p>
+          <span class="weapon-quote-mark weapon-quote-close" aria-hidden="true">”</span>
+        </blockquote>
+        <div class="skill-read-rule weapon-read-stat-rule" aria-hidden="true"></div>
+        <dl class="weapon-read-stats" aria-label="ค่าสถานะอาวุธ">
+          <div><dt>CORE</dt><dd id="weaponReadCORE">0</dd></div>
+          <div><dt>MNF</dt><dd id="weaponReadMNF">0</dd></div>
+          <div><dt>SCR</dt><dd id="weaponReadSCR">0</dd></div>
+        </dl>
+      </article>
+    </dialog>
+    <dialog class="employee-card-dialog" id="employeeCardDialog" aria-label="บัตรพนักงาน" aria-describedby="employeeCardHint">
+      <button class="employee-card-close" id="closeEmployeeCard" type="button" aria-label="ปิดบัตรพนักงาน">×</button>
+      <div class="employee-card-view">
+        <div class="employee-card-stage">
+          <button class="employee-card-object" id="employeeCardFlip" type="button" aria-label="พลิกดูด้านหลังบัตร" aria-pressed="false">
+            <span class="employee-card-face employee-card-front"><canvas id="employeeCardFront" width="1968" height="1240" role="img" aria-label="ด้านหน้าบัตรพนักงาน"></canvas></span>
+            <span class="employee-card-face employee-card-back"><canvas id="employeeCardBack" width="1968" height="1240" role="img" aria-label="ด้านหลังบัตรพนักงาน"></canvas></span>
+          </button>
+        </div>
+        <p class="employee-card-hint" id="employeeCardHint">คลิกที่บัตรเพื่อพลิกดูด้านหลัง</p>
+      </div>
+      <div class="employee-card-controls" aria-label="จัดการบัตรพนักงาน">
+        <button id="chooseEmployeeCardPhoto" type="button" hidden>เพิ่มรูปติดบัตร</button>
+        <button id="openEmployeeSignature" type="button" hidden>เซ็นหลังบัตร</button>
+        <button class="employee-card-download" id="downloadEmployeeCard" type="button" disabled>ดาวน์โหลดบัตร</button>
+      </div>
+      <input id="employeeCardFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+      <p class="employee-card-status" id="employeeCardStatus" role="status" aria-live="polite"></p>
+      <section class="employee-photo-panel" id="employeePhotoPanel" aria-label="จัดรูปติดบัตร" hidden>
+        <header><h2>จัดรูปติดบัตร</h2><button id="cancelEmployeePhoto" type="button" aria-label="ปิดการจัดรูป">×</button></header>
+        <p>ลากรูปให้เห็นใบหน้า แล้วปรับขยายให้พอดีกรอบ</p>
+        <div class="employee-photo-preview"><canvas id="employeePhotoCrop" width="1047" height="1340" aria-label="ลากเพื่อจัดตำแหน่งรูปติดบัตร" tabindex="0"></canvas><span class="employee-photo-guides" aria-hidden="true"></span></div>
+        <label class="employee-photo-zoom">ขยายรูป <input id="employeePhotoZoom" type="range" min="100" max="800" step="1" value="100"><output id="employeePhotoZoomValue">100%</output></label>
+        <div class="employee-photo-shortcuts"><button id="chooseNewEmployeePhoto" type="button">เลือกรูปใหม่</button><button id="resetEmployeePhoto" type="button">จัดภาพเริ่มต้น</button></div>
+        <footer><button id="saveEmployeePhoto" type="button" disabled>ใช้รูปนี้บนบัตร</button></footer>
+      </section>
+      <section class="employee-signature-panel" id="employeeSignaturePanel" aria-label="เซ็นหลังบัตร" hidden>
+        <header><h2>ลายเซ็นเจ้าของบัตร</h2><button id="cancelEmployeeSignature" type="button" aria-label="ปิดช่องเซ็น">×</button></header>
+        <p>เซ็นด้วยเมาส์ นิ้ว หรือปากกา หรืออัปโหลดภาพลายเซ็น แล้วบันทึกลงบัตร</p>
+        <div class="employee-signature-paper"><canvas id="employeeSignaturePad" width="1200" height="360" aria-label="พื้นที่วาดลายเซ็น" tabindex="0"></canvas><span id="employeeSignaturePlaceholder">เซ็นตรงนี้</span></div>
+        <p class="employee-signature-feedback" id="employeeSignatureStatus" role="status" aria-live="polite"></p>
+        <footer class="employee-signature-footer">
+          <div class="employee-signature-tools">
+            <label class="employee-signature-color"><span>สีหมึก</span><input id="employeeSignatureColor" type="color" value="#182c48" aria-label="สีหมึกสำหรับเซ็นหลังบัตร"></label>
+            <div class="employee-signature-tool-actions"><button id="clearEmployeeSignature" type="button">ล้างช่องเซ็น</button><button id="uploadEmployeeSignature" type="button">เลือกรูปลายเซ็น</button></div>
+          </div>
+          <input id="employeeSignatureFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+          <button id="saveEmployeeSignature" type="button" disabled>บันทึกลงบัตร</button>
+          <button class="employee-signature-delete" id="deleteEmployeeSignature" type="button" hidden>ลบลายเซ็นจากบัตร</button>
+        </footer>
+      </section>
+    </dialog>
+    <article class="enemy-scene" id="enemyScene" hidden>
+      <div class="enemy-scene-grain" aria-hidden="true"></div>
+      <header class="enemy-toolbar"><a href="/community/rnc" class="enemy-back" aria-label="กลับคลัง Enemy" title="กลับคลัง Enemy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 3 4 12l14 9z"/></svg></a><div class="enemy-toolbar-meta"><span>R:NC · ENEMY ARCHIVE</span><span class="enemy-boss-stamp" id="enemyBossStamp" hidden>BOSS</span></div></header>
+      <div class="enemy-detail-layout">
+        <section class="enemy-identity" aria-label="ข้อมูลและค่าสถานะ Enemy">
+          <img class="enemy-affinity-seal" id="enemyElementIcon" alt="">
+          <div class="enemy-classification"><span id="enemySubtype">Enemy</span></div>
+          <h1 id="enemyName">Enemy</h1>
+          <p class="enemy-local-name" id="enemyLocalName" hidden></p>
+          <div class="enemy-health"><span>HP</span><strong id="enemyHP">0</strong></div>
+          <dl class="enemy-stats">
+            <div><dt>CORE</dt><dd id="enemyCORE">0</dd></div><div><dt>MNF</dt><dd id="enemyMNF">0</dd></div>
+            <div><dt>RFX</dt><dd id="enemyRFX">0</dd></div><div><dt>SCR</dt><dd id="enemySCR">0</dd></div><div><dt>DEF</dt><dd id="enemyDEF">0</dd></div>
+          </dl>
+          <section class="character-theme-song enemy-theme-song" id="enemyThemeSong" aria-label="เพลงประจำตัวมอน" hidden></section>
+        </section>
+        <div class="enemy-art" id="enemyArt"><img id="enemyImage" alt="" hidden></div>
+        <section class="enemy-records" aria-label="สกิลและรายละเอียด Enemy">
+          <section class="enemy-skills-section" id="enemySkillsSection" hidden><header><h2>SKILLS</h2><span>กดเพื่ออ่านสกิล</span></header><div class="enemy-skills" id="enemySkills"></div></section>
+          <section class="enemy-notes"><h2>Field Notes</h2><div class="enemy-notes-content">
+            <p class="enemy-record-kicker">ENEMY RECORD</p><p id="enemyDescription"></p>
+            <dl class="enemy-facts"><div><dt>ประเภท</dt><dd id="enemyTypeFact"></dd></div><div><dt>ธาตุ</dt><dd id="enemyElementLabel"></dd></div><div><dt>ระดับศัตรู</dt><dd id="enemyLevel"></dd></div></dl>
+          </div></section>
+        </section>
+      </div>
+    </article>
+  </main>
+    <section class="wardrobe-screen" id="wardrobeScreen" aria-label="Garments" hidden>
+      <div class="wardrobe-left">
+        <div class="wardrobe-stage-glow" aria-hidden="true"></div>
+        <img class="wardrobe-hero-image" id="wardrobeHeroImage" alt="ตัวอย่างสกินที่เลือก">
+        <div class="wardrobe-accessories" id="wardrobeAccessories" hidden>
+          <button class="wardrobe-accessory wardrobe-accessory-medium" id="openWardrobeMedium" type="button" aria-label="ดูรูป Medium" aria-haspopup="dialog" aria-controls="wardrobeChibiDialog" hidden>
+            <img id="wardrobeHeroMedium" alt="" hidden>
+          </button>
+          <button class="wardrobe-accessory wardrobe-hero-chibi" id="openWardrobeChibi" type="button" aria-haspopup="dialog" aria-controls="wardrobeChibiDialog" hidden>
+            <img id="wardrobeHeroChibi" alt="" hidden>
+          </button>
+        </div>
+        <header class="wardrobe-toolbar">
+          <button class="garment-icon garment-back" id="closeWardrobe" type="button" aria-label="กลับหน้า Character"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M31 6 9 20l22 14z"/></svg></button>
+          <button class="garment-icon garment-archive" id="wardrobeArchiveLink" type="button" aria-label="กลับคลังตัวละคร" title="กลับคลังตัวละคร" disabled aria-disabled="true"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="7" width="26" height="26"/><path d="M13 13h14v14H13z"/></svg></button>
+          <span class="garment-label">GARMENTS</span>
+        </header>
+        <div class="wardrobe-illustration-copy">
+          <p class="wardrobe-illustration-kicker"><span></span> ILLUSTRATION</p>
+          <p class="wardrobe-character-name" id="wardrobeCharacterName"></p>
+          <div class="wardrobe-skin-title"><h2 id="wardrobeCurrentName">Default</h2><span id="wardrobeDefaultTag">Default</span></div>
+          <p class="wardrobe-description" id="wardrobeCurrentDescription"></p>
+        </div>
+        <p class="wardrobe-stage-mark">R:NC &nbsp; / &nbsp; PERSONAL WARDROBE</p>
+      </div>
+      <aside class="wardrobe-side">
+        <header class="garment-side-head">
+          <div class="garment-title"><span>ROLE</span><h1>GARMENT</h1></div>
+          <label class="language-select"><span class="sr-only">Language</span><select id="wardrobeLanguage" aria-label="Language"><option value="en">English</option><option value="th">ไทย</option></select><span aria-hidden="true">▾</span></label>
+        </header>
+        <div class="wardrobe-side-content">
+          <p class="wardrobe-status" id="wardrobeStatus" role="status" aria-live="polite"></p>
+          <button class="wardrobe-action wardrobe-retry" id="retryWardrobe" type="button" hidden data-wardrobe-label="retry">ลองอีกครั้ง</button>
+          <div class="wardrobe-subhead"><span>COLLECTION</span><span id="wardrobeSkinCount">01</span></div>
+          <div class="wardrobe-list" id="wardrobeSkinList" role="listbox" aria-label="เลือกสกิน"></div>
+          <div class="wardrobe-dressing-note"><p class="dressing-kicker">DRESSING ROOM</p><p>You can have anything you want in life<br>if you dress for it.</p><span>— Edith Head</span></div>
+          <div class="wardrobe-actions" id="wardrobeActions" aria-label="จัดการสกิน" hidden><button class="wardrobe-mini-action" id="editWardrobeSkin" type="button" aria-label="แก้ไขสกิน" title="แก้ไขสกิน" aria-haspopup="dialog" aria-controls="wardrobeSkinDialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19.7 7.8a2.1 2.1 0 0 0-3-3L4 16.5zM14.9 6.6l2.8 2.8"/></svg></button><button class="wardrobe-mini-action" id="deleteWardrobeSkin" type="button" aria-label="ลบสกิน" title="ลบสกิน"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 3v7m4-7v7"/></svg></button><button class="wardrobe-mini-action wardrobe-add" id="addWardrobeSkin" type="button" aria-label="เพิ่มสกิน" title="เพิ่มสกิน" aria-haspopup="dialog" aria-controls="wardrobeSkinDialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </aside>
+    </section>
+    <dialog class="wardrobe-chibi-dialog" id="wardrobeChibiDialog" aria-labelledby="wardrobeChibiTitle">
+      <h2 class="sr-only" id="wardrobeChibiTitle">Chibi</h2>
+      <button class="wardrobe-chibi-close" id="closeWardrobeChibi" type="button" aria-label="ปิดหน้าต่าง" autofocus>×</button>
+      <img id="wardrobeChibiArtwork" alt="" hidden>
+      <p class="wardrobe-chibi-error" id="wardrobeChibiError" role="status" hidden></p>
+    </dialog>
+    <dialog class="wardrobe-skin-dialog" id="wardrobeSkinDialog" aria-labelledby="wardrobeFormTitle" aria-describedby="wardrobeSkinFormHint">
+      <form class="wardrobe-form" id="wardrobeSkinForm" hidden>
+        <header class="wardrobe-skin-form-head"><div><span class="wardrobe-signature-kicker">PERSONAL WARDROBE</span><h2 id="wardrobeFormTitle">เพิ่มสกิน</h2></div><button id="closeWardrobeForm" type="button" aria-label="ปิดหน้าต่าง">×</button></header>
+        <p class="wardrobe-skin-form-hint" id="wardrobeSkinFormHint">เพิ่มภาพและรายละเอียดของสกิน</p>
+        <div class="wardrobe-outfit-workspace">
+          <section class="wardrobe-image-editor" id="wardrobeImageEditor" aria-label="ภาพชุด">
+            <div class="wardrobe-outfit-section-label"><span data-wardrobe-label="image">ภาพชุด *</span><div class="wardrobe-preview-modes" id="wardrobePreviewModes" role="group" aria-label="รูปแบบพรีวิว" hidden><button id="previewWardrobeScene" type="button" aria-pressed="true" data-wardrobe-label="scenePreview">ดูบนฉาก</button><button id="previewWardrobeProfile" type="button" aria-pressed="false" data-wardrobe-label="profilePreview">ดูหน้าตัวละคร</button><button id="previewWardrobeFull" type="button" aria-pressed="false" data-wardrobe-label="fullPreview">ภาพเต็ม</button></div></div>
+            <div class="wardrobe-image-frame wardrobe-upload-stage" id="wardrobeArtworkStage">
+              <button class="wardrobe-artwork-empty" id="chooseWardrobeArtwork" type="button" aria-label="เลือกรูปชุด">
+                <svg class="wardrobe-upload-hanger" viewBox="0 0 65 47" aria-hidden="true"><path fill-rule="evenodd" d="M24.00 1.75 L23.61 3.00 L23.60 7.00 L24.00 8.23 L25.00 8.71 L26.00 8.51 L26.45 8.00 L26.85 5.00 L28.00 4.45 L38.00 4.42 L38.89 5.00 L38.80 10.00 L38.00 10.53 L32.00 10.41 L31.19 11.00 L31.04 17.00 L30.21 19.00 L2.00 43.11 L1.50 44.00 L2.00 45.09 L63.00 45.10 L63.51 44.00 L63.00 42.35 L37.00 20.24 L34.57 18.00 L34.05 17.00 L34.00 14.81 L35.00 13.60 L41.00 13.44 L42.00 12.97 L42.29 3.00 L42.00 1.80 L40.00 1.37 L25.00 1.39Z M32.00 21.54 L10.43 40.00 L9.53 41.00 L9.90 42.00 L55.00 42.17 L56.00 41.74 L56.27 41.00 L55.43 40.00 L35.00 22.47 L33.00 21.07Z M27.00 30.86 L26.56 32.00 L26.99 33.00 L33.00 38.37 L38.83 33.00 L39.26 32.00 L38.00 30.19 L37.00 30.49 L33.00 33.88 L28.00 30.11Z"/></svg>
+                <span class="wardrobe-upload-title" data-wardrobe-label="uploadArtwork">เลือกรูปชุด</span>
+                <span class="wardrobe-upload-hint" data-wardrobe-label="dropArtwork">หรือลากรูปมาวางตรงนี้</span>
+              </button>
+              <span class="wardrobe-artwork-canvas" id="wardrobeArtworkCanvas" hidden><img class="wardrobe-hero-image" id="wardrobeImageTransformPreview" alt="พรีวิวภาพชุด" draggable="false" hidden><span class="wardrobe-outfit-scene-caption" aria-hidden="true"><span>ILLUSTRATION</span><strong id="wardrobeOutfitPreviewName">ชุดใหม่ของคุณ</strong></span></span>
+              <div class="character-scene wardrobe-profile-preview" id="wardrobeProfilePreview" hidden>
+                <div class="scene-portrait" id="wardrobeProfileFrame"><img class="scene-portrait-image" id="wardrobeProfileImage" alt="" draggable="false"></div>
+                <div class="scene-shade" aria-hidden="true"></div>
+              </div>
+              <button class="wardrobe-artwork-change" id="wardrobeArtworkChange" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16-.8 4.8 4.8-.8L20 8a2.8 2.8 0 0 0-4-4L4 16Zm10-10 4 4"/></svg><span data-wardrobe-label="changeArtwork">เปลี่ยนภาพ</span></button>
+            </div>
+            <p class="wardrobe-profile-pan-hint" id="wardrobeProfilePanHint" hidden></p>
+            <input id="wardrobeSkinImage" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
+            <div class="wardrobe-image-size-controls" id="wardrobeImageSizeControls" hidden>
+              <label class="wardrobe-image-size"><span><span data-wardrobe-label="imageSize">ขนาดภาพ</span><output id="wardrobeImageScaleValue">100%</output></span><input id="wardrobeImageScale" type="range" min="50" max="200" step="5" value="100"></label>
+              <button class="wardrobe-image-reset" id="resetWardrobeImageScale" type="button" data-wardrobe-label="resetImageSize">คืนขนาดเริ่มต้น</button>
+            </div>
+          </section>
+          <div class="wardrobe-outfit-details">
+            <label class="wardrobe-field"><span data-wardrobe-label="name">ชื่อชุด *</span><input id="wardrobeSkinName" type="text" maxlength="80" required autocomplete="off"></label>
+            <label class="wardrobe-field wardrobe-outfit-story"><span data-wardrobe-label="description">รายละเอียดของชุดสุดมหัศจรรย์</span><textarea id="wardrobeSkinDescription" maxlength="5000" rows="4"></textarea></label>
+            <fieldset class="wardrobe-framing-option" id="wardrobeFramingOption" hidden>
+              <legend data-wardrobe-label="framingScope">ใช้การจัดรูปกับ</legend>
+              <div class="wardrobe-preview-modes" id="wardrobeProfileFraming">
+                <label><input type="radio" name="profileFraming" value="false" checked><span data-wardrobe-label="wardrobeOnly">เฉพาะในตู้</span></label>
+                <label><input type="radio" name="profileFraming" value="true"><span data-wardrobe-label="wardrobeAndProfile">ตู้และหน้าตัวละคร</span></label>
+                <label hidden><input type="radio" name="profileFraming" value="legacy"><span data-wardrobe-label="legacyFraming">ค่าเดิม · เฉพาะขนาด</span></label>
+              </div>
+            </fieldset>
+            <div class="wardrobe-accessory-fields">
+              <section class="wardrobe-accessory-field" id="wardrobeChibiSection" aria-labelledby="wardrobeChibiFieldTitle">
+                <div class="wardrobe-accessory-field-heading">
+                  <div><h3 id="wardrobeChibiFieldTitle">Chibi</h3><span data-wardrobe-label="optional">ไม่บังคับ</span></div>
+                  <button class="wardrobe-accessory-remove" id="removeWardrobeChibi" type="button" hidden><span aria-hidden="true">×</span><span class="sr-only" data-wardrobe-label="removeChibi">เอา Chibi ออก</span></button>
+                </div>
+                  <button class="wardrobe-accessory-picker" id="chooseWardrobeChibi" type="button" aria-labelledby="wardrobeChibiFieldTitle wardrobeChibiActionLabel" aria-describedby="wardrobeChibiHint">
+                    <span class="wardrobe-accessory-thumbnail">
+                      <span id="wardrobeChibiEmpty" aria-hidden="true"><svg viewBox="0 0 48 56"><circle cx="24" cy="16" r="11"/><path d="M11 47v-9a13 13 0 0 1 26 0v9M18 47v5m12-5v5"/><path class="wardrobe-chibi-plus" d="M36 7h10m-5-5v10"/></svg></span>
+                      <img id="wardrobeChibiPreview" alt="ตัวอย่าง Chibi" draggable="false" hidden>
+                    </span>
+                    <span class="wardrobe-accessory-field-copy"><span id="wardrobeChibiActionLabel" data-wardrobe-label="addChibi">เพิ่มภาพ Chibi</span><span id="wardrobeChibiHint" data-wardrobe-label="chibiHint">ตัวจิ๋วประจำชุดนี้</span></span>
+                  </button>
+                <input id="wardrobeSkinChibi" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
+              </section>
+              <section class="wardrobe-accessory-field" id="wardrobeMediumSection" aria-labelledby="wardrobeMediumFieldTitle" hidden>
+                <div class="wardrobe-accessory-field-heading">
+                  <div><h3 id="wardrobeMediumFieldTitle">Medium</h3><span data-wardrobe-label="optional">ไม่บังคับ</span></div>
+                  <button class="wardrobe-accessory-remove" id="removeWardrobeMedium" type="button" hidden><span aria-hidden="true">×</span><span class="sr-only" data-wardrobe-label="removeMedium">เอา Medium ออก</span></button>
+                </div>
+                  <button class="wardrobe-accessory-picker" id="chooseWardrobeMedium" type="button" aria-labelledby="wardrobeMediumFieldTitle wardrobeMediumActionLabel" aria-describedby="wardrobeMediumHint">
+                    <span class="wardrobe-accessory-thumbnail">
+                      <span class="wardrobe-medium-empty" id="wardrobeMediumEmpty" aria-hidden="true">+</span>
+                      <img id="wardrobeMediumPreview" alt="ตัวอย่าง Medium" draggable="false" hidden>
+                    </span>
+                    <span class="wardrobe-accessory-field-copy"><span id="wardrobeMediumActionLabel" data-wardrobe-label="addMedium">เพิ่มภาพ Medium</span><span id="wardrobeMediumHint" data-wardrobe-label="mediumHint">Medium ประจำชุดนี้</span></span>
+                  </button>
+                <input id="wardrobeSkinMedium" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
+              </section>
+            </div>
+          </div>
+        </div>
+        <footer class="wardrobe-outfit-footer"><p class="wardrobe-form-status" id="wardrobeFormStatus" role="status" aria-live="polite"></p><div class="wardrobe-form-actions"><button class="wardrobe-action" id="cancelWardrobeEdit" type="button" data-wardrobe-label="cancel">ยกเลิก</button><button class="wardrobe-action primary" id="saveWardrobeSkin" type="submit"><span id="saveWardrobeSkinLabel" data-wardrobe-label="save">บันทึกชุด</span></button></div></footer>
+      </form>
+    </dialog>
+    <dialog class="wardrobe-confirm-dialog" id="wardrobeConfirmDialog" role="alertdialog" aria-modal="true" aria-labelledby="wardrobeConfirmTitle" aria-describedby="wardrobeConfirmMessage">
+      <button class="wardrobe-confirm-close" id="closeWardrobeConfirm" type="button" aria-label="ปิดหน้าต่าง">×</button>
+      <span class="wardrobe-confirm-kicker">PERSONAL WARDROBE</span>
+      <h2 id="wardrobeConfirmTitle">ออกโดยไม่บันทึกชุดนี้?</h2>
+      <p id="wardrobeConfirmMessage">ชุดนี้มีการแก้ไขที่ยังไม่ได้บันทึก</p>
+      <div class="wardrobe-confirm-actions"><button class="wardrobe-confirm-proceed" id="wardrobeConfirmProceed" type="button">ไม่บันทึกและออก</button><button class="wardrobe-confirm-cancel" id="wardrobeConfirmCancel" type="button" autofocus>แก้ไขต่อ</button></div>
+    </dialog>
+    <dialog class="wardrobe-signature-dialog" id="wardrobeSignatureDialog" aria-labelledby="wardrobeSignatureTitle" aria-describedby="wardrobeSignatureHint">
+      <header><div><span class="wardrobe-signature-kicker">GARMENT ACCESS</span><h2 id="wardrobeSignatureTitle">ยืนยันลายเซ็นเพื่อเข้า</h2></div><button id="closeWardrobeSignature" type="button" aria-label="ปิดหน้าต่าง">×</button></header>
+      <p class="wardrobe-signature-hint" id="wardrobeSignatureHint">เซ็นหรืออัปโหลดได้ทีละแบบ หากอัปโหลดรูปแล้ว ให้กด “ล้างรูป / เริ่มเซ็นใหม่” ก่อนจึงจะวาดลายเซ็นได้</p>
+      <section class="wardrobe-signature-editor" id="wardrobeSignatureEditor">
+        <div class="wardrobe-signature-paper"><canvas id="wardrobeSignaturePad" width="1200" height="360" aria-label="พื้นที่วาดลายเซ็น" tabindex="0"></canvas><div class="wardrobe-signature-transform" id="signatureTransform" hidden aria-label="ปรับตำแหน่ง ขนาด และมุมของลายเซ็น"><img id="wardrobeSignaturePreview" alt="ตัวอย่างลายเซ็น" draggable="false"><span class="signature-transform-outline" aria-hidden="true"></span><button class="signature-transform-handle signature-rotate-handle" type="button" data-signature-transform="rotate" aria-label="ลากเพื่อหมุนลายเซ็น" title="ลากเพื่อหมุน">↻</button><button class="signature-transform-handle signature-scale-handle" type="button" data-signature-transform="scale" aria-label="ลากเพื่อปรับขนาดลายเซ็น" title="ลากเพื่อปรับขนาด"></button></div></div>
+        <div class="wardrobe-signature-adjustments" id="wardrobeSignatureAdjustments" hidden aria-label="ปรับภาพลายเซ็น">
+          <div class="wardrobe-signature-adjust-head"><span>ปรับด้วยเมาส์</span><button id="resetSignatureAdjustments" type="button">คืนค่าเริ่มต้น</button></div>
+          <p class="signature-transform-hint">ลากรูปเพื่อย้าย · ลากวงกลมด้านบนเพื่อหมุน · ลากจุดมุมเพื่อปรับขนาด</p>
+          <div class="signature-transform-readouts"><span>ขนาด <output id="signatureImageScaleValue">100%</output></span><span>มุม <output id="signatureImageRotationValue">0°</output></span></div>
+          <details class="signature-fine-tune"><summary>ปรับละเอียด</summary><div class="signature-fine-tune-grid">
+            <label class="wardrobe-signature-range"><span>ขนาด <output>100%</output></span><input id="signatureImageScale" data-signature-adjustment="scale" type="range" min="40" max="300" value="100"></label>
+            <label class="wardrobe-signature-range"><span>แนวนอน <output id="signatureImageXValue">0%</output></span><input id="signatureImageX" data-signature-adjustment="x" type="range" min="-50" max="50" value="0"></label>
+            <label class="wardrobe-signature-range"><span>แนวตั้ง <output id="signatureImageYValue">0%</output></span><input id="signatureImageY" data-signature-adjustment="y" type="range" min="-50" max="50" value="0"></label>
+            <label class="wardrobe-signature-range"><span>หมุน <output>0°</output></span><input id="signatureImageRotation" data-signature-adjustment="rotation" type="range" min="-180" max="180" value="0"></label>
+          </div></details>
+        </div>
+        <div class="wardrobe-signature-actions"><button id="uploadWardrobeSignature" type="button">อัปโหลดภาพ</button><button id="clearWardrobeSignature" type="button" hidden>ล้างรูป / เริ่มเซ็นใหม่</button><input id="wardrobeSignatureFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button class="wardrobe-signature-confirm" id="saveWardrobeSignature" type="button">ยืนยันและเข้า</button></div>
+      </section>
+      <p class="wardrobe-signature-status" id="wardrobeSignatureStatus" role="status" aria-live="polite"></p>
+      <p class="wardrobe-signature-readonly" id="wardrobeSignatureReadonly" hidden>ลายเซ็นยังไม่ได้รับการยืนยัน เจ้าของตัวละครต้องเป็นผู้ยืนยันก่อนจึงจะเปิดตู้เสื้อผ้าได้</p>
+    </dialog>
+</body>
+</html>

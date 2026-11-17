@@ -1,0 +1,2 @@
+ALTER TABLE "CommunityCharacter"
+  ADD COLUMN "heightChartXOffset" DOUBLE PRECISION NOT NULL DEFAULT 0;

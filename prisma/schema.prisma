@@ -1,0 +1,437 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Session {
+  id                    String   @id @default(cuid())
+  channelId             String   @unique
+  guildId               String
+  hostId                String
+  lobbyMessageId        String   @default("")
+  combatMessageId       String?
+  state                 String   @default("lobby")
+  maxSlots              Int      @default(4)
+  forumChannelId        String?
+  monsterForumChannelId String?
+  monsterRollMode       String   @default("manual")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  players Player[]
+}
+
+model Player {
+  id        String  @id @default(cuid())
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  userId     String
+  name       String
+  className  String
+  hp         Int
+  maxHp      Int
+  slotIndex  Int
+  tupperName String?
+  avatarUrl  String?
+
+  // Stats are stored as separate integer columns.
+  statCore Int @default(0)
+  statMnf  Int @default(0)
+  statRfx  Int @default(0)
+  statScr  Int @default(0)
+  statDef  Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sessionId, slotIndex])
+}
+
+model CommunityUser {
+  id          String   @id @default(cuid())
+  discordId   String   @unique
+  username    String
+  displayName String
+  avatarHash  String?
+  createdAt   DateTime @default(now())
+  lastLoginAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  characters CommunityCharacter[]
+  mediaUploads CommunityMediaAsset[]
+  labuuScores CommunityLabuuScore[]
+  labuuRunScores CommunityLabuuRunScore[]
+}
+
+model CommunityLabuuScore {
+  guildId         String
+  userId          String
+  user            CommunityUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roundId         String
+  startedAt       DateTime
+  targetIds       String[]
+  lastScore       Int?
+  bestScore       Int?
+  bestRemainingMs Int           @default(0)
+  bestAt          DateTime?
+
+  @@id([guildId, userId])
+  @@index([guildId, bestScore(sort: Desc), bestRemainingMs(sort: Desc), bestAt, userId], map: "CommunityLabuuScore_ranking_idx")
+}
+
+model CommunityLabuuRunScore {
+  guildId   String
+  userId    String
+  user      CommunityUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roundId   String
+  seed      Int
+  startedAt DateTime
+  lastScore Int?
+  bestScore Int?
+  bestAt    DateTime?
+
+  @@id([guildId, userId])
+  @@index([guildId, bestScore(sort: Desc), bestAt, userId], map: "CommunityLabuuRunScore_ranking_idx")
+}
+
+model CommunityCharacter {
+  id       String        @id @default(cuid())
+  ownerId  String?
+  owner    CommunityUser? @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  legacyId String?
+  characterType    String @default("Character")
+  publicationState String @default("PUBLISHED")
+  createdById      String?
+  reviewNote       String @default("")
+  reviewedById     String?
+  reviewedAt       DateTime?
+
+  name         String
+  byname       String @default("")
+  era          String @default("")
+  quote        String @default("")
+  nickname     String @default("")
+  age          String @default("")
+  gender       String @default("")
+  nationality  String @default("")
+  nationalityCode String @default("")
+  employeeEnabled Boolean @default(false)
+  employeeNumber Int? @unique
+  employeeId String? @unique
+  heightWeight String @default("")
+  race         String @default("")
+  arcana       String @default("")
+  rank         Int?
+  position     String @default("")
+  stats        Json   @default("{}")
+  enemyData    Json   @default("{}")
+
+  mediumName         String @default("")
+  mediumDescription  String @default("")
+  weaponName         String @default("")
+  weaponDescription  String @default("")
+  weaponArcana       String @default("")
+  weaponData         Json   @default("[]")
+  abilityDescription String @default("")
+  limitations        String @default("")
+  skillDetails       Json   @default("{}")
+
+  likes       String @default("")
+  dislikes    String @default("")
+  personality String @default("")
+  history     String @default("")
+
+  playstyle String @default("")
+  status    String @default("")
+  contact   String @default("")
+  discord   String @default("")
+  other     String @default("")
+
+  heightChartScale  Float @default(1)
+  heightChartOffset Float @default(0)
+  heightChartXOffset Float @default(0)
+  galleryCrop       Json?
+  imageLayout       Json @default("{}")
+  archiveCategory String @default("Character")
+
+  assets    CommunityCharacterAsset[]
+  wardrobeSkins CommunityCharacterSkin[]
+  outgoingRelationships CommunityCharacterRelationship[] @relation("RelationshipSource")
+  incomingRelationships CommunityCharacterRelationship[] @relation("RelationshipTarget")
+  voiceLines CommunityCharacterVoiceLine[]
+  themeSong CommunityCharacterThemeSong?
+  mediaAssets CommunityMediaAsset[]
+  roles     CommunityCharacterRole[]
+  forumSync ForumSync?
+  createdAt DateTime                  @default(now())
+  updatedAt DateTime                  @updatedAt
+
+  @@unique([ownerId, legacyId])
+  @@index([ownerId, updatedAt])
+  @@index([archiveCategory])
+  @@index([publicationState, updatedAt])
+  @@index([characterType])
+}
+
+model CommunityEmployeeCounter {
+  id String @id @default("main")
+  value Int @default(0)
+}
+
+model CommunityCharacterSkin {
+  characterId String
+  id          String
+  character   CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  name        String
+  description String @default("")
+  imageScale  Int @default(100)
+  imageOffsetX Float @default(0)
+  imageOffsetY Float @default(0)
+  /// Null preserves the original scale-only profile framing for existing outfits.
+  applyFramingToProfile Boolean? @default(false)
+  sortOrder   Int @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@id([characterId, id])
+  @@index([characterId, sortOrder, createdAt])
+}
+
+model CommunityCharacterAsset {
+  id          String             @id @default(cuid())
+  characterId String
+  character   CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  kind        String
+  contentType String
+  data        Bytes?
+  storageBucket String?
+  storageKey  String?
+  createdAt   DateTime           @default(now())
+
+  @@unique([characterId, kind])
+  @@index([characterId])
+}
+
+model CommunityCharacterRelationship {
+  id String @id @default(uuid())
+  sourceId String
+  targetId String
+  source CommunityCharacter @relation("RelationshipSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target CommunityCharacter @relation("RelationshipTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  type String
+  label String @default("")
+  note String @default("")
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  evidence CommunityRelationshipEvidence[]
+
+  @@unique([sourceId, targetId])
+  @@index([targetId, updatedAt])
+}
+
+model CommunityRelationshipEvidence {
+  id String @id @default(uuid())
+  relationshipId String
+  relationship CommunityCharacterRelationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  title String @default("")
+  text String @default("")
+  imageAssetId String?
+  imageAsset CommunityMediaAsset? @relation(fields: [imageAssetId], references: [id], onDelete: NoAction)
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([relationshipId, sortOrder, createdAt])
+  @@index([imageAssetId])
+}
+
+model CommunityMediaAsset {
+  id String @id @default(uuid())
+  uploaderId String?
+  uploader CommunityUser? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+  characterId String?
+  character CommunityCharacter? @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  purpose String
+  status String @default("PENDING")
+  originalName String
+  contentType String
+  byteSize BigInt
+  durationSeconds Float?
+  storageBucket String
+  storageKey String @unique
+  attachedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  voiceLines CommunityCharacterVoiceLine[]
+  themeAudio CommunityCharacterThemeSong[] @relation("ThemeAudio")
+  themeCover CommunityCharacterThemeSong[] @relation("ThemeCover")
+  relationshipEvidence CommunityRelationshipEvidence[]
+
+  @@index([characterId, status])
+  @@index([uploaderId, createdAt])
+  @@index([attachedAt, createdAt])
+}
+
+model CommunityCharacterVoiceLine {
+  id String @id @default(uuid())
+  characterId String
+  character CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  title String
+  category String @default("")
+  transcript String @default("")
+  credit String @default("")
+  sourceType String
+  youtubeId String?
+  sourceUrl String?
+  audioAssetId String?
+  audioAsset CommunityMediaAsset? @relation(fields: [audioAssetId], references: [id], onDelete: NoAction)
+  startSeconds Float @default(0)
+  endSeconds Float?
+  sortOrder Int @default(0)
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([characterId, sortOrder, createdAt])
+}
+
+model CommunityCharacterThemeSong {
+  id String @id @default(uuid())
+  characterId String @unique
+  character CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  title String
+  artist String @default("")
+  sourceType String
+  youtubeId String?
+  sourceUrl String?
+  audioAssetId String?
+  audioAsset CommunityMediaAsset? @relation("ThemeAudio", fields: [audioAssetId], references: [id], onDelete: NoAction)
+  coverAssetId String?
+  coverAsset CommunityMediaAsset? @relation("ThemeCover", fields: [coverAssetId], references: [id], onDelete: NoAction)
+  startSeconds Float @default(0)
+  endSeconds Float?
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunitySettings {
+  id               String   @id @default("main")
+  name             String   @default("Reverse : Noir Chronicle")
+  state            String   @default("OPEN")
+  opensAt          DateTime?
+  registrationOpen Boolean  @default(true)
+  headline         String   @default("")
+  description      String   @default("")
+  worldUrl         String   @default("")
+  updatedById      String?
+  updatedAt        DateTime @updatedAt
+}
+
+model CommunityAnnouncement {
+  id          String   @id @default(cuid())
+  title       String
+  body        String
+  kind        String   @default("NOTICE")
+  state       String   @default("DRAFT")
+  publishAt   DateTime?
+  expiresAt   DateTime?
+  pinned      Boolean  @default(false)
+  authorId    String
+  updatedById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([state, publishAt, expiresAt])
+}
+
+model CommunityRole {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String   @default("")
+  color       String   @default("#d99468")
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  characters CommunityCharacterRole[]
+}
+
+model CommunityCharacterRole {
+  characterId String
+  roleId      String
+  character   CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  role        CommunityRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([characterId, roleId])
+  @@index([roleId])
+}
+
+model CommunityRankStyle {
+  rank        Int      @id
+  borderColor String
+  glowColor   String
+  accentColor String
+  updatedAt   DateTime @updatedAt
+}
+
+model CommunityFrameStyle {
+  key       String   @id
+  borderColor String
+  glowColor String
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityAuditLog {
+  id             String   @id @default(cuid())
+  actorId        String
+  actorDiscordId String
+  actorName      String
+  action         String
+  entityType     String
+  entityId       String
+  summary        String
+  before         Json?
+  after          Json?
+  createdAt      DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+}
+
+model ForumSync {
+  id                String             @id @default(cuid())
+  characterId       String             @unique
+  character         CommunityCharacter @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  forumChannelId    String
+  guildId           String?
+  threadId          String?            @unique
+  status            String             @default("PENDING")
+  lastSyncedAt      DateTime?
+  lastError         String?
+  createAttemptedAt DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  job               ForumSyncJob?
+
+  @@index([status, updatedAt])
+}
+
+model ForumSyncJob {
+  characterId String    @id
+  sync        ForumSync @relation(fields: [characterId], references: [characterId], onDelete: Cascade)
+  revision    Int       @default(1)
+  attempts    Int       @default(0)
+  runAfter    DateTime  @default(now())
+  leaseToken  String?
+  leaseUntil  DateTime?
+
+  @@index([runAfter])
+}

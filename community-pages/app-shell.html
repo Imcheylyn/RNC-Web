@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111213">
+  <title>R:NC · Reverse : Noir Chronicle</title>
+  <link rel="stylesheet" href="/community/rnc/music-record.css?v=record-20261107-v1">
+  <link rel="stylesheet" href="/community/rnc/app-shell.css?v=music-queue-20261113-v5">
+  <script>window.__RNC_INITIAL_URL__=__RNC_BOOT_URL_JSON__;</script>
+  <script src="/community/rnc/app-shell.js?v=music-queue-20261113-v3" defer></script>
+</head>
+<body>
+  <iframe id="rncAppFrame" title="Reverse : Noir Chronicle" allow="autoplay; clipboard-write; fullscreen; picture-in-picture" allowfullscreen></iframe>
+  <aside class="rnc-theme-dock" id="rncThemeDock" aria-label="เครื่องเล่นเพลงประจำตัวละคร" hidden>
+    <div class="rnc-dock-panel">
+      <header class="rnc-dock-head" data-dock-drag>
+        <span class="rnc-dock-playing"><i></i><i></i><i></i><span data-dock-state>PAUSED</span></span>
+        <div><button type="button" data-dock-minimize aria-label="ย่อเป็นแผ่นเสียง" title="ย่อเป็นแผ่นเสียง">−</button><button type="button" data-dock-close aria-label="ปิดเครื่องเล่น" title="ปิดเครื่องเล่น">×</button></div>
+      </header>
+      <div class="rnc-dock-content">
+        <div class="rnc-dock-art" aria-hidden="true">
+          <div class="rnc-record rnc-dock-vinyl"><span class="rnc-record-label" data-record-label></span></div>
+          <div class="rnc-dock-cover" data-dock-cover>R:NC</div>
+        </div>
+        <div class="rnc-dock-copy">
+          <small data-dock-character>PERSONAL ARCHIVE</small>
+          <h2 data-dock-title>Theme Song</h2>
+          <p data-dock-artist></p>
+        </div>
+      </div>
+      <div class="rnc-dock-controls">
+        <button class="rnc-dock-play" type="button" data-dock-play aria-label="เล่นเพลง"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z" fill="currentColor"/></svg></button>
+        <button class="rnc-dock-next" type="button" data-dock-next aria-label="เพลงถัดไป" title="เพลงถัดไป" disabled hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4 5v14l12-7L4 5zm13 0h3v14h-3z"/></svg>
+        </button>
+        <div class="rnc-dock-progress"><input type="range" data-dock-seek min="0" max="1000" value="0" aria-label="ตำแหน่งเพลง"><div><time data-dock-current>0:00</time><time data-dock-duration>–:––</time></div></div>
+      </div>
+      <footer class="rnc-dock-footer">
+        <div class="rnc-dock-links">
+          <a href="/community/rnc/music" data-dock-library>คลังเพลง</a>
+          <button type="button" data-dock-queue-toggle aria-expanded="false" aria-controls="rncDockQueue">คิวเพลง <span data-dock-queue-count hidden>0</span></button>
+        </div>
+        <div class="rnc-dock-volume" role="group" aria-label="ระดับเสียง">
+          <button type="button" data-dock-volume-down aria-label="ลดเสียง" title="ลดเสียง">−</button>
+          <input type="range" data-dock-volume min="0" max="100" value="100" aria-label="ระดับเสียง" aria-valuetext="100%">
+          <button type="button" data-dock-volume-up aria-label="เพิ่มเสียง" title="เพิ่มเสียง">+</button>
+          <span class="rnc-dock-volume-value" data-dock-volume-value aria-hidden="true">100%</span>
+        </div>
+      </footer>
+      <p class="rnc-dock-volume-note" data-dock-volume-note hidden>ใช้ปุ่มปรับเสียงบนอุปกรณ์</p>
+      <section class="rnc-dock-queue" id="rncDockQueue" aria-label="เพลงที่รอเล่น" hidden>
+        <p class="rnc-dock-queue-empty" data-dock-queue-empty>เพิ่มเพลงเข้าคิวจากคลังเพลง</p>
+        <div class="rnc-dock-queue-list"><ol data-dock-queue-list></ol></div>
+      </section>
+      <p class="rnc-dock-status" data-dock-status role="status" aria-live="polite"></p>
+    </div>
+    <button class="rnc-dock-mini" type="button" data-dock-restore aria-label="เปิดเครื่องเล่นเพลง" title="เปิดเครื่องเล่นเพลง"><span class="rnc-record"><span class="rnc-record-label" data-record-label></span></span></button>
+    <div class="rnc-dock-provider" data-dock-provider hidden></div>
+    <audio data-dock-audio preload="metadata"></audio>
+  </aside>
+</body>
+</html>

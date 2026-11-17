@@ -1,0 +1,11 @@
+export type LinoState   = "idle" | "thinking" | "speaking"
+export type LinoEmotion =
+  | "happy"
+  | "neutral"
+  | "surprised"
+  | "sleepy"
+  | "excited"
+  | "curious"
+  | "embarrassed"
+  | "love"
+  | "glitched"

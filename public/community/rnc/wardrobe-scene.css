@@ -1,0 +1,210 @@
+/* Main scene and artwork viewer stay available before opening Garments. */
+.wardrobe-open-icon svg{width:48px;height:40px;display:block;fill:currentColor;stroke:none;filter:drop-shadow(0 1px 2px #0005)}
+.scene-accessories {
+  position: absolute;
+  z-index: 2;
+  left: max(34%, min(43%, calc(3% + 560px)));
+  right: 37.5%;
+  bottom: 28px;
+  height: min(25dvh, 220px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+.scene-accessory {
+  display: block;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: zoom-in;
+  pointer-events: auto;
+}
+.scene-accessory:focus-visible { outline: 2px solid #e3bc83; outline-offset: 4px; }
+.scene-accessory:hover img { filter: drop-shadow(0 7px 9px #0006) brightness(1.08); }
+.scene-accessory img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 7px 9px #0006);
+}
+.scene-medium { width: 44%; height: 68%; }
+.scene-chibi { width: 56%; height: 100%; }
+.scene-accessories[hidden],.scene-accessory[hidden],.scene-accessories img[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .scene-accessory { animation: sceneAccessoryReveal .55s ease-out both; }
+  .scene-chibi { animation-delay: .12s; }
+  .scene-accessory img { animation: sceneAccessoryFloat 4.8s ease-in-out infinite; }
+  .scene-medium img { animation-duration: 5.4s; animation-delay: -1.8s; }
+  @keyframes sceneAccessoryReveal {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes sceneAccessoryFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(var(--scene-accessory-float, -6px)); }
+  }
+}
+@media (min-width: 901px) and (max-width: 1100px) {
+  .scene-accessories { left: 44.6%; right: 40.6%; }
+}
+@media (max-width: 900px) {
+  .scene-accessories {
+    position: relative;
+    inset: auto;
+    width: min(100%, 260px);
+    height: 144px;
+    margin: 0 0 0 auto;
+    --scene-accessory-float: -4px;
+  }
+}
+@media(max-width:900px){.wardrobe-open-icon svg{width:38px;height:32px}}
+.scene-toolbar .toolbar-left{gap:clamp(14px,1.6vw,24px)}
+.scene-toolbar .scene-archive-icon{margin-inline-end:6px}
+.scene-toolbar .wardrobe-open-icon{margin-inline-end:12px}
+.scene-toolbar .scene-word-icon{margin-top:0}
+@media(max-width:900px){
+    .scene-right .detail-cards{display:grid;grid-template-columns:minmax(0,1.12fr) repeat(3,minmax(0,1fr));align-items:end;gap:clamp(6px,2vw,12px);width:100%;height:auto;flex:0 0 auto;padding:14px 0 10px}
+    .scene-right .detail-cards .skill-card{width:100%;max-width:none;height:auto;min-width:0;flex:none;align-self:end;aspect-ratio:168 / 236}
+    .scene-right .detail-cards .ultimate-skill-card{aspect-ratio:194 / 314}
+    .scene-right .detail-cards .skill-card figcaption{right:2px;left:2px;font-size:clamp(6px,1.75vw,10px);letter-spacing:.05em}
+  }
+.wardrobe-signature{position:absolute;right:8px;top:5px;width:96px;height:31px;padding:2px 5px;background:transparent;color:#c94d43;border:0;cursor:pointer;transition:filter .2s,transform .2s}
+.wardrobe-signature:hover{color:#ed6a55;filter:drop-shadow(0 3px 4px #120504aa);transform:translateY(-1px)}
+.wardrobe-signature-stamp{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 -1px 0 #f1947a80) drop-shadow(0 1px 0 #5d140ee0) drop-shadow(0 2px 1px #310a0770)}
+.character-scene > .wardrobe-signature{position:absolute;z-index:3;top:var(--signature-y,85%);left:var(--signature-x,53%);right:auto;bottom:auto;width:var(--signature-width,148px);height:var(--signature-height,48px);padding:4px 6px;transform:translate(-50%,-50%);background:transparent;color:#ed6656;border:0;backdrop-filter:none;pointer-events:auto;touch-action:manipulation;visibility:hidden;transition:color .18s,filter .18s;filter:drop-shadow(0 2px 3px #12050488)}
+.character-scene > .wardrobe-signature[data-positioned]{visibility:visible}
+.character-scene > .wardrobe-signature:hover{transform:translate(-50%,-50%) scale(1.045);color:#ff8970;background:transparent;filter:drop-shadow(0 3px 4px #120504aa)}
+.identity-caption-row{min-width:0}
+.mobile-signature-dock{display:none}
+.identity-era-row{display:flex;align-items:center;gap:10px;min-width:0}
+@media(max-width:900px){
+    .identity-caption-row{display:flex;align-items:center;gap:10px;min-height:0;margin:0 0 5px}
+    .identity-caption-row .identity-byname{flex:0 1 auto;min-width:0;margin:0;line-height:1.45;overflow-wrap:anywhere}
+    .mobile-signature-dock{display:flex;align-items:center;flex:0 1 269px;min-width:0}
+    .mobile-signature-dock .wardrobe-signature{position:relative;inset:auto;z-index:3;display:block;width:min(100%,clamp(230px,60.8vw,269px));height:77px;padding:4px 6px;transform:none;background:transparent;border:0;color:#ed6656;visibility:visible;touch-action:manipulation;filter:drop-shadow(0 2px 3px #12050488)}
+    .mobile-signature-dock .wardrobe-signature:hover{transform:scale(1.045);color:#ff8970;filter:drop-shadow(0 3px 4px #120504aa)}
+  }
+.wardrobe-signature-count{display:none}
+.wardrobe-signature:focus-visible{outline:1px solid #eea17e;outline-offset:4px;border-radius:2px}
+.language-select>span:not(.sr-only){position:absolute;right:14px;top:14px;color:#eee7dc;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.language-select>span:not(.sr-only){top:11px}}
+.character-stage[hidden],.wardrobe-signature[hidden]{display:none!important}
+@media(max-width:900px){.identity-caption-row:not(.has-skins){min-height:0;margin-bottom:10px}}
+.scene-portrait-image.wardrobe-skin-enter{animation:wardrobeSkinFade .22s ease both}
+@keyframes wardrobeSkinFade{from{opacity:.35}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.scene-portrait-image.wardrobe-skin-enter{animation:none}}
+.character-edit-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px}
+.character-edit-actions .edit-character{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;margin:0;font:14px/1.4 Sarabun,"Noto Sans Thai",sans-serif}
+.character-edit-actions .edit-character-signature{background:transparent;cursor:pointer}
+.character-edit-actions .edit-character-signature:hover{background:#5d382b}
+.character-edit-actions .edit-character:focus-visible{outline:2px solid #e4b87f;outline-offset:3px}
+.character-signature-status{margin:10px 0 0;color:#d9b48e;font:12px/1.5 Sarabun,"Noto Sans Thai",sans-serif}
+.character-signature-status:empty{display:none}
+.identity-era-row .identity-era{flex-shrink:0}
+.wardrobe-open-icon svg{width:48px;height:40px;display:block;fill:currentColor;stroke:none;filter:drop-shadow(0 1px 2px #0005)}
+@media(max-width:900px){.wardrobe-open-icon svg{width:38px;height:32px}}
+.scene-toolbar .toolbar-left{gap:clamp(14px,1.6vw,24px)}
+.scene-toolbar .scene-archive-icon{margin-inline-end:6px}
+.scene-toolbar .wardrobe-open-icon{margin-inline-end:12px}
+.scene-toolbar .scene-word-icon{margin-top:0}
+@media(max-width:900px){
+    .scene-right .detail-cards{display:grid;grid-template-columns:minmax(0,1.12fr) repeat(3,minmax(0,1fr));align-items:end;gap:clamp(6px,2vw,12px);width:100%;height:auto;flex:0 0 auto;padding:14px 0 10px}
+    .scene-right .detail-cards .skill-card{width:100%;max-width:none;height:auto;min-width:0;flex:none;align-self:end;aspect-ratio:168 / 236}
+    .scene-right .detail-cards .ultimate-skill-card{aspect-ratio:194 / 314}
+    .scene-right .detail-cards .skill-card figcaption{right:2px;left:2px;font-size:clamp(6px,1.75vw,10px);letter-spacing:.05em}
+  }
+.wardrobe-signature{position:absolute;right:8px;top:5px;width:96px;height:31px;padding:2px 5px;background:transparent;color:#c94d43;border:0;cursor:pointer;transition:filter .2s,transform .2s}
+.wardrobe-signature:hover{color:#ed6a55;filter:drop-shadow(0 3px 4px #120504aa);transform:translateY(-1px)}
+.wardrobe-signature-stamp{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 -1px 0 #f1947a80) drop-shadow(0 1px 0 #5d140ee0) drop-shadow(0 2px 1px #310a0770)}
+.character-scene > .wardrobe-signature{position:absolute;z-index:3;top:var(--signature-y,85%);left:var(--signature-x,53%);right:auto;bottom:auto;width:var(--signature-width,148px);height:var(--signature-height,48px);padding:4px 6px;transform:translate(-50%,-50%);background:transparent;color:#ed6656;border:0;backdrop-filter:none;pointer-events:auto;touch-action:manipulation;visibility:hidden;transition:color .18s,filter .18s;filter:drop-shadow(0 2px 3px #12050488)}
+.character-scene > .wardrobe-signature[data-positioned]{visibility:visible}
+.character-scene > .wardrobe-signature:hover{transform:translate(-50%,-50%) scale(1.045);color:#ff8970;background:transparent;filter:drop-shadow(0 3px 4px #120504aa)}
+.identity-caption-row{min-width:0}
+.mobile-signature-dock{display:none}
+.identity-era-row{display:flex;align-items:center;gap:10px;min-width:0}
+@media(max-width:900px){
+    .identity-caption-row{display:flex;align-items:center;gap:10px;min-height:0;margin:0 0 5px}
+    .identity-caption-row .identity-byname{flex:0 1 auto;min-width:0;margin:0;line-height:1.45;overflow-wrap:anywhere}
+    .mobile-signature-dock{display:flex;align-items:center;flex:0 1 269px;min-width:0}
+    .mobile-signature-dock .wardrobe-signature{position:relative;inset:auto;z-index:3;display:block;width:min(100%,clamp(230px,60.8vw,269px));height:77px;padding:4px 6px;transform:none;background:transparent;border:0;color:#ed6656;visibility:visible;touch-action:manipulation;filter:drop-shadow(0 2px 3px #12050488)}
+    .mobile-signature-dock .wardrobe-signature:hover{transform:scale(1.045);color:#ff8970;filter:drop-shadow(0 3px 4px #120504aa)}
+  }
+.wardrobe-signature-count{display:none}
+.wardrobe-signature:focus-visible{outline:1px solid #eea17e;outline-offset:4px;border-radius:2px}
+.language-select>span:not(.sr-only){position:absolute;right:14px;top:14px;color:#eee7dc;pointer-events:none}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.language-select>span:not(.sr-only){top:11px}}
+.character-stage[hidden],.wardrobe-signature[hidden]{display:none!important}
+@media(max-width:900px){.identity-caption-row:not(.has-skins){min-height:0;margin-bottom:10px}}
+.scene-portrait-image.wardrobe-skin-enter{animation:wardrobeSkinFade .22s ease both}
+@keyframes wardrobeSkinFade{from{opacity:.35}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.scene-portrait-image.wardrobe-skin-enter{animation:none}}
+.character-edit-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px}
+.character-edit-actions .edit-character{display:inline-flex;align-items:center;justify-content:center;min-height:44px;box-sizing:border-box;margin:0;font:14px/1.4 Sarabun,"Noto Sans Thai",sans-serif}
+.character-edit-actions .edit-character-signature{background:transparent;cursor:pointer}
+.character-edit-actions .edit-character-signature:hover{background:#5d382b}
+.character-edit-actions .edit-character:focus-visible{outline:2px solid #e4b87f;outline-offset:3px}
+.character-signature-status{margin:10px 0 0;color:#d9b48e;font:12px/1.5 Sarabun,"Noto Sans Thai",sans-serif}
+.character-signature-status:empty{display:none}
+.identity-era-row .identity-era{flex-shrink:0}
+.character-signature-status{position:fixed!important;z-index:12000;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);display:flex;align-items:center;gap:9px;max-width:calc(100vw - 32px);margin:0!important;padding:11px 17px;border:1px solid #8f6249;border-radius:999px;background:linear-gradient(135deg,#26201c,#141617);color:#f1d4ad;box-shadow:0 12px 32px #0009;font:13px/1.4 Sarabun,"Noto Sans Thai",sans-serif;opacity:0;visibility:hidden;transform:translate(-50%,12px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
+.character-signature-status::before{content:"\2713";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#c16b48;color:#fff2df;font:600 12px/1 Arial,sans-serif}
+.character-signature-status.is-visible{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.character-signature-status:empty{display:none}
+@media(prefers-reduced-motion:reduce){.character-signature-status{transition:none}}
+.wardrobe-signature{overflow:visible}
+.wardrobe-signature-stamp{position:absolute;left:50%;top:50%;max-width:none;max-height:none;object-fit:fill;transform:translate(-50%,-50%)}
+.wardrobe-profile-preview.character-scene {
+  position:absolute; inset:0 auto auto 0; width:var(--preview-width); height:var(--preview-height);
+  display:block; padding:0; border:0; border-radius:0; box-shadow:none; pointer-events:none;
+  transform:scale(var(--preview-scale,1)); transform-origin:top left;
+}
+.wardrobe-profile-preview .scene-portrait{animation:none}
+.wardrobe-chibi-dialog button:focus-visible{outline:2px solid #dcb789;outline-offset:3px}
+.wardrobe-chibi-dialog {
+  width:max-content; max-width:calc(100vw - 32px); margin:auto; padding:0;
+  border:0; background:transparent; color:#e9dfcf; overflow:visible;
+}
+.wardrobe-chibi-dialog::backdrop{background:#070605c9}
+.wardrobe-chibi-close {
+  position:fixed;
+  inset-block-start:max(16px,env(safe-area-inset-top));
+  inset-inline-end:max(16px,env(safe-area-inset-right));
+  width:44px; height:44px; display:grid; place-items:center; padding:0;
+  border:0; border-radius:50%; background:transparent; color:#e9dfcf;
+  font:34px/1 Georgia,serif; cursor:pointer;
+}
+.wardrobe-chibi-close:hover{background:#f0d7ad14;color:#fff0dd}
+.wardrobe-chibi-dialog>img {
+  display:block; width:min(72vw,480px); height:min(53dvh,520px);
+  object-fit:contain; filter:drop-shadow(0 10px 18px #0009);
+}
+.wardrobe-chibi-error{margin:0;text-align:center;color:#e9bd93;font-size:13px}
+@media(prefers-reduced-motion:no-preference) {
+  .wardrobe-chibi-dialog[open]>img{animation:wardrobeChibiReveal .22s ease-out both}
+  .wardrobe-chibi-dialog[data-closing]{animation:wardrobeChibiFadeOut .18s ease-in both}
+  .wardrobe-chibi-dialog[data-closing]::backdrop{animation:wardrobeChibiBackdropOut .18s ease-in both}
+  .wardrobe-chibi-dialog>img{transition:scale .18s ease-in}
+  .wardrobe-chibi-dialog[data-closing]>img{scale:.96}
+  @keyframes wardrobeChibiReveal{from{opacity:0;transform:scale(.96)}}
+  @keyframes wardrobeChibiFadeOut{to{opacity:0}}
+  @keyframes wardrobeChibiBackdropOut{to{background:transparent}}
+}
+.scene-portrait.wardrobe-fitted-portrait {
+  top: 0;
+  bottom: 0;
+  max-width: calc((100vw - 10px - clamp(310px, 27vw, 390px)) * 1.05);
+}
+@media (max-width: 900px) {
+  .scene-portrait.wardrobe-fitted-portrait { top: 55px; bottom: auto; width: auto; height: max(437.5px, 72.5dvh); max-width: calc(100vw - 10px); }
+}
+@media (max-width: 480px) {
+  .scene-portrait.wardrobe-fitted-portrait { height: max(437.5px, 66.25dvh); }
+}

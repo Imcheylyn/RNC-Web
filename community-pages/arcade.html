@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#140e11">
+  <title>Arcade | Reverse : Noir Chronicle</title>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/arcade.css?v=20261112-v14">
+  <script src="/community/rnc/arcade.js?v=labuu-run-20261113-v8" defer></script>
+</head>
+<body class="arcade-page">
+  <nav class="top-nav" aria-label="เมนูหลัก">
+    <a class="community-brand" href="/community/rnc" aria-label="Reverse : Noir Chronicle"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links">
+      <a href="/community/rnc">ARCHIVE</a>
+      <a class="hide-small" href="/community/rnc/music">MUSIC</a>
+      <a class="hide-small" href="/community/rnc/relationships">RELATIONSHIPS</a>
+      <a class="hide-small" href="/community/rnc/world">WORLD</a>
+      <a class="hide-small" href="/community">COMMUNITY</a>
+      <a class="labuu-nav-mark" href="/community/rnc/arcade" aria-current="page" aria-label="Arcade" title="Arcade">!</a>
+    </div>
+  </nav>
+  <main class="arcade-shell">
+    <header class="arcade-heading">
+      <h1>Arcade</h1>
+      <button class="arcade-leaderboard-open" type="button" aria-haspopup="dialog" aria-controls="arcade-leaderboard" data-leaderboard-open>Leaderboard</button>
+    </header>
+    <section class="arcade-carousel" aria-label="เลือกตู้เกม">
+      <div class="arcade-stage">
+        <div class="arcade-track" data-cabinet-track></div>
+        <img class="arcade-labuu-cameo" src="/assets/Labuu.png" width="478" height="450" alt="" draggable="false" hidden>
+        <div class="arcade-power" aria-hidden="true"></div>
+        <button class="arcade-step" type="button" data-cabinet-step="-1" aria-label="ตู้ก่อนหน้า" title="ตู้ก่อนหน้า"></button>
+        <button class="arcade-step" type="button" data-cabinet-step="1" aria-label="ตู้ถัดไป" title="ตู้ถัดไป"></button>
+      </div>
+      <div class="arcade-selection">
+        <div aria-live="polite">
+          <h2 data-game-title>Find the Labuu</h2>
+          <p data-game-description>ลาบู้ทั้ง 7 ตัวกำลังซ่อนอยู่ในความมืด! รีบตามหาให้ครบก่อนหมดเวลานะคะ!</p>
+        </div>
+        <div class="arcade-game-notes" id="arcade-game-notes" hidden>
+          <p class="arcade-game-status" lang="en"><strong data-game-status></strong></p>
+          <p class="arcade-game-quote"><i data-game-quote></i></p>
+        </div>
+      </div>
+    </section>
+
+    <dialog class="arcade-scoreboard" id="arcade-leaderboard" aria-labelledby="arcade-score-title">
+      <header class="arcade-score-heading">
+        <div>
+          <h2 id="arcade-score-title">High Scores</h2>
+          <p class="arcade-score-game" data-score-game>Find the Labuu</p>
+        </div>
+        <form method="dialog">
+          <button class="arcade-leaderboard-close" type="submit" aria-label="ปิด" autofocus>X</button>
+        </form>
+      </header>
+      <div class="arcade-score-body" role="region" aria-label="อันดับและคะแนน" tabindex="0">
+        <div class="arcade-personal">
+          <span data-personal-label>คะแนนสูงสุดของคุณ</span>
+          <strong data-personal-score>—</strong>
+          <span data-personal-rank hidden></span>
+        </div>
+        <p class="arcade-score-status" data-score-status role="status">กำลังโหลดอันดับของเซิร์ฟ</p>
+        <table class="arcade-score-table" data-score-table hidden>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Score</th><th scope="col">Name</th></tr></thead>
+          <tbody data-score-rows></tbody>
+        </table>
+      </div>
+    </dialog>
+
+    <template id="arcade-cabinet">
+      <button class="arcade-cabinet" type="button">
+        <span class="cabinet-marquee"></span>
+        <span class="cabinet-bezel">
+          <span class="cabinet-screen">
+            <img src="/assets/Labuu.png" width="110" height="110" alt="" hidden>
+            <span class="cabinet-status"></span>
+          </span>
+        </span>
+        <span class="cabinet-deck" aria-hidden="true"><span class="cabinet-stick"></span><span class="cabinet-buttons"></span></span>
+        <span class="cabinet-base" aria-hidden="true"><span class="cabinet-coin-slot"></span></span>
+      </button>
+    </template>
+  </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+@font-face { font-family:EmployeeDIN; src:url('/fonts/employee-card/DIN-Regular.ttf') format('truetype'); font-weight:400; font-display:swap; }
+@font-face { font-family:EmployeeDIN; src:url('/fonts/employee-card/DIN-Bold.otf') format('opentype'); font-weight:700; font-display:swap; }
+.employee-card-dialog { position:fixed; inset:0; width:100vw; height:100dvh; max-width:none; max-height:none; box-sizing:border-box; margin:0; padding:58px 26px 115px; overflow:auto; border:0; background:transparent; color:#ece9e2; }
+.employee-card-dialog[open] { display:flex; align-items:center; justify-content:center; }
+.employee-card-dialog::backdrop { background:#05070bc9; backdrop-filter:blur(12px); }
+.employee-card-close { position:fixed; z-index:5; top:20px; right:24px; display:grid; place-items:center; width:40px; height:40px; padding:0; border:1px solid #e3d7c14d; border-radius:50%; background:#11151be6; color:#efe6d4; font:28px/1 Georgia,serif; cursor:pointer; }
+.employee-card-view { width:min(980px,calc(100vw - 64px),calc((100dvh - 220px)*1.587)); text-align:center; }
+.employee-card-stage { perspective:1800px; padding:7px; }
+.employee-card-object { --card-turn:0deg; --card-tilt-x:0deg; --card-tilt-y:0deg; --shine-x:50%; --shine-y:40%; position:relative; display:block; width:100%; aspect-ratio:1968/1240; padding:0; border:0; border-radius:clamp(12px,1.8vw,26px); background:transparent; transform-style:preserve-3d; transform:rotateX(var(--card-tilt-x)) rotateY(calc(var(--card-turn) + var(--card-tilt-y))); transition:transform .7s cubic-bezier(.2,.7,.2,1); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.employee-card-object.is-flipped { --card-turn:180deg; }
+.employee-card-object.is-tilting { transition:transform .14s ease-out; }
+.employee-card-object::before { content:''; position:absolute; inset:0; border-radius:inherit; background:#a4aebc; box-shadow:0 1px 0 #fff9,0 4px 0 #7b8795,0 24px 60px #000b; transform:translateZ(-1px); }
+.employee-card-face { position:absolute; inset:0; display:block; overflow:hidden; border:1px solid #e1e4e9aa; border-radius:inherit; background:#dce0e6; backface-visibility:hidden; -webkit-backface-visibility:hidden; box-shadow:inset 0 0 0 2px #fff4,0 2px 0 #8f9baa,0 18px 55px #0008; }
+.employee-card-front { transform:translateZ(2px); }
+.employee-card-back { transform:rotateY(180deg) translateZ(2px); }
+.employee-card-face canvas { display:block; width:100%; height:100%; }
+.employee-card-face::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at var(--shine-x) var(--shine-y),#fff9 0%,#fff0 45%),linear-gradient(118deg,#ff99b900 13%,#a1eaff45 31%,#a8ffc63d 40%,#fff3a54a 48%,#f5a6ff3b 57%,#b6b9ff26 66%,#ffffff00 83%); background-size:100% 100%,230% 230%; background-position:center,var(--shine-x) var(--shine-y); mix-blend-mode:soft-light; opacity:.7; }
+.employee-card-face::before { content:''; position:absolute; z-index:1; inset:0; pointer-events:none; border-radius:inherit; box-shadow:inset 0 2px 2px #fffc,inset 0 -3px 4px #17223335; background:linear-gradient(125deg,transparent 30%,#ffffff29 47%,transparent 58%); background-size:240% 240%; animation:employee-card-glint 9s ease-in-out infinite; }
+@keyframes employee-card-glint { 0%,100% { background-position:100% 50%; } 50% { background-position:0% 50%; } }
+.employee-card-object:focus-visible { outline:2px solid #efd3a7; outline-offset:9px; }
+.employee-card-hint { margin:20px 0 0; color:#dad7d0b3; font:12px/1.5 Sarabun,'Noto Sans Thai',sans-serif; letter-spacing:.025em; }
+.employee-card-controls { position:fixed; z-index:3; bottom:calc(22px + env(safe-area-inset-bottom)); left:50%; display:flex; align-items:center; justify-content:center; gap:10px; width:max-content; max-width:calc(100vw - 28px); transform:translateX(-50%); }
+.employee-card-controls button,.employee-signature-panel button { min-height:43px; padding:10px 17px; border:1px solid #cbb48c70; border-radius:5px; background:#161a20eb; color:#ece4d5; font:14px/1.35 Sarabun,'Noto Sans Thai',sans-serif; cursor:pointer; }
+.employee-card-controls button:hover:not(:disabled),.employee-signature-panel button:hover:not(:disabled) { border-color:#e2c695; background:#2b2c2c; }
+.employee-card-controls .employee-card-download,.employee-signature-panel #saveEmployeeSignature { border-color:#ddc494; background:#dcc493; color:#26211a; }
+.employee-card-controls button:disabled,.employee-signature-panel button:disabled { opacity:.4; cursor:not-allowed; }
+.employee-card-status { position:fixed; z-index:3; bottom:calc(74px + env(safe-area-inset-bottom)); left:20px; right:20px; margin:0; text-align:center; color:#d9ccb6; font:12px/1.5 Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-signature-panel { position:fixed; z-index:4; left:50%; bottom:calc(91px + env(safe-area-inset-bottom)); width:min(620px,calc(100vw - 28px)); max-height:calc(100dvh - 125px); overflow:auto; box-sizing:border-box; padding:20px; border:1px solid #9e8970; border-radius:12px; background:#15191ff5; box-shadow:0 20px 70px #000b; transform:translateX(-50%); text-align:left; }
+.employee-signature-panel header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.employee-signature-panel h2 { margin:0; color:#eadac0; font:20px/1.3 Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-signature-panel header button { min-height:32px; width:32px; padding:0; border:0; background:transparent; font-size:26px; }
+.employee-signature-panel p { margin:6px 0 16px; color:#c1bcb1; font:12px/1.5 Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-signature-paper { position:relative; overflow:hidden; border:1px solid #d1ccc2; border-radius:5px; background:linear-gradient(transparent 76%,#9aa5b34a 76%,#9aa5b34a 76.5%,transparent 76.5%),#f6f3ec; }
+.employee-signature-paper canvas { position:relative; z-index:1; display:block; width:100%; height:auto; aspect-ratio:10/3; touch-action:none; cursor:crosshair; }
+.employee-signature-paper span { position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; color:#b8b1a5; font:22px Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-signature-paper span[hidden] { display:none; }
+.employee-signature-panel footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; margin-top:14px; }
+.employee-signature-panel .employee-signature-delete { flex-basis:100%; min-height:35px; border-color:#c1807252; background:transparent; color:#d89587; font-size:12px; }
+.employee-photo-panel { position:fixed; z-index:6; top:50%; left:50%; width:min(460px,calc(100vw - 28px)); max-height:calc(100dvh - 24px); overflow:auto; box-sizing:border-box; padding:20px; border:1px solid #9e8970; border-radius:12px; background:#15191ffa; box-shadow:0 20px 80px #000d; transform:translate(-50%,-50%); text-align:left; }
+.employee-photo-panel header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.employee-photo-panel h2 { margin:0; color:#eadac0; font:20px/1.3 Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-photo-panel p { margin:7px 0 13px; color:#c1bcb1; font:12px/1.5 Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-photo-panel button { min-height:38px; padding:8px 12px; border:1px solid #cbb48c70; border-radius:5px; background:#20242b; color:#ece4d5; font:13px/1.35 Sarabun,'Noto Sans Thai',sans-serif; cursor:pointer; }
+.employee-photo-panel button:disabled { opacity:.4; cursor:not-allowed; }
+.employee-photo-panel header button { min-height:30px; width:30px; padding:0; border:0; background:transparent; font-size:25px; }
+.employee-photo-preview { position:relative; width:min(240px,calc((100dvh - 320px)*.7813)); min-width:105px; margin:0 auto; overflow:hidden; border:1px solid #ceb99580; border-radius:7px; background:linear-gradient(140deg,#343943,#11151b); }
+.employee-photo-preview canvas { display:block; width:100%; height:auto; aspect-ratio:1047/1340; touch-action:none; cursor:grab; }
+.employee-photo-preview canvas:active { cursor:grabbing; }
+.employee-photo-guides { position:absolute; inset:0; pointer-events:none; }
+.employee-photo-guides::before { content:''; position:absolute; top:10%; left:22%; width:56%; height:49%; border:1px dashed #fff6; border-radius:48%; }
+.employee-photo-guides::after { content:''; position:absolute; top:33%; left:8%; right:8%; border-top:1px dashed #fff5; }
+.employee-photo-zoom { display:flex; align-items:center; gap:10px; margin:15px 0; color:#d8c9b6; font:12px Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-photo-zoom input { flex:1; min-width:0; accent-color:#dcc493; }
+.employee-photo-zoom output { min-width:38px; text-align:right; font-variant-numeric:tabular-nums; }
+.employee-photo-shortcuts { display:flex; justify-content:space-between; gap:8px; }
+.employee-photo-panel footer { margin-top:11px; }
+.employee-photo-panel #saveEmployeePhoto { width:100%; border-color:#ddc494; background:#dcc493; color:#26211a; }
+@media (max-width:600px) {
+  .employee-card-dialog { padding:52px 8px 120px; }
+  .employee-card-view { width:min(calc(100vw - 18px),calc((100dvh - 240px)*1.587)); }
+  .employee-card-stage { padding:4px; perspective:1000px; }
+  .employee-card-close { top:12px; right:14px; width:35px; height:35px; }
+  .employee-card-controls { gap:6px; }
+  .employee-card-controls button { min-height:42px; padding:9px 10px; font-size:12px; }
+  .employee-card-status { font-size:11px; }
+  .employee-signature-panel { padding:15px; }
+}
+@media (prefers-reduced-motion:reduce) { .employee-card-object,.employee-card-object.is-tilting { transition:none; } .employee-card-object { --card-tilt-x:0deg !important; --card-tilt-y:0deg !important; } .employee-card-face::before { animation:none; } }
+
+.employee-signature-panel footer input[type="file"] { display: none; }
+.employee-signature-panel #uploadEmployeeSignature { border-color: #9d7459; color: #e9c19e; background: #28211e; }
+.employee-signature-panel #uploadEmployeeSignature:hover:not(:disabled) { border-color: #d39168; background: #382921; }
+
+.employee-signature-color { display:inline-flex; align-items:center; gap:7px; color:#c7b7a1; font:12px Sarabun,'Noto Sans Thai',sans-serif; }
+.employee-signature-color input { width:32px; height:32px; padding:2px; border:1px solid #9e897080; border-radius:4px; background:#24262a; cursor:pointer; }
+.employee-signature-color input:disabled { opacity:.4; cursor:wait; }
+
+/* Card action layout */
+.employee-card-controls { width:min(570px,calc(100vw - 28px)); max-width:none; box-sizing:border-box; gap:8px; padding:9px; border:1px solid #aa906a75; border-radius:10px; background:#12161bf5; box-shadow:0 12px 34px #000a; }
+.employee-card-controls button { flex:1 1 0; min-width:0; min-height:48px; padding:10px 12px; border-radius:6px; font-weight:600; transition:background .18s ease,border-color .18s ease,transform .18s ease; }
+.employee-card-controls button:hover:not(:disabled),.employee-signature-panel button:hover:not(:disabled) { transform:translateY(-1px); }
+.employee-card-controls .employee-card-download:hover:not(:disabled),.employee-signature-panel #saveEmployeeSignature:hover:not(:disabled) { border-color:#f3d9a8; background:#efd7a6; color:#241f1a; }
+.employee-card-controls .employee-card-download:disabled { border-color:#756c5f; background:#49473f; color:#e0d6c3; opacity:.65; }
+.employee-card-controls button:focus-visible,.employee-signature-panel button:focus-visible,.employee-signature-color input:focus-visible { outline:2px solid #f1d39d; outline-offset:3px; }
+.employee-card-status { bottom:calc(96px + env(safe-area-inset-bottom)); text-shadow:0 2px 6px #000; }
+.employee-signature-panel { top:50%; bottom:auto; max-height:calc(100dvh - 36px); padding:24px; border-color:#b99b70; background:#171b20; transform:translate(-50%,-50%); }
+.employee-card-dialog:has(.employee-signature-panel:not([hidden])) .employee-card-controls,.employee-card-dialog:has(.employee-signature-panel:not([hidden])) .employee-card-status { visibility:hidden; }
+.employee-signature-panel header button { min-width:44px; min-height:44px; border-radius:50%; }
+.employee-signature-panel .employee-signature-feedback { min-height:20px; margin:9px 0 0; color:#e3c193; font-size:12px; }
+.employee-signature-panel footer { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin-top:11px; }
+.employee-signature-panel footer button { min-width:0; min-height:46px; font-weight:600; }
+.employee-signature-panel footer button[hidden] { display:none; }
+.employee-signature-color { display:flex; align-items:center; justify-content:space-between; min-height:46px; box-sizing:border-box; padding:6px 11px; border:1px solid #cbb48c70; border-radius:5px; background:#202329; font-size:14px; }
+.employee-signature-color input { width:38px; height:32px; }
+.employee-signature-panel #saveEmployeeSignature { grid-column:1/-1; min-height:50px; margin-top:3px; font-size:15px; font-weight:700; }
+.employee-signature-panel #saveEmployeeSignature:disabled { background:#635d50; color:#f0e7d5; opacity:.65; }
+.employee-signature-panel .employee-signature-delete { grid-column:1/-1; min-height:44px; margin-top:5px; border-color:#ad706c; background:#251b1d; color:#e2a59d; font-size:13px; }
+.employee-signature-panel .employee-signature-delete:hover:not(:disabled) { border-color:#e1a39b; background:#3b2428; }
+@media (max-width:600px) { .employee-card-controls { gap:5px; padding:6px; } .employee-card-controls button { min-height:48px; padding:8px 5px; font-size:11px; } .employee-card-status { bottom:calc(84px + env(safe-area-inset-bottom)); } .employee-signature-panel { padding:18px; } .employee-signature-panel footer { grid-template-columns:repeat(2,minmax(0,1fr)); } .employee-signature-color { grid-column:1/-1; } .employee-signature-panel #clearEmployeeSignature,.employee-signature-panel #uploadEmployeeSignature { font-size:12px; } }
+@media (prefers-reduced-motion:reduce) { .employee-card-controls button,.employee-signature-panel button { transition:none; } }
+
+/* Cleaner owner signature workflow */
+.employee-signature-panel{width:min(660px,calc(100vw - 28px));padding:22px;border-color:#9f8462;border-radius:16px;background:linear-gradient(145deg,#191d22f8,#111418fa);box-shadow:0 24px 80px #000c}
+.employee-signature-panel header{margin-bottom:2px}
+.employee-signature-panel h2{font-size:21px;letter-spacing:-.015em}
+.employee-signature-panel>p:not(.employee-signature-feedback){margin:5px 0 13px;color:#aaa69d;font-size:12px}
+.employee-signature-paper{border-color:#d2c8b7;border-radius:10px;box-shadow:inset 0 1px #fff8,0 8px 26px #0002}
+.employee-signature-panel .employee-signature-feedback{min-height:0;margin:7px 0 0;color:#d5b88e;font-size:12px}
+.employee-signature-panel .employee-signature-feedback:empty{display:none}
+.employee-signature-panel footer.employee-signature-footer{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin-top:13px}
+.employee-signature-tools{display:flex;align-items:center;justify-content:space-between;gap:14px;min-width:0}
+.employee-signature-color{display:flex;flex:0 0 auto;align-items:center;gap:8px;min-height:40px;padding:0;border:0;background:transparent;color:#c6b8a2;font-size:12px}
+.employee-signature-color input{width:34px;height:34px;padding:2px;border-radius:50%;overflow:hidden}
+.employee-signature-tool-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0}
+.employee-signature-panel .employee-signature-tool-actions button{min-height:40px;padding:8px 13px;border-radius:8px;font-size:13px}
+.employee-signature-panel #clearEmployeeSignature{border-color:#ffffff20;background:#ffffff06;color:#d6cbb9}
+.employee-signature-panel #uploadEmployeeSignature{border-color:#aa7959;background:#29221f;color:#e7c09d}
+.employee-signature-panel #saveEmployeeSignature{width:100%;min-height:48px;margin:0;border-radius:9px;background:linear-gradient(135deg,#e4ca91,#c7a870);box-shadow:0 6px 20px #b08a4a24;color:#211e19;font-size:15px;font-weight:700}
+.employee-signature-panel #saveEmployeeSignature:hover:not(:disabled){background:linear-gradient(135deg,#f0dca9,#d8ba7f)}
+.employee-signature-panel #saveEmployeeSignature:disabled{border-color:#736b5a;background:#45433c;color:#c8bda7;box-shadow:none;opacity:.76}
+.employee-signature-panel .employee-signature-delete{justify-self:end;min-height:34px;margin:0;padding:5px 9px;border-color:transparent;background:transparent;color:#c88c82;font-size:12px}
+.employee-signature-panel .employee-signature-delete:hover:not(:disabled){border-color:#ad706c66;background:#251b1d;color:#f0b2a7}
+@media(max-width:600px){.employee-signature-panel{padding:17px}.employee-signature-tools{gap:8px}.employee-signature-panel .employee-signature-tool-actions{flex:1}.employee-signature-panel .employee-signature-tool-actions button{flex:1;min-width:0;padding-inline:8px;font-size:12px}.employee-signature-panel .employee-signature-delete{min-height:30px}}

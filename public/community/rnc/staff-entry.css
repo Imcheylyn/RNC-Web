@@ -1,0 +1,75 @@
+.staff-entry-dialog {
+  width: min(92vw, 430px);
+  padding: 0;
+  border: 1px solid #a86643;
+  border-radius: 18px;
+  color: #eee5db;
+  background: linear-gradient(145deg, #282525, #191819);
+  box-shadow: 0 28px 100px #000b, 0 0 40px #ae573522;
+}
+.staff-entry-dialog::backdrop {
+  background: #080708c9;
+  backdrop-filter: blur(5px);
+}
+.staff-entry-form { padding: 30px; }
+.staff-entry-kicker {
+  margin: 0 0 12px;
+  color: #d98c5f;
+  font: 12px Georgia, serif;
+  letter-spacing: .2em;
+}
+.staff-entry-form h2 {
+  margin: 0;
+  color: #f4ece4;
+  font: 30px/1.25 Georgia, "Noto Serif Thai", serif;
+}
+.staff-entry-description {
+  margin: 12px 0 22px;
+  color: #c2b8ae;
+  font: 15px/1.7 Arial, "Noto Sans Thai", sans-serif;
+}
+.staff-entry-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #e5d7cb;
+  font: 14px Arial, "Noto Sans Thai", sans-serif;
+}
+.staff-entry-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #72513f;
+  border-radius: 7px;
+  color: #f6eee8;
+  background: #171616;
+}
+.staff-entry-form input:focus-visible {
+  outline: 2px solid #e59060;
+  outline-offset: 2px;
+}
+.staff-entry-error {
+  margin: 12px 0 0;
+  color: #f2a582;
+  font: 13px/1.6 Arial, "Noto Sans Thai", sans-serif;
+}
+.staff-entry-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+.staff-entry-actions button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #8d5338;
+  border-radius: 6px;
+  color: #f5e8dc;
+  background: #aa5132;
+  font: 600 14px Arial, "Noto Sans Thai", sans-serif;
+}
+.staff-entry-actions .staff-entry-cancel { background: transparent; border-color: #62524a; }
+.staff-entry-actions button:disabled { opacity: .65; cursor: wait; }
+@media (max-width: 480px) {
+  .staff-entry-form { padding: 24px 20px; }
+  .staff-entry-form h2 { font-size: 26px; }
+}

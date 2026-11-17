@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616"><title>Staff Console | RNC</title>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/staff.css?v=staff-monster-split-20261111-v1">
+  <script src="/community/rnc/frame-art.js?v=staff-character-card-20261023" defer></script>
+  <script src="/community/rnc/image-layout.js?v=image-layout-20261026" defer></script>
+  <script src="/community/rnc/staff-panel.js?v=arcanist-spelling-20261116-v1" defer></script>
+</head>
+<body>
+  <nav class="top-nav" aria-label="เมนูหลัก">
+    <a class="community-brand" href="/community/rnc"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links"><button id="lockStaffMode" class="staff-power-button" type="button" title="ปิดโหมด Staff แล้วกลับไป Gallery" aria-label="ปิดโหมด Staff แล้วกลับไป Gallery"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v8"></path><path d="M7.05 6.55a8 8 0 1 0 9.9 0"></path></svg></button></div>
+  </nav>
+  <main class="staff-shell">
+    <header class="staff-heading"><div><p class="staff-eyebrow">REVERSE : NOIR CHRONICLE / INTERNAL ARCHIVE</p><h1>The Curator’s Desk</h1><p>ยินดีต้อนรับ <strong id="staffUserName">Staff</strong> · พื้นที่จัดการเรื่องราวและบันทึกของ Community</p></div></header>
+    <nav class="staff-tabs" aria-label="ส่วนจัดการ">
+      <button type="button" data-tab="overview" aria-current="page">ภาพรวม</button>
+      <button type="button" data-tab="characters">คลังตัวละคร</button>
+      <button type="button" data-tab="monsters">Monster</button>
+      <button type="button" data-tab="community">ประกาศ / Community</button>
+    </nav>
+    <p id="staffMessage" class="staff-message" role="status" aria-live="polite">กำลังโหลดข้อมูล…</p>
+    <section data-panel="overview"><div id="staffMetrics" class="staff-metrics"></div><div class="staff-card"><p class="staff-eyebrow">COMMUNITY AT A GLANCE</p><h2 id="overviewTitle">Community</h2><p id="overviewStatus"></p><div id="overviewNotices" class="staff-list"></div></div></section>
+    <section data-panel="community" hidden><div class="staff-two-columns">
+      <form id="announcementForm" class="staff-card staff-form">
+        <h2 id="announcementFormTitle">เขียนประกาศ</h2><input type="hidden" name="id"><input type="hidden" name="expectedUpdatedAt">
+        <label>หัวข้อ<input name="title" required maxlength="180"></label>
+        <label>หมวด<select name="kind"><option value="NOTICE">ประกาศทั่วไป</option><option value="STORY">เนื้อเรื่อง</option><option value="OPENING">กำหนดการเปิดคอมมู</option><option value="SETTING">การตั้งค่าโลก</option></select></label>
+        <label>เนื้อหา<textarea name="body" rows="8" required maxlength="20000"></textarea></label>
+        <label>สถานะ<select name="state"><option value="DRAFT">ฉบับร่าง</option><option value="PUBLISHED">เผยแพร่ / ตั้งเวลาเผยแพร่</option><option value="ARCHIVED">เก็บเข้าคลัง</option></select></label>
+        <div class="staff-fields"><label>เวลาเผยแพร่<input name="publishAt" type="datetime-local"><small>เว้นว่างเพื่อเผยแพร่ทันทีเมื่อเลือกเผยแพร่</small></label><label>หมดอายุ<input name="expiresAt" type="datetime-local"><small>เว้นว่างเพื่อแสดงต่อเนื่อง</small></label></div>
+        <label class="staff-check"><input name="pinned" type="checkbox"> ปักหมุดประกาศ</label>
+        <details class="staff-preview"><summary>ตัวอย่างประกาศ</summary><h3 id="noticePreviewTitle"></h3><p id="noticePreviewBody"></p></details>
+        <div class="staff-actions"><button type="submit">บันทึกประกาศ</button><button type="button" id="resetAnnouncement" class="staff-quiet">เขียนใหม่</button></div>
+      </form><div class="staff-card"><h2>ประกาศทั้งหมด</h2><div id="announcementList" class="staff-list"></div></div>
+    </div></section>
+    <section data-panel="settings" hidden><form id="settingsForm" class="staff-card staff-form staff-wide-form">
+      <h2>ตั้งค่า Community</h2><input type="hidden" name="expectedUpdatedAt">
+      <label>ชื่อ Community<input name="name" required maxlength="120"></label>
+      <div class="staff-fields"><label>สถานะ<select name="state"><option value="OPEN">เปิด Community</option><option value="CLOSED">ยังไม่เปิด / ปิด</option><option value="PAUSED">พักชั่วคราว</option></select></label><label>วันเปิด Community<input type="datetime-local" name="opensAt"></label></div>
+      <label class="staff-check"><input type="checkbox" name="registrationOpen"> เปิดรับลงทะเบียนตัวละครใหม่</label>
+      <label>ข้อความหลัก<input name="headline" maxlength="200" placeholder="ข้อความสั้นสำหรับสมาชิก"></label>
+      <label>รายละเอียด<textarea name="description" rows="5" maxlength="5000"></textarea></label>
+      <label>ลิงก์ข้อมูลโลก<input type="url" name="worldUrl" maxlength="1000" placeholder="https://…"></label>
+      <button type="submit">บันทึกการตั้งค่า</button>
+    </form></section>
+    <section data-panel="characters" hidden><div class="staff-card">
+      <div class="staff-section-heading"><div><h2>คลังตัวละคร</h2><p>แก้ไข จัดเก็บ หรือลบตัวละครในคลัง Community</p></div><div class="staff-section-actions"><a class="staff-button staff-height-link" href="/community/staff/height">Character Height</a><a class="staff-button" href="/community/rnc/create?staff=1">+ สร้างตัวละคร</a></div></div>
+      <div class="staff-filters"><label>ค้นหา<input id="characterSearch" type="search" placeholder="ชื่อ / เจ้าของ / ประเภท"></label><label>ประเภท<select id="characterTypeFilter"><option value="all">ทั้งหมด</option><option value="Character">Arcanist</option><option>Human</option><option>President</option><option>Director</option><option>NPC</option><option>Magus</option></select></label></div>
+      <div id="characterRows" class="staff-character-grid" role="list" aria-label="ตัวละครในคลัง"></div>
+    </div></section>
+    <section data-panel="monsters" hidden><div class="staff-card">
+      <div class="staff-section-heading"><div><h2>Monster</h2><p>จัดการตัวละครประเภท Monster แยกจากคลังตัวละคร</p></div><div class="staff-section-actions"><a class="staff-button" href="/community/rnc/create?staff=1&amp;type=Monster">+ สร้าง Monster</a></div></div>
+      <div class="staff-filters staff-filters-single"><label>ค้นหา Monster<input id="monsterSearch" type="search" placeholder="ชื่อ / เจ้าของ"></label></div>
+      <div id="monsterRows" class="staff-character-grid" role="list" aria-label="Monster ใน Community"></div>
+    </div></section>
+    <section data-panel="roles" hidden><div class="staff-two-columns"><form id="roleForm" class="staff-card staff-form">
+      <p class="staff-eyebrow">CHARACTER AFFILIATION</p><h2>Role ของตัวละคร</h2><p>บทบาทภายในเรื่องราว แสดงเป็นชื่อพร้อมเครื่องหมายข้าวหลามตัด</p><input type="hidden" name="id"><input type="hidden" name="expectedUpdatedAt">
+      <label>ชื่อ Role<input name="name" required maxlength="80"></label><label>รายละเอียด<textarea name="description" rows="4" maxlength="2000"></textarea></label>
+      <div class="staff-fields"><label>สีเครื่องหมาย ◇<input name="color" type="color" value="#b8a581"></label><label>ลำดับ<input name="sortOrder" type="number" min="0" max="999" value="0" required></label></div>
+      <label class="staff-check"><input name="isActive" type="checkbox" checked> เปิดให้เลือกใช้งาน</label><div class="staff-actions"><button type="submit">บันทึก Role</button><button type="button" id="resetRole" class="staff-quiet">สร้างใหม่</button></div>
+    </form><div class="staff-card"><h2>Role ทั้งหมด</h2><div id="roleList" class="staff-list"></div></div></div></section>
+    <section data-panel="styles" hidden><form id="stylesForm" class="staff-card"><p class="staff-eyebrow">CHARACTER FRAME / LIGHT STUDY</p><h2>กรอบและแสงเรือง</h2><p>ตัวละครทั่วไปใช้สีกรอบและแสงตามธาตุ · Magus และ President ใช้กรอบเฉพาะ 7 ดาว</p><label class="staff-preview-rank">ดูตัวอย่างกรอบตามธาตุ<select id="framePreviewRank"><option value="6">6 ดาว</option><option value="5">5 ดาว</option><option value="4">4 ดาว</option></select></label><div id="rankStyleFields" class="staff-style-grid"></div><button type="submit">บันทึกสีกรอบและแสง</button></form></section>
+    <section data-panel="logs" hidden><div class="staff-card"><h2>ประวัติการจัดการ</h2><p>รายการล่าสุด 100 รายการ สำหรับตรวจสอบภายในทีม Staff</p><div id="auditList" class="staff-list"></div></div></section>
+  </main>
+</body>
+</html>

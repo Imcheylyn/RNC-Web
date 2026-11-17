@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Find the Labuu | Reverse : Noir Chronicle</title>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/labuu-game.css?v=labuu-field-20261112">
+  <script src="/community/rnc/labuu-score.js?v=20261112-v1" defer></script>
+  <script src="/community/rnc-game.js?v=labuu-field-20261112" defer></script>
+  <script src="/community/rnc/labuu.js?v=labuu-field-20261112" defer></script>
+  <style>
+    .labuu-stage { min-height: calc(100dvh - 96px); display: grid; place-items: center; padding: 35px 20px 45px; }
+    .labuu-panel { width: min(820px, 100%); min-height: 480px; display: grid; place-items: center; padding: 35px; text-align: center; border: 1px solid var(--orange); border-radius: 0 24px; background: linear-gradient(130deg, #211e1de8, #101012e8); box-shadow: 0 25px 65px #0009; }
+    .labuu-content { max-width: 560px; }
+    .labuu-kicker { margin: 0 0 12px; color: #d68b60; letter-spacing: .3em; font-size: 12px; }
+    .labuu-art { width: 112px; height: 112px; object-fit: contain; filter: drop-shadow(0 0 28px #c66c4477); }
+    .labuu-heading { margin: 12px 0 16px; color: #f1e1d0; font-weight: 400; font-size: clamp(40px, 6vw, 67px); line-height: 1; }
+    .labuu-rule { width: 110px; height: 2px; margin: 0 auto 19px; background: var(--orange); }
+    .labuu-description { color: #c6b6a9; font: 16px/1.8 Sarabun, sans-serif; }
+    .labuu-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 27px; }
+    .labuu-actions a, .labuu-actions button { min-height: 42px; display: inline-flex; align-items: center; padding: 9px 20px; text-decoration: none; font: 600 13px Sarabun, sans-serif; }
+    .labuu-actions a { color: #dfc7b8; border: 1px solid #756053; background: #282422; }
+    .labuu-actions button { color: #fff4ea; border: 1px solid var(--orange); background: #b44a26; }
+    .labuu-actions a:hover { background: #3c312d; }
+    .labuu-actions button:hover { background: #d25c2d; }
+    .labuu-footnote { margin: 20px 0 0; color: #a58e7e; font: 12px Sarabun, sans-serif; }
+    @media (max-width: 520px) { .labuu-stage { min-height: calc(100dvh - 80px); } .labuu-panel { min-height: 430px; padding: 25px 15px; } .labuu-description { font-size: 14px; } }
+  </style>
+</head>
+<body>
+  <div class="site-notice"><span>✦ Reverse : Noir Chronicle ✦ Arcade ✦ Find the Labuu ✦</span></div>
+  <nav class="top-nav" aria-label="เมนูหลัก">
+    <a class="community-brand" href="/community/rnc" aria-label="RNC - Reverse : Noir Chronicle"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links">
+      <a href="/community/rnc">ARCHIVE</a>
+      <a class="hide-small" href="https://docs.google.com/document/d/1yL9UAzhE4H2L6t0bjRZRbtq90enrofSSXoSLqfeIWaA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">WORLD</a>
+      <button class="hide-small community-trigger" type="button" data-community-open aria-haspopup="dialog" aria-controls="communityAnnouncement" aria-label="COMMUNITY" aria-expanded="false">COMMUNITY<span class="community-notification-mark" data-community-notification role="img" aria-label="New staff notice" hidden><img src="/assets/RNCelement/Number%20Star.png" alt=""></span></button>
+      <a class="labuu-nav-mark" href="/community/rnc/arcade" aria-label="Arcade" title="Arcade">!</a>
+    </div>
+  </nav>
+  <main class="labuu-stage">
+    <section class="labuu-panel" aria-labelledby="labuuTitle">
+      <div class="labuu-content">
+        <p class="labuu-kicker">THE HIDDEN GAME</p>
+        <img class="labuu-art" src="/assets/Labuu.png" alt="ลาบู้">
+        <h1 class="labuu-heading" id="labuuTitle">Find the Labuu</h1>
+        <div class="labuu-rule"></div>
+        <p class="labuu-description">ลาบู้ 7 ตัวซ่อนอยู่ในความมืด ใช้ไฟฉายส่องหาแล้วคลิกให้ครบก่อนหมดเวลา ระวังลาบู้ตัวปลอมด้วยนะ</p>
+        <div class="labuu-actions">
+          <button id="startLabuuButton" type="button">เริ่มค้นหา</button>
+          <a href="/community/rnc/arcade">กลับ Arcade</a>
+        </div>
+        <p class="labuu-footnote">เจอตัวจริง +1,000 · แตะตัวปลอม −100 · โบนัส 25 คะแนนต่อวินาทีที่เหลือเมื่อหาเจอครบ</p>
+        <p class="labuu-footnote">เลื่อนเมาส์หรือแตะหน้าจอเพื่อขยับไฟฉาย</p>
+      </div>
+    </section>
+  </main>
+  <div id="labuu-field" aria-hidden="true"></div>
+  <div id="flashlight" aria-hidden="true"></div>
+  <dialog class="community-dialog" id="communityAnnouncement" aria-labelledby="communityDialogTitle" data-notice-unread="false" data-notice-id="latest">
+    <div class="community-dialog-shell">
+      <header class="community-dialog-header">
+        <div>
+          <p class="community-eyebrow">RNC / COMMUNITY NOTICE</p>
+          <h2 id="communityDialogTitle">Latest Staff Notice</h2>
+        </div>
+        <button class="community-dialog-close" type="button" data-community-close aria-label="Close announcements">&times;</button>
+      </header>
+      <div class="community-dialog-grid">
+        <section class="community-dialog-card" aria-label="Latest Staff Notice"><p class="card-kicker">LATEST FROM STAFF</p><p class="dialog-empty">No new staff announcements yet.</p></section>
+      </div>
+    </div>
+  </dialog>
+<script src="/community/rnc/community-popup.js" defer></script>
+</body>
+</html>

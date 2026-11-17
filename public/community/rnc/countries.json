@@ -1,0 +1,1496 @@
+[
+  {
+    "code": "AD",
+    "th": "อันดอร์รา",
+    "en": "Andorra",
+    "nationalityEn": "Andorran"
+  },
+  {
+    "code": "AE",
+    "th": "สหรัฐอาหรับเอมิเรตส์",
+    "en": "United Arab Emirates",
+    "nationalityEn": "Emirati"
+  },
+  {
+    "code": "AF",
+    "th": "อัฟกานิสถาน",
+    "en": "Afghanistan",
+    "nationalityEn": "Afghan"
+  },
+  {
+    "code": "AG",
+    "th": "แอนติกาและบาร์บูดา",
+    "en": "Antigua & Barbuda",
+    "nationalityEn": "Antiguan and Barbudan"
+  },
+  {
+    "code": "AI",
+    "th": "แองกวิลลา",
+    "en": "Anguilla",
+    "nationalityEn": "Anguillian"
+  },
+  {
+    "code": "AL",
+    "th": "แอลเบเนีย",
+    "en": "Albania",
+    "nationalityEn": "Albanian"
+  },
+  {
+    "code": "AM",
+    "th": "อาร์เมเนีย",
+    "en": "Armenia",
+    "nationalityEn": "Armenian"
+  },
+  {
+    "code": "AO",
+    "th": "แองโกลา",
+    "en": "Angola",
+    "nationalityEn": "Angolan"
+  },
+  {
+    "code": "AQ",
+    "th": "แอนตาร์กติกา",
+    "en": "Antarctica",
+    "nationalityEn": "Antarctican"
+  },
+  {
+    "code": "AR",
+    "th": "อาร์เจนตินา",
+    "en": "Argentina",
+    "nationalityEn": "Argentine"
+  },
+  {
+    "code": "AS",
+    "th": "อเมริกันซามัว",
+    "en": "American Samoa",
+    "nationalityEn": "American Samoan"
+  },
+  {
+    "code": "AT",
+    "th": "ออสเตรีย",
+    "en": "Austria",
+    "nationalityEn": "Austrian"
+  },
+  {
+    "code": "AU",
+    "th": "ออสเตรเลีย",
+    "en": "Australia",
+    "nationalityEn": "Australian"
+  },
+  {
+    "code": "AW",
+    "th": "อารูบา",
+    "en": "Aruba",
+    "nationalityEn": "Aruban"
+  },
+  {
+    "code": "AX",
+    "th": "หมู่เกาะโอลันด์",
+    "en": "Åland Islands",
+    "nationalityEn": "Ålandish"
+  },
+  {
+    "code": "AZ",
+    "th": "อาเซอร์ไบจาน",
+    "en": "Azerbaijan",
+    "nationalityEn": "Azerbaijani"
+  },
+  {
+    "code": "BA",
+    "th": "บอสเนียและเฮอร์เซโกวีนา",
+    "en": "Bosnia & Herzegovina",
+    "nationalityEn": "Bosnian and Herzegovinian"
+  },
+  {
+    "code": "BB",
+    "th": "บาร์เบโดส",
+    "en": "Barbados",
+    "nationalityEn": "Barbadian"
+  },
+  {
+    "code": "BD",
+    "th": "บังกลาเทศ",
+    "en": "Bangladesh",
+    "nationalityEn": "Bangladeshi"
+  },
+  {
+    "code": "BE",
+    "th": "เบลเยียม",
+    "en": "Belgium",
+    "nationalityEn": "Belgian"
+  },
+  {
+    "code": "BF",
+    "th": "บูร์กินาฟาโซ",
+    "en": "Burkina Faso",
+    "nationalityEn": "Burkinabe"
+  },
+  {
+    "code": "BG",
+    "th": "บัลแกเรีย",
+    "en": "Bulgaria",
+    "nationalityEn": "Bulgarian"
+  },
+  {
+    "code": "BH",
+    "th": "บาห์เรน",
+    "en": "Bahrain",
+    "nationalityEn": "Bahraini"
+  },
+  {
+    "code": "BI",
+    "th": "บุรุนดี",
+    "en": "Burundi",
+    "nationalityEn": "Burundian"
+  },
+  {
+    "code": "BJ",
+    "th": "เบนิน",
+    "en": "Benin",
+    "nationalityEn": "Beninese"
+  },
+  {
+    "code": "BL",
+    "th": "เซนต์บาร์เธเลมี",
+    "en": "St. Barthélemy",
+    "nationalityEn": "Saint Barthélemy Islander"
+  },
+  {
+    "code": "BM",
+    "th": "เบอร์มิวดา",
+    "en": "Bermuda",
+    "nationalityEn": "Bermudian"
+  },
+  {
+    "code": "BN",
+    "th": "บรูไน",
+    "en": "Brunei",
+    "nationalityEn": "Bruneian"
+  },
+  {
+    "code": "BO",
+    "th": "โบลิเวีย",
+    "en": "Bolivia",
+    "nationalityEn": "Bolivian"
+  },
+  {
+    "code": "BQ",
+    "th": "เนเธอร์แลนด์แคริบเบียน",
+    "en": "Caribbean Netherlands",
+    "nationalityEn": "Dutch"
+  },
+  {
+    "code": "BR",
+    "th": "บราซิล",
+    "en": "Brazil",
+    "nationalityEn": "Brazilian"
+  },
+  {
+    "code": "BS",
+    "th": "บาฮามาส",
+    "en": "Bahamas",
+    "nationalityEn": "Bahamian"
+  },
+  {
+    "code": "BT",
+    "th": "ภูฏาน",
+    "en": "Bhutan",
+    "nationalityEn": "Bhutanese"
+  },
+  {
+    "code": "BV",
+    "th": "เกาะบูเว",
+    "en": "Bouvet Island",
+    "nationalityEn": "Bouvet Islander"
+  },
+  {
+    "code": "BW",
+    "th": "บอตสวานา",
+    "en": "Botswana",
+    "nationalityEn": "Motswana"
+  },
+  {
+    "code": "BY",
+    "th": "เบลารุส",
+    "en": "Belarus",
+    "nationalityEn": "Belarusian"
+  },
+  {
+    "code": "BZ",
+    "th": "เบลีซ",
+    "en": "Belize",
+    "nationalityEn": "Belizean"
+  },
+  {
+    "code": "CA",
+    "th": "แคนาดา",
+    "en": "Canada",
+    "nationalityEn": "Canadian"
+  },
+  {
+    "code": "CC",
+    "th": "หมู่เกาะโคโคส (คีลิง)",
+    "en": "Cocos (Keeling) Islands",
+    "nationalityEn": "Cocos Islander"
+  },
+  {
+    "code": "CD",
+    "th": "คองโก - กินชาซา",
+    "en": "Congo - Kinshasa",
+    "nationalityEn": "Congolese"
+  },
+  {
+    "code": "CF",
+    "th": "สาธารณรัฐแอฟริกากลาง",
+    "en": "Central African Republic",
+    "nationalityEn": "Central African"
+  },
+  {
+    "code": "CG",
+    "th": "คองโก - บราซซาวิล",
+    "en": "Congo - Brazzaville",
+    "nationalityEn": "Congolese"
+  },
+  {
+    "code": "CH",
+    "th": "สวิตเซอร์แลนด์",
+    "en": "Switzerland",
+    "nationalityEn": "Swiss"
+  },
+  {
+    "code": "CI",
+    "th": "โกตดิวัวร์",
+    "en": "Côte d’Ivoire",
+    "nationalityEn": "Ivorian"
+  },
+  {
+    "code": "CK",
+    "th": "หมู่เกาะคุก",
+    "en": "Cook Islands",
+    "nationalityEn": "Cook Islander"
+  },
+  {
+    "code": "CL",
+    "th": "ชิลี",
+    "en": "Chile",
+    "nationalityEn": "Chilean"
+  },
+  {
+    "code": "CM",
+    "th": "แคเมอรูน",
+    "en": "Cameroon",
+    "nationalityEn": "Cameroonian"
+  },
+  {
+    "code": "CN",
+    "th": "จีน",
+    "en": "China",
+    "nationalityEn": "Chinese"
+  },
+  {
+    "code": "CO",
+    "th": "โคลอมเบีย",
+    "en": "Colombia",
+    "nationalityEn": "Colombian"
+  },
+  {
+    "code": "CR",
+    "th": "คอสตาริกา",
+    "en": "Costa Rica",
+    "nationalityEn": "Costa Rican"
+  },
+  {
+    "code": "CU",
+    "th": "คิวบา",
+    "en": "Cuba",
+    "nationalityEn": "Cuban"
+  },
+  {
+    "code": "CV",
+    "th": "เคปเวิร์ด",
+    "en": "Cape Verde",
+    "nationalityEn": "Cape Verdian"
+  },
+  {
+    "code": "CW",
+    "th": "คูราเซา",
+    "en": "Curaçao",
+    "nationalityEn": "Curaçaoan"
+  },
+  {
+    "code": "CX",
+    "th": "เกาะคริสต์มาส",
+    "en": "Christmas Island",
+    "nationalityEn": "Christmas Islander"
+  },
+  {
+    "code": "CY",
+    "th": "ไซปรัส",
+    "en": "Cyprus",
+    "nationalityEn": "Cypriot"
+  },
+  {
+    "code": "CZ",
+    "th": "เช็ก",
+    "en": "Czechia",
+    "nationalityEn": "Czech"
+  },
+  {
+    "code": "DE",
+    "th": "เยอรมนี",
+    "en": "Germany",
+    "nationalityEn": "German"
+  },
+  {
+    "code": "DJ",
+    "th": "จิบูตี",
+    "en": "Djibouti",
+    "nationalityEn": "Djiboutian"
+  },
+  {
+    "code": "DK",
+    "th": "เดนมาร์ก",
+    "en": "Denmark",
+    "nationalityEn": "Danish"
+  },
+  {
+    "code": "DM",
+    "th": "โดมินิกา",
+    "en": "Dominica",
+    "nationalityEn": "Dominican"
+  },
+  {
+    "code": "DO",
+    "th": "สาธารณรัฐโดมินิกัน",
+    "en": "Dominican Republic",
+    "nationalityEn": "Dominican"
+  },
+  {
+    "code": "DZ",
+    "th": "แอลจีเรีย",
+    "en": "Algeria",
+    "nationalityEn": "Algerian"
+  },
+  {
+    "code": "EC",
+    "th": "เอกวาดอร์",
+    "en": "Ecuador",
+    "nationalityEn": "Ecuadorian"
+  },
+  {
+    "code": "EE",
+    "th": "เอสโตเนีย",
+    "en": "Estonia",
+    "nationalityEn": "Estonian"
+  },
+  {
+    "code": "EG",
+    "th": "อียิปต์",
+    "en": "Egypt",
+    "nationalityEn": "Egyptian"
+  },
+  {
+    "code": "EH",
+    "th": "ซาฮาราตะวันตก",
+    "en": "Western Sahara",
+    "nationalityEn": "Sahrawi"
+  },
+  {
+    "code": "ER",
+    "th": "เอริเทรีย",
+    "en": "Eritrea",
+    "nationalityEn": "Eritrean"
+  },
+  {
+    "code": "ES",
+    "th": "สเปน",
+    "en": "Spain",
+    "nationalityEn": "Spanish"
+  },
+  {
+    "code": "ET",
+    "th": "เอธิโอเปีย",
+    "en": "Ethiopia",
+    "nationalityEn": "Ethiopian"
+  },
+  {
+    "code": "FI",
+    "th": "ฟินแลนด์",
+    "en": "Finland",
+    "nationalityEn": "Finnish"
+  },
+  {
+    "code": "FJ",
+    "th": "ฟิจิ",
+    "en": "Fiji",
+    "nationalityEn": "Fijian"
+  },
+  {
+    "code": "FK",
+    "th": "หมู่เกาะฟอล์กแลนด์",
+    "en": "Falkland Islands",
+    "nationalityEn": "Falkland Islander"
+  },
+  {
+    "code": "FM",
+    "th": "ไมโครนีเซีย",
+    "en": "Micronesia",
+    "nationalityEn": "Micronesian"
+  },
+  {
+    "code": "FO",
+    "th": "หมู่เกาะแฟโร",
+    "en": "Faroe Islands",
+    "nationalityEn": "Faroese"
+  },
+  {
+    "code": "FR",
+    "th": "ฝรั่งเศส",
+    "en": "France",
+    "nationalityEn": "French"
+  },
+  {
+    "code": "GA",
+    "th": "กาบอง",
+    "en": "Gabon",
+    "nationalityEn": "Gabonese"
+  },
+  {
+    "code": "GB",
+    "th": "สหราชอาณาจักร",
+    "en": "United Kingdom",
+    "nationalityEn": "British"
+  },
+  {
+    "code": "GD",
+    "th": "เกรเนดา",
+    "en": "Grenada",
+    "nationalityEn": "Grenadian"
+  },
+  {
+    "code": "GE",
+    "th": "จอร์เจีย",
+    "en": "Georgia",
+    "nationalityEn": "Georgian"
+  },
+  {
+    "code": "GF",
+    "th": "เฟรนช์เกียนา",
+    "en": "French Guiana",
+    "nationalityEn": "Guianan"
+  },
+  {
+    "code": "GG",
+    "th": "เกิร์นซีย์",
+    "en": "Guernsey",
+    "nationalityEn": "Channel Islander"
+  },
+  {
+    "code": "GH",
+    "th": "กานา",
+    "en": "Ghana",
+    "nationalityEn": "Ghanaian"
+  },
+  {
+    "code": "GI",
+    "th": "ยิบรอลตาร์",
+    "en": "Gibraltar",
+    "nationalityEn": "Gibraltarian"
+  },
+  {
+    "code": "GL",
+    "th": "กรีนแลนด์",
+    "en": "Greenland",
+    "nationalityEn": "Greenlandic"
+  },
+  {
+    "code": "GM",
+    "th": "แกมเบีย",
+    "en": "Gambia",
+    "nationalityEn": "Gambian"
+  },
+  {
+    "code": "GN",
+    "th": "กินี",
+    "en": "Guinea",
+    "nationalityEn": "Guinean"
+  },
+  {
+    "code": "GP",
+    "th": "กวาเดอลูป",
+    "en": "Guadeloupe",
+    "nationalityEn": "Guadeloupian"
+  },
+  {
+    "code": "GQ",
+    "th": "อิเควทอเรียลกินี",
+    "en": "Equatorial Guinea",
+    "nationalityEn": "Equatorial Guinean"
+  },
+  {
+    "code": "GR",
+    "th": "กรีซ",
+    "en": "Greece",
+    "nationalityEn": "Greek"
+  },
+  {
+    "code": "GS",
+    "th": "เกาะเซาท์จอร์เจียและหมู่เกาะเซาท์แซนด์วิช",
+    "en": "South Georgia & South Sandwich Islands",
+    "nationalityEn": "South Georgian South Sandwich Islander"
+  },
+  {
+    "code": "GT",
+    "th": "กัวเตมาลา",
+    "en": "Guatemala",
+    "nationalityEn": "Guatemalan"
+  },
+  {
+    "code": "GU",
+    "th": "กวม",
+    "en": "Guam",
+    "nationalityEn": "Guamanian"
+  },
+  {
+    "code": "GW",
+    "th": "กินี-บิสเซา",
+    "en": "Guinea-Bissau",
+    "nationalityEn": "Guinea-Bissauan"
+  },
+  {
+    "code": "GY",
+    "th": "กายอานา",
+    "en": "Guyana",
+    "nationalityEn": "Guyanese"
+  },
+  {
+    "code": "HK",
+    "th": "เขตปกครองพิเศษฮ่องกงแห่งสาธารณรัฐประชาชนจีน",
+    "en": "Hong Kong SAR China",
+    "nationalityEn": "Hong Konger"
+  },
+  {
+    "code": "HM",
+    "th": "เกาะเฮิร์ดและหมู่เกาะแมกดอนัลด์",
+    "en": "Heard & McDonald Islands",
+    "nationalityEn": "Heard and McDonald Islander"
+  },
+  {
+    "code": "HN",
+    "th": "ฮอนดูรัส",
+    "en": "Honduras",
+    "nationalityEn": "Honduran"
+  },
+  {
+    "code": "HR",
+    "th": "โครเอเชีย",
+    "en": "Croatia",
+    "nationalityEn": "Croatian"
+  },
+  {
+    "code": "HT",
+    "th": "เฮติ",
+    "en": "Haiti",
+    "nationalityEn": "Haitian"
+  },
+  {
+    "code": "HU",
+    "th": "ฮังการี",
+    "en": "Hungary",
+    "nationalityEn": "Hungarian"
+  },
+  {
+    "code": "ID",
+    "th": "อินโดนีเซีย",
+    "en": "Indonesia",
+    "nationalityEn": "Indonesian"
+  },
+  {
+    "code": "IE",
+    "th": "ไอร์แลนด์",
+    "en": "Ireland",
+    "nationalityEn": "Irish"
+  },
+  {
+    "code": "IL",
+    "th": "อิสราเอล",
+    "en": "Israel",
+    "nationalityEn": "Israeli"
+  },
+  {
+    "code": "IM",
+    "th": "เกาะแมน",
+    "en": "Isle of Man",
+    "nationalityEn": "Manx"
+  },
+  {
+    "code": "IN",
+    "th": "อินเดีย",
+    "en": "India",
+    "nationalityEn": "Indian"
+  },
+  {
+    "code": "IO",
+    "th": "บริติชอินเดียนโอเชียนเทร์ริทอรี",
+    "en": "British Indian Ocean Territory",
+    "nationalityEn": "Indian"
+  },
+  {
+    "code": "IQ",
+    "th": "อิรัก",
+    "en": "Iraq",
+    "nationalityEn": "Iraqi"
+  },
+  {
+    "code": "IR",
+    "th": "อิหร่าน",
+    "en": "Iran",
+    "nationalityEn": "Iranian"
+  },
+  {
+    "code": "IS",
+    "th": "ไอซ์แลนด์",
+    "en": "Iceland",
+    "nationalityEn": "Icelandic"
+  },
+  {
+    "code": "IT",
+    "th": "อิตาลี",
+    "en": "Italy",
+    "nationalityEn": "Italian"
+  },
+  {
+    "code": "JE",
+    "th": "เจอร์ซีย์",
+    "en": "Jersey",
+    "nationalityEn": "Channel Islander"
+  },
+  {
+    "code": "JM",
+    "th": "จาเมกา",
+    "en": "Jamaica",
+    "nationalityEn": "Jamaican"
+  },
+  {
+    "code": "JO",
+    "th": "จอร์แดน",
+    "en": "Jordan",
+    "nationalityEn": "Jordanian"
+  },
+  {
+    "code": "JP",
+    "th": "ญี่ปุ่น",
+    "en": "Japan",
+    "nationalityEn": "Japanese"
+  },
+  {
+    "code": "KE",
+    "th": "เคนยา",
+    "en": "Kenya",
+    "nationalityEn": "Kenyan"
+  },
+  {
+    "code": "KG",
+    "th": "คีร์กีซสถาน",
+    "en": "Kyrgyzstan",
+    "nationalityEn": "Kirghiz"
+  },
+  {
+    "code": "KH",
+    "th": "กัมพูชา",
+    "en": "Cambodia",
+    "nationalityEn": "Cambodian"
+  },
+  {
+    "code": "KI",
+    "th": "คิริบาส",
+    "en": "Kiribati",
+    "nationalityEn": "I-Kiribati"
+  },
+  {
+    "code": "KM",
+    "th": "คอโมโรส",
+    "en": "Comoros",
+    "nationalityEn": "Comoran"
+  },
+  {
+    "code": "KN",
+    "th": "เซนต์คิตส์และเนวิส",
+    "en": "St. Kitts & Nevis",
+    "nationalityEn": "Kittitian and Nevisian"
+  },
+  {
+    "code": "KP",
+    "th": "เกาหลีเหนือ",
+    "en": "North Korea",
+    "nationalityEn": "North Korean"
+  },
+  {
+    "code": "KR",
+    "th": "เกาหลีใต้",
+    "en": "South Korea",
+    "nationalityEn": "South Korean"
+  },
+  {
+    "code": "KW",
+    "th": "คูเวต",
+    "en": "Kuwait",
+    "nationalityEn": "Kuwaiti"
+  },
+  {
+    "code": "KY",
+    "th": "หมู่เกาะเคย์แมน",
+    "en": "Cayman Islands",
+    "nationalityEn": "Caymanian"
+  },
+  {
+    "code": "KZ",
+    "th": "คาซัคสถาน",
+    "en": "Kazakhstan",
+    "nationalityEn": "Kazakhstani"
+  },
+  {
+    "code": "LA",
+    "th": "ลาว",
+    "en": "Laos",
+    "nationalityEn": "Laotian"
+  },
+  {
+    "code": "LB",
+    "th": "เลบานอน",
+    "en": "Lebanon",
+    "nationalityEn": "Lebanese"
+  },
+  {
+    "code": "LC",
+    "th": "เซนต์ลูเซีย",
+    "en": "St. Lucia",
+    "nationalityEn": "Saint Lucian"
+  },
+  {
+    "code": "LI",
+    "th": "ลิกเตนสไตน์",
+    "en": "Liechtenstein",
+    "nationalityEn": "Liechtensteiner"
+  },
+  {
+    "code": "LK",
+    "th": "ศรีลังกา",
+    "en": "Sri Lanka",
+    "nationalityEn": "Sri Lankan"
+  },
+  {
+    "code": "LR",
+    "th": "ไลบีเรีย",
+    "en": "Liberia",
+    "nationalityEn": "Liberian"
+  },
+  {
+    "code": "LS",
+    "th": "เลโซโท",
+    "en": "Lesotho",
+    "nationalityEn": "Mosotho"
+  },
+  {
+    "code": "LT",
+    "th": "ลิทัวเนีย",
+    "en": "Lithuania",
+    "nationalityEn": "Lithuanian"
+  },
+  {
+    "code": "LU",
+    "th": "ลักเซมเบิร์ก",
+    "en": "Luxembourg",
+    "nationalityEn": "Luxembourger"
+  },
+  {
+    "code": "LV",
+    "th": "ลัตเวีย",
+    "en": "Latvia",
+    "nationalityEn": "Latvian"
+  },
+  {
+    "code": "LY",
+    "th": "ลิเบีย",
+    "en": "Libya",
+    "nationalityEn": "Libyan"
+  },
+  {
+    "code": "MA",
+    "th": "โมร็อกโก",
+    "en": "Morocco",
+    "nationalityEn": "Moroccan"
+  },
+  {
+    "code": "MC",
+    "th": "โมนาโก",
+    "en": "Monaco",
+    "nationalityEn": "Monegasque"
+  },
+  {
+    "code": "MD",
+    "th": "มอลโดวา",
+    "en": "Moldova",
+    "nationalityEn": "Moldovan"
+  },
+  {
+    "code": "ME",
+    "th": "มอนเตเนโกร",
+    "en": "Montenegro",
+    "nationalityEn": "Montenegrin"
+  },
+  {
+    "code": "MF",
+    "th": "เซนต์มาร์ติน",
+    "en": "St. Martin",
+    "nationalityEn": "Saint Martin Islander"
+  },
+  {
+    "code": "MG",
+    "th": "มาดากัสการ์",
+    "en": "Madagascar",
+    "nationalityEn": "Malagasy"
+  },
+  {
+    "code": "MH",
+    "th": "หมู่เกาะมาร์แชลล์",
+    "en": "Marshall Islands",
+    "nationalityEn": "Marshallese"
+  },
+  {
+    "code": "MK",
+    "th": "มาซิโดเนียเหนือ",
+    "en": "North Macedonia",
+    "nationalityEn": "Macedonian"
+  },
+  {
+    "code": "ML",
+    "th": "มาลี",
+    "en": "Mali",
+    "nationalityEn": "Malian"
+  },
+  {
+    "code": "MM",
+    "th": "เมียนมา (พม่า)",
+    "en": "Myanmar (Burma)",
+    "nationalityEn": "Burmese"
+  },
+  {
+    "code": "MN",
+    "th": "มองโกเลีย",
+    "en": "Mongolia",
+    "nationalityEn": "Mongolian"
+  },
+  {
+    "code": "MO",
+    "th": "เขตปกครองพิเศษมาเก๊าแห่งสาธารณรัฐประชาชนจีน",
+    "en": "Macao SAR China",
+    "nationalityEn": "Macanese"
+  },
+  {
+    "code": "MP",
+    "th": "หมู่เกาะนอร์เทิร์นมาเรียนา",
+    "en": "Northern Mariana Islands",
+    "nationalityEn": "American"
+  },
+  {
+    "code": "MQ",
+    "th": "มาร์ตินีก",
+    "en": "Martinique",
+    "nationalityEn": "Martinican"
+  },
+  {
+    "code": "MR",
+    "th": "มอริเตเนีย",
+    "en": "Mauritania",
+    "nationalityEn": "Mauritanian"
+  },
+  {
+    "code": "MS",
+    "th": "มอนต์เซอร์รัต",
+    "en": "Montserrat",
+    "nationalityEn": "Montserratian"
+  },
+  {
+    "code": "MT",
+    "th": "มอลตา",
+    "en": "Malta",
+    "nationalityEn": "Maltese"
+  },
+  {
+    "code": "MU",
+    "th": "มอริเชียส",
+    "en": "Mauritius",
+    "nationalityEn": "Mauritian"
+  },
+  {
+    "code": "MV",
+    "th": "มัลดีฟส์",
+    "en": "Maldives",
+    "nationalityEn": "Maldivan"
+  },
+  {
+    "code": "MW",
+    "th": "มาลาวี",
+    "en": "Malawi",
+    "nationalityEn": "Malawian"
+  },
+  {
+    "code": "MX",
+    "th": "เม็กซิโก",
+    "en": "Mexico",
+    "nationalityEn": "Mexican"
+  },
+  {
+    "code": "MY",
+    "th": "มาเลเซีย",
+    "en": "Malaysia",
+    "nationalityEn": "Malaysian"
+  },
+  {
+    "code": "MZ",
+    "th": "โมซัมบิก",
+    "en": "Mozambique",
+    "nationalityEn": "Mozambican"
+  },
+  {
+    "code": "NA",
+    "th": "นามิเบีย",
+    "en": "Namibia",
+    "nationalityEn": "Namibian"
+  },
+  {
+    "code": "NC",
+    "th": "นิวแคลิโดเนีย",
+    "en": "New Caledonia",
+    "nationalityEn": "New Caledonian"
+  },
+  {
+    "code": "NE",
+    "th": "ไนเจอร์",
+    "en": "Niger",
+    "nationalityEn": "Nigerien"
+  },
+  {
+    "code": "NF",
+    "th": "เกาะนอร์ฟอล์ก",
+    "en": "Norfolk Island",
+    "nationalityEn": "Norfolk Islander"
+  },
+  {
+    "code": "NG",
+    "th": "ไนจีเรีย",
+    "en": "Nigeria",
+    "nationalityEn": "Nigerian"
+  },
+  {
+    "code": "NI",
+    "th": "นิการากัว",
+    "en": "Nicaragua",
+    "nationalityEn": "Nicaraguan"
+  },
+  {
+    "code": "NL",
+    "th": "เนเธอร์แลนด์",
+    "en": "Netherlands",
+    "nationalityEn": "Dutch"
+  },
+  {
+    "code": "NO",
+    "th": "นอร์เวย์",
+    "en": "Norway",
+    "nationalityEn": "Norwegian"
+  },
+  {
+    "code": "NP",
+    "th": "เนปาล",
+    "en": "Nepal",
+    "nationalityEn": "Nepalese"
+  },
+  {
+    "code": "NR",
+    "th": "นาอูรู",
+    "en": "Nauru",
+    "nationalityEn": "Nauruan"
+  },
+  {
+    "code": "NU",
+    "th": "นีอูเอ",
+    "en": "Niue",
+    "nationalityEn": "Niuean"
+  },
+  {
+    "code": "NZ",
+    "th": "นิวซีแลนด์",
+    "en": "New Zealand",
+    "nationalityEn": "New Zealander"
+  },
+  {
+    "code": "OM",
+    "th": "โอมาน",
+    "en": "Oman",
+    "nationalityEn": "Omani"
+  },
+  {
+    "code": "PA",
+    "th": "ปานามา",
+    "en": "Panama",
+    "nationalityEn": "Panamanian"
+  },
+  {
+    "code": "PE",
+    "th": "เปรู",
+    "en": "Peru",
+    "nationalityEn": "Peruvian"
+  },
+  {
+    "code": "PF",
+    "th": "เฟรนช์โปลินีเซีย",
+    "en": "French Polynesia",
+    "nationalityEn": "French Polynesian"
+  },
+  {
+    "code": "PG",
+    "th": "ปาปัวนิวกินี",
+    "en": "Papua New Guinea",
+    "nationalityEn": "Papua New Guinean"
+  },
+  {
+    "code": "PH",
+    "th": "ฟิลิปปินส์",
+    "en": "Philippines",
+    "nationalityEn": "Filipino"
+  },
+  {
+    "code": "PK",
+    "th": "ปากีสถาน",
+    "en": "Pakistan",
+    "nationalityEn": "Pakistani"
+  },
+  {
+    "code": "PL",
+    "th": "โปแลนด์",
+    "en": "Poland",
+    "nationalityEn": "Polish"
+  },
+  {
+    "code": "PM",
+    "th": "แซงปีแยร์และมีเกอลง",
+    "en": "St. Pierre & Miquelon",
+    "nationalityEn": "Saint-Pierrais and Miquelonnais"
+  },
+  {
+    "code": "PN",
+    "th": "หมู่เกาะพิตแคร์น",
+    "en": "Pitcairn Islands",
+    "nationalityEn": "Pitcairn Islander"
+  },
+  {
+    "code": "PR",
+    "th": "เปอร์โตริโก",
+    "en": "Puerto Rico",
+    "nationalityEn": "Puerto Rican"
+  },
+  {
+    "code": "PS",
+    "th": "ดินแดนปาเลสไตน์",
+    "en": "Palestinian Territories",
+    "nationalityEn": "Palestinian"
+  },
+  {
+    "code": "PT",
+    "th": "โปรตุเกส",
+    "en": "Portugal",
+    "nationalityEn": "Portuguese"
+  },
+  {
+    "code": "PW",
+    "th": "ปาเลา",
+    "en": "Palau",
+    "nationalityEn": "Palauan"
+  },
+  {
+    "code": "PY",
+    "th": "ปารากวัย",
+    "en": "Paraguay",
+    "nationalityEn": "Paraguayan"
+  },
+  {
+    "code": "QA",
+    "th": "กาตาร์",
+    "en": "Qatar",
+    "nationalityEn": "Qatari"
+  },
+  {
+    "code": "RE",
+    "th": "เรอูนียง",
+    "en": "Réunion",
+    "nationalityEn": "Réunionese"
+  },
+  {
+    "code": "RO",
+    "th": "โรมาเนีย",
+    "en": "Romania",
+    "nationalityEn": "Romanian"
+  },
+  {
+    "code": "RS",
+    "th": "เซอร์เบีย",
+    "en": "Serbia",
+    "nationalityEn": "Serbian"
+  },
+  {
+    "code": "RU",
+    "th": "รัสเซีย",
+    "en": "Russia",
+    "nationalityEn": "Russian"
+  },
+  {
+    "code": "RW",
+    "th": "รวันดา",
+    "en": "Rwanda",
+    "nationalityEn": "Rwandan"
+  },
+  {
+    "code": "SA",
+    "th": "ซาอุดีอาระเบีย",
+    "en": "Saudi Arabia",
+    "nationalityEn": "Saudi Arabian"
+  },
+  {
+    "code": "SB",
+    "th": "หมู่เกาะโซโลมอน",
+    "en": "Solomon Islands",
+    "nationalityEn": "Solomon Islander"
+  },
+  {
+    "code": "SC",
+    "th": "เซเชลส์",
+    "en": "Seychelles",
+    "nationalityEn": "Seychellois"
+  },
+  {
+    "code": "SD",
+    "th": "ซูดาน",
+    "en": "Sudan",
+    "nationalityEn": "Sudanese"
+  },
+  {
+    "code": "SE",
+    "th": "สวีเดน",
+    "en": "Sweden",
+    "nationalityEn": "Swedish"
+  },
+  {
+    "code": "SG",
+    "th": "สิงคโปร์",
+    "en": "Singapore",
+    "nationalityEn": "Singaporean"
+  },
+  {
+    "code": "SH",
+    "th": "เซนต์เฮเลนา",
+    "en": "St. Helena",
+    "nationalityEn": "Saint Helenian"
+  },
+  {
+    "code": "SI",
+    "th": "สโลวีเนีย",
+    "en": "Slovenia",
+    "nationalityEn": "Slovene"
+  },
+  {
+    "code": "SJ",
+    "th": "สฟาลบาร์และยานไมเอน",
+    "en": "Svalbard & Jan Mayen",
+    "nationalityEn": "Norwegian"
+  },
+  {
+    "code": "SK",
+    "th": "สโลวะเกีย",
+    "en": "Slovakia",
+    "nationalityEn": "Slovak"
+  },
+  {
+    "code": "SL",
+    "th": "เซียร์ราลีโอน",
+    "en": "Sierra Leone",
+    "nationalityEn": "Sierra Leonean"
+  },
+  {
+    "code": "SM",
+    "th": "ซานมาริโน",
+    "en": "San Marino",
+    "nationalityEn": "Sammarinese"
+  },
+  {
+    "code": "SN",
+    "th": "เซเนกัล",
+    "en": "Senegal",
+    "nationalityEn": "Senegalese"
+  },
+  {
+    "code": "SO",
+    "th": "โซมาเลีย",
+    "en": "Somalia",
+    "nationalityEn": "Somali"
+  },
+  {
+    "code": "SR",
+    "th": "ซูรินาเม",
+    "en": "Suriname",
+    "nationalityEn": "Surinamer"
+  },
+  {
+    "code": "SS",
+    "th": "ซูดานใต้",
+    "en": "South Sudan",
+    "nationalityEn": "South Sudanese"
+  },
+  {
+    "code": "ST",
+    "th": "เซาตูเมและปรินซิปี",
+    "en": "São Tomé & Príncipe",
+    "nationalityEn": "Sao Tomean"
+  },
+  {
+    "code": "SV",
+    "th": "เอลซัลวาดอร์",
+    "en": "El Salvador",
+    "nationalityEn": "Salvadoran"
+  },
+  {
+    "code": "SX",
+    "th": "ซินต์มาร์เทน",
+    "en": "Sint Maarten",
+    "nationalityEn": "St. Maartener"
+  },
+  {
+    "code": "SY",
+    "th": "ซีเรีย",
+    "en": "Syria",
+    "nationalityEn": "Syrian"
+  },
+  {
+    "code": "SZ",
+    "th": "เอสวาตีนี",
+    "en": "Eswatini",
+    "nationalityEn": "Swazi"
+  },
+  {
+    "code": "TC",
+    "th": "หมู่เกาะเติกส์และหมู่เกาะเคคอส",
+    "en": "Turks & Caicos Islands",
+    "nationalityEn": "Turks and Caicos Islander"
+  },
+  {
+    "code": "TD",
+    "th": "ชาด",
+    "en": "Chad",
+    "nationalityEn": "Chadian"
+  },
+  {
+    "code": "TF",
+    "th": "เฟรนช์เซาเทิร์นเทร์ริทอรีส์",
+    "en": "French Southern Territories",
+    "nationalityEn": "French"
+  },
+  {
+    "code": "TG",
+    "th": "โตโก",
+    "en": "Togo",
+    "nationalityEn": "Togolese"
+  },
+  {
+    "code": "TH",
+    "th": "ไทย",
+    "en": "Thailand",
+    "nationalityEn": "Thai"
+  },
+  {
+    "code": "TJ",
+    "th": "ทาจิกิสถาน",
+    "en": "Tajikistan",
+    "nationalityEn": "Tadzhik"
+  },
+  {
+    "code": "TK",
+    "th": "โตเกเลา",
+    "en": "Tokelau",
+    "nationalityEn": "Tokelauan"
+  },
+  {
+    "code": "TL",
+    "th": "ติมอร์-เลสเต",
+    "en": "Timor-Leste",
+    "nationalityEn": "East Timorese"
+  },
+  {
+    "code": "TM",
+    "th": "เติร์กเมนิสถาน",
+    "en": "Turkmenistan",
+    "nationalityEn": "Turkmen"
+  },
+  {
+    "code": "TN",
+    "th": "ตูนิเซีย",
+    "en": "Tunisia",
+    "nationalityEn": "Tunisian"
+  },
+  {
+    "code": "TO",
+    "th": "ตองกา",
+    "en": "Tonga",
+    "nationalityEn": "Tongan"
+  },
+  {
+    "code": "TR",
+    "th": "ตุรกี",
+    "en": "Türkiye",
+    "nationalityEn": "Turkish"
+  },
+  {
+    "code": "TT",
+    "th": "ตรินิแดดและโตเบโก",
+    "en": "Trinidad & Tobago",
+    "nationalityEn": "Trinidadian"
+  },
+  {
+    "code": "TV",
+    "th": "ตูวาลู",
+    "en": "Tuvalu",
+    "nationalityEn": "Tuvaluan"
+  },
+  {
+    "code": "TW",
+    "th": "ไต้หวัน",
+    "en": "Taiwan",
+    "nationalityEn": "Taiwanese"
+  },
+  {
+    "code": "TZ",
+    "th": "แทนซาเนีย",
+    "en": "Tanzania",
+    "nationalityEn": "Tanzanian"
+  },
+  {
+    "code": "UA",
+    "th": "ยูเครน",
+    "en": "Ukraine",
+    "nationalityEn": "Ukrainian"
+  },
+  {
+    "code": "UG",
+    "th": "ยูกันดา",
+    "en": "Uganda",
+    "nationalityEn": "Ugandan"
+  },
+  {
+    "code": "UM",
+    "th": "หมู่เกาะรอบนอกของสหรัฐอเมริกา",
+    "en": "U.S. Outlying Islands",
+    "nationalityEn": "American Islander"
+  },
+  {
+    "code": "US",
+    "th": "สหรัฐอเมริกา",
+    "en": "United States",
+    "nationalityEn": "American"
+  },
+  {
+    "code": "UY",
+    "th": "อุรุกวัย",
+    "en": "Uruguay",
+    "nationalityEn": "Uruguayan"
+  },
+  {
+    "code": "UZ",
+    "th": "อุซเบกิสถาน",
+    "en": "Uzbekistan",
+    "nationalityEn": "Uzbekistani"
+  },
+  {
+    "code": "VA",
+    "th": "นครวาติกัน",
+    "en": "Vatican City",
+    "nationalityEn": "Vatican"
+  },
+  {
+    "code": "VC",
+    "th": "เซนต์วินเซนต์และเกรนาดีนส์",
+    "en": "St. Vincent & Grenadines",
+    "nationalityEn": "Saint Vincentian"
+  },
+  {
+    "code": "VE",
+    "th": "เวเนซุเอลา",
+    "en": "Venezuela",
+    "nationalityEn": "Venezuelan"
+  },
+  {
+    "code": "VG",
+    "th": "หมู่เกาะบริติชเวอร์จิน",
+    "en": "British Virgin Islands",
+    "nationalityEn": "Virgin Islander"
+  },
+  {
+    "code": "VI",
+    "th": "หมู่เกาะเวอร์จินของสหรัฐอเมริกา",
+    "en": "U.S. Virgin Islands",
+    "nationalityEn": "Virgin Islander"
+  },
+  {
+    "code": "VN",
+    "th": "เวียดนาม",
+    "en": "Vietnam",
+    "nationalityEn": "Vietnamese"
+  },
+  {
+    "code": "VU",
+    "th": "วานูอาตู",
+    "en": "Vanuatu",
+    "nationalityEn": "Ni-Vanuatu"
+  },
+  {
+    "code": "WF",
+    "th": "วาลลิสและฟุตูนา",
+    "en": "Wallis & Futuna",
+    "nationalityEn": "Wallis and Futuna Islander"
+  },
+  {
+    "code": "WS",
+    "th": "ซามัว",
+    "en": "Samoa",
+    "nationalityEn": "Samoan"
+  },
+  {
+    "code": "YE",
+    "th": "เยเมน",
+    "en": "Yemen",
+    "nationalityEn": "Yemeni"
+  },
+  {
+    "code": "YT",
+    "th": "มายอต",
+    "en": "Mayotte",
+    "nationalityEn": "Mahoran"
+  },
+  {
+    "code": "ZA",
+    "th": "แอฟริกาใต้",
+    "en": "South Africa",
+    "nationalityEn": "South African"
+  },
+  {
+    "code": "ZM",
+    "th": "แซมเบีย",
+    "en": "Zambia",
+    "nationalityEn": "Zambian"
+  },
+  {
+    "code": "ZW",
+    "th": "ซิมบับเว",
+    "en": "Zimbabwe",
+    "nationalityEn": "Zimbabwean"
+  }
+]

@@ -1,0 +1,141 @@
+/* Only the public Gallery opts in. Shared Community and desktop styles stay intact. */
+@media (max-width: 767px) {
+  .rnc-gallery { min-height: 0; }
+  .rnc-gallery .archive-stage {
+    width: calc(100% - 20px);
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rnc-gallery .archive-star-rail { display: none; }
+  .rnc-gallery .profiles-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .rnc-gallery .panel-header { flex-shrink: 0; }
+  .rnc-gallery .title-button { font-size: clamp(20px, 5.9vw, 29px); }
+  .rnc-gallery .archive-layout {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 12px;
+  }
+  .rnc-gallery .card-scroll {
+    height: 100%;
+    margin: 0 12px;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+  }
+  .rnc-gallery .archive-section { padding: 12px 0 20px; opacity: 1; transform: none; }
+  .rnc-gallery .archive-section.is-visible .card-cell { animation: none; }
+  .rnc-gallery .archive-section-heading { margin-bottom: 12px; }
+  .rnc-gallery .archive-section-heading h2 { font-size: 22px; }
+  .rnc-gallery .card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    gap: 12px;
+    min-height: 0;
+  }
+  .rnc-gallery .card-cell { width: 100%; height: auto; min-width: 0; }
+  .rnc-gallery .character-card {
+    width: 100%;
+    height: 120px;
+    border-radius: 2px;
+    background: #171a17;
+    text-align: left;
+  }
+  /* Mobile focus can be adjusted per character in the Editor. */
+  .rnc-gallery .character-card > .card-art {
+    right: auto;
+    width: min(62%, 240px);
+    background-size: cover !important;
+    background-position: var(--rnc-mobile-image-x, 50%) var(--rnc-mobile-image-y, 18%) !important;
+    background-repeat: no-repeat !important;
+    transform: scale(var(--rnc-mobile-image-scale, 1)) !important;
+    transform-origin: var(--rnc-mobile-image-origin, 50% 50%) !important;
+  }
+  .rnc-gallery .character-card::before {
+    z-index: 2;
+    background: linear-gradient(90deg, transparent 26%, #171a1733 38%, #171a17e6 61%, #171a17 76%);
+    opacity: 1;
+  }
+  /* Portrait-shaped rank artwork cannot stretch into a horizontal frame. */
+  .rnc-gallery .card-rank-frame { display: none; }
+  .rnc-gallery .card-affinity { top: 0; left: 0; width: 30px; height: 40px; }
+  .rnc-gallery .card-name-wrap {
+    top: 43%;
+    bottom: auto;
+    left: 52%;
+    right: 12px;
+    transform: translateY(-50%);
+  }
+  .rnc-gallery .card-name {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: #fff1dc;
+    font-size: clamp(20px, 5.6vw, 24px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    text-shadow: 0 2px 5px #000;
+  }
+  .rnc-gallery .card-byname,
+  .rnc-gallery .card-owner,
+  .rnc-gallery .card-enemy-hp { display: none; }
+  .rnc-gallery .character-card.has-byname .card-name-wrap {
+    top: 10px;
+    bottom: 40px;
+    align-content: center;
+    transform: none;
+  }
+  .rnc-gallery .card-byname.card-fullname {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    font-size: 11px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .rnc-gallery .character-card.has-byname .card-name {
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1.14;
+  }
+  .rnc-gallery .card-name-wrap .card-review-state {
+    color: #e4c58e;
+    font: 11px/1.35 Sarabun, sans-serif;
+  }
+  .rnc-gallery .character-card[data-rank="1"] { --mobile-star-count: 1; }
+  .rnc-gallery .character-card[data-rank="2"] { --mobile-star-count: 2; }
+  .rnc-gallery .character-card[data-rank="3"] { --mobile-star-count: 3; }
+  .rnc-gallery .character-card[data-rank="4"] { --mobile-star-count: 4; }
+  .rnc-gallery .character-card[data-rank="5"] { --mobile-star-count: 5; }
+  .rnc-gallery .character-card[data-rank="6"] { --mobile-star-count: 6; }
+  .rnc-gallery .character-card[data-rank="7"] { --mobile-star-count: 7; }
+  .rnc-gallery .character-card::after {
+    --mobile-star-size: clamp(16px, 4.4vw, 20px);
+    content: none;
+    z-index: 4;
+    inset: auto auto 15px 52%;
+    width: calc(var(--mobile-star-count, 0) * var(--mobile-star-size));
+    height: calc(var(--mobile-star-size) * 1.108);
+    background: url("/assets/RNCelement/Number%20Star.png") left center / var(--mobile-star-size) 100% repeat-x;
+    opacity: 1;
+    transition: none;
+  }
+  .rnc-gallery .character-card[data-rank]:not([data-rank=""])::after { content: ""; }
+  /* The existing text fallback is always the last child when no frame is present. */
+  .rnc-gallery .character-card[data-rank]:not([data-rank=""]):not(:has(.card-rank-frame)) .card-review-state:last-child { display: none; }
+  .rnc-gallery .character-card:hover,
+  .rnc-gallery .character-card:focus-visible,
+  .archive-opening .rnc-gallery .character-card.is-opening { transform: none; }
+  .rnc-gallery .character-card:hover > .card-art,
+  .rnc-gallery .character-card:focus-visible > .card-art { transform: scale(var(--rnc-mobile-image-scale, 1)) !important; }
+}
+
+@media (max-width: 360px) {
+  .rnc-gallery .card-scroll { margin-right: 9px; margin-left: 9px; }
+  .rnc-gallery .character-card { height: 112px; }
+}

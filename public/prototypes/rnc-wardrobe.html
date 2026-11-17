@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Character File + Wardrobe Preview | Reverse : Noir Chronicle</title>
+  <script>
+    try {
+      const galleryEntry = sessionStorage.getItem("rnc-gallery-entry");
+      const galleryVisual = sessionStorage.getItem("rnc-gallery-entry-visual");
+      sessionStorage.removeItem("rnc-gallery-entry");
+      sessionStorage.removeItem("rnc-gallery-entry-visual");
+      if (galleryEntry === new URLSearchParams(location.search).get("id")) {
+        document.documentElement.classList.add("from-gallery");
+        const visual = galleryVisual && JSON.parse(galleryVisual);
+        if (visual && visual.id === galleryEntry && visual.image !== "none"
+          && [visual.left, visual.top, visual.width, visual.height].every(Number.isFinite)) {
+          const root = document.documentElement;
+          root.classList.add("has-arrival-art");
+          root.style.setProperty("--arrival-left", visual.left + "px");
+          root.style.setProperty("--arrival-top", visual.top + "px");
+          root.style.setProperty("--arrival-width", visual.width + "px");
+          root.style.setProperty("--arrival-height", visual.height + "px");
+          root.style.setProperty("--arrival-image", visual.image);
+          root.style.setProperty("--arrival-size", visual.size);
+          root.style.setProperty("--arrival-position", visual.position);
+          root.style.setProperty("--arrival-filter", visual.filter);
+          root.style.setProperty("--arrival-edge", visual.edge);
+          window.RNCGalleryArrival = visual;
+        }
+      }
+    } catch {}
+  </script>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=human-weapons-20261026">
+  <link rel="stylesheet" href="/community/rnc/character.css?v=ultimate-arch-mask-20261029-v2">
+  <script>
+    if (!new URLSearchParams(location.search).has("id")) {
+      const previewUrl = new URL(location.href);
+      previewUrl.searchParams.set("id", "wardrobe-demo");
+      history.replaceState(null, "", previewUrl);
+    }
+    window.__RNC_BOOTSTRAP__ = {
+      currentUser: null,
+      characters: [{
+        id: "wardrobe-demo", ownerId: "preview", owner: "R:NC", publicationState: "PUBLISHED",
+        characterType: "Director", race: "The Cursed", position: "Director", arcana: "STAR", rank: 6,
+        name: "Adele Euploea", nickname: "Adele", byname: "The Quiet Star", era: "1999", employeeId: "PR 1999 0042 US",
+        age: "27", gender: "หญิง", nationality: "USA", height: "166", weight: "54",
+        quote: "แสงดาวยังอยู่ แม้ในคืนที่มืดที่สุด", playstyle: "Support", status: "ยังมีชีวิต",
+        contact: "", discord: "", other: "", mediumName: "Astral Compass",
+        mediumDescription: "เข็มทิศที่ชี้ไปยังเส้นทางซึ่งยังไม่มีใครค้นพบ",
+        abilityDescription: "รวบรวมแสงดาวเพื่อสร้างแนวป้องกันให้พวกพ้อง",
+        limitations: "พลังจะอ่อนลงเมื่ออยู่ห่างจากท้องฟ้าเป็นเวลานาน",
+        likes: "แผนที่เก่าและท้องฟ้ายามค่ำคืน", dislikes: "เสียงดัง", personality: "สุขุมและช่างสังเกต",
+        history: "ตัวอย่างข้อมูลสำหรับต้นแบบระบบตู้เสื้อผ้า", stats: { COR: 7, MNF: 8, RFX: 6, SCR: 7, DEF: 8 },
+        skillImages: [], skillDetails: {}, image: "/assets/seren-vey-fullbody-mockup.png",
+        imageLayout: { profile: { scale: 1, x: 50, y: 50 } }
+      }]
+    };
+  </script>
+  <script src="/community/rnc/character-data.js?v=height-weight-20261023" defer></script>
+  <script src="/community/rnc/image-layout.js?v=image-layout-20261026" defer></script>
+<style>
+  .wardrobe-open-icon svg{width:48px;height:40px;display:block;fill:currentColor;stroke:none;filter:drop-shadow(0 1px 2px #0005)}
+  @media(max-width:900px){.wardrobe-open-icon svg{width:38px;height:32px}}
+  .scene-toolbar .toolbar-left{gap:clamp(14px,1.6vw,24px)}
+  .scene-toolbar .scene-archive-icon{margin-inline-end:6px}
+  .scene-toolbar .wardrobe-open-icon{margin-inline-end:12px}
+  .scene-toolbar .scene-word-icon{margin-top:0}
+  @media(max-width:900px){
+    .scene-right .detail-cards{display:grid;grid-template-columns:minmax(0,1.12fr) repeat(3,minmax(0,1fr));align-items:end;gap:clamp(6px,2vw,12px);width:100%;height:auto;flex:0 0 auto;padding:14px 0 10px}
+    .scene-right .detail-cards .skill-card{width:100%;max-width:none;height:auto;min-width:0;flex:none;align-self:end;aspect-ratio:168 / 236}
+    .scene-right .detail-cards .ultimate-skill-card{aspect-ratio:194 / 314}
+    .scene-right .detail-cards .skill-card figcaption{right:2px;left:2px;font-size:clamp(6px,1.75vw,10px);letter-spacing:.05em}
+  }
+  .identity-panel{position:relative}
+  .wardrobe-signature{position:absolute;right:8px;top:5px;width:96px;height:31px;padding:2px 5px;background:transparent;color:#c94d43;border:0;cursor:pointer;transition:filter .2s,transform .2s}
+  .wardrobe-signature:hover{color:#ed6a55;filter:drop-shadow(0 0 8px #e9564d77);transform:translateY(-1px)}
+  .wardrobe-signature svg{width:100%;height:100%;overflow:visible}
+  .wardrobe-signature .signature-path{fill:none;stroke:currentColor;stroke-width:2.7;stroke-linecap:round;stroke-linejoin:round}
+  .wardrobe-signature-count{position:absolute;right:0;bottom:-7px;color:#d4a58b;font:9px/1.3 Georgia,serif;letter-spacing:.08em}
+  .wardrobe-dialog{width:min(990px,calc(100vw - 30px));max-width:none;max-height:calc(100dvh - 34px);padding:0;overflow:hidden;border:1px solid #a95a37;border-radius:0 24px 0 24px;background:radial-gradient(ellipse at 7% 0%,#5b392b55,transparent 44%),linear-gradient(145deg,#242321,#171817 72%);color:#e8dfd2;box-shadow:0 24px 90px #000c}
+  .wardrobe-dialog::backdrop{background:#070707cf;backdrop-filter:blur(5px)}
+  .wardrobe-dialog-inner{max-height:calc(100dvh - 36px);overflow:auto;padding:27px 32px 25px;scrollbar-color:#956d50 transparent;scrollbar-width:thin}
+  .wardrobe-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding-bottom:19px;border-bottom:1px solid #73513c77}
+  .wardrobe-kicker{margin:0 0 7px;color:#d78a62;font:11px/1.4 Georgia,serif;letter-spacing:.23em}
+  .wardrobe-head h2{margin:0;color:#e8dfd2;font:36px/1.1 Georgia,"Noto Serif Thai",serif;font-weight:400}
+  .wardrobe-close{width:37px;height:37px;display:grid;place-items:center;background:transparent;border:1px solid #a9795a66;color:#e3d7c9;font-size:24px;line-height:1}
+  .wardrobe-close:hover{background:#633b2b;color:#fff}
+  .wardrobe-subhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 11px;color:#b99a7d;font-size:12px;letter-spacing:.04em}
+  .wardrobe-subhead span:last-child{font:11px Georgia,serif;letter-spacing:.08em;color:#c39c79}
+  .wardrobe-list{display:flex;gap:12px;overflow-x:auto;padding:3px 2px 12px;scroll-snap-type:x mandatory;scrollbar-color:#946644 transparent;scrollbar-width:thin}
+  .wardrobe-skin{position:relative;flex:0 0 142px;height:204px;overflow:hidden;padding:0;background:#262724;border:1px solid #75553f;opacity:.72;scroll-snap-align:start;text-align:left;transition:opacity .2s,border-color .2s,transform .2s}
+  .wardrobe-skin:hover{opacity:1;transform:translateY(-2px)}
+  .wardrobe-skin[aria-pressed=true]{opacity:1;border:2px solid #cf7548;box-shadow:0 0 0 1px #d1895a44,0 6px 20px #0007}
+  .wardrobe-skin img.skin-art{width:100%;height:100%;object-fit:cover;object-position:50% 8%;filter:var(--skin-filter,none);transform:scale(1.16);transform-origin:50% 8%}
+  .wardrobe-skin:after{content:"";position:absolute;inset:32% 0 0;background:linear-gradient(0deg,#10110fee,transparent 70%);pointer-events:none}
+  .wardrobe-skin-name{position:absolute;z-index:1;left:10px;right:8px;bottom:11px;color:#f0e6d9;font:16px/1.2 Georgia,"Noto Serif Thai",serif;overflow-wrap:anywhere}
+  .wardrobe-skin-mark{position:absolute;z-index:1;top:9px;left:9px;color:#f1c99f;font:10px Georgia,serif;letter-spacing:.15em}
+  .wardrobe-skin-chibi{position:absolute;z-index:1;top:7px;right:7px;width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px 4px #0009)}
+  .wardrobe-current{display:grid;grid-template-columns:94px minmax(0,1fr) auto;align-items:center;gap:16px;min-height:115px;margin-top:5px;padding:13px 0;border-top:1px solid #73513c55;border-bottom:1px solid #73513c55}
+  .wardrobe-current-art{width:88px;height:88px;display:grid;place-items:center;overflow:hidden;background:#282824;border:1px solid #72523d}
+  .wardrobe-current-art img{width:100%;height:100%;object-fit:cover;object-position:50% 8%}
+  .wardrobe-current-kicker{margin:0 0 5px;color:#c5835d;font:9px Georgia,serif;letter-spacing:.2em}
+  .wardrobe-current-name{margin:0 0 5px;font:22px/1.2 Georgia,"Noto Serif Thai",serif;font-weight:400;color:#e6ddd1}
+  .wardrobe-current-description{margin:0;color:#b6aa9c;font-size:13px;line-height:1.5;white-space:pre-line}
+  .wardrobe-chibi-preview{width:52px;height:56px;object-fit:contain;filter:drop-shadow(0 4px 7px #0009)}
+  .wardrobe-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+  .wardrobe-action{min-height:38px;padding:8px 13px;background:#211f1d;border:1px solid #80583e;color:#dac8b5;font-size:12px}
+  .wardrobe-action:hover{background:#493023;color:#fff}
+  .wardrobe-action.primary{background:#a74b2f;border-color:#c66a43;color:#f2e5d4}
+  .wardrobe-action.delete{color:#db8974;border-color:#8f4c3f}
+  .wardrobe-form{margin-top:18px;padding:17px;border:1px solid #80583e;background:#171817}
+  .wardrobe-form h3{margin:0 0 13px;color:#e4d6c4;font:20px Georgia,serif;font-weight:400}
+  .wardrobe-form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px 18px}
+  .wardrobe-field{display:grid;gap:6px;color:#c9a987;font-size:11px}
+  .wardrobe-field input[type=text],.wardrobe-field textarea{width:100%;padding:10px 11px;background:#242322;border:1px solid #66503e;color:#eee4d8}
+  .wardrobe-field textarea{min-height:76px;resize:vertical}
+  .wardrobe-file{min-height:40px;display:flex;align-items:center;gap:10px;padding:7px 9px;background:#211f1d;border:1px dashed #805e45;color:#d2bd9e}
+  .wardrobe-file input{max-width:100%;font-size:10px;color:#bcae9d}
+  .wardrobe-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+  .wardrobe-toast{position:absolute;left:50%;bottom:20px;z-index:8;padding:8px 12px;border:1px solid #b76642;background:#171716ed;color:#ebd6c0;font-size:12px;transform:translateX(-50%);pointer-events:none}
+  .scene-portrait-image.skin-changing{animation:wardrobeSkinIn .28s ease both}
+  @keyframes wardrobeSkinIn{from{opacity:.45;filter:blur(3px)}to{opacity:1;filter:var(--skin-filter,none)}}
+  @media(max-width:900px){.wardrobe-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 18px);border-radius:0 18px 0 18px}.wardrobe-dialog-inner{max-height:calc(100dvh - 20px);padding:20px 17px 18px}.wardrobe-head h2{font-size:29px}.wardrobe-skin{flex-basis:116px;height:166px}.wardrobe-current{grid-template-columns:72px minmax(0,1fr) 42px;gap:11px;min-height:94px}.wardrobe-current-art{width:68px;height:68px}.wardrobe-current-name{font-size:18px}.wardrobe-current-description{font-size:12px}.wardrobe-chibi-preview{width:40px;height:42px}.wardrobe-form-grid{grid-template-columns:1fr}.wardrobe-signature{right:2px;top:3px;width:77px;height:27px}.wardrobe-signature-count{font-size:8px}}
+  @media(max-width:420px){.wardrobe-skin{flex-basis:104px;height:150px}.wardrobe-dialog-inner{padding-left:13px;padding-right:13px}.wardrobe-actions{gap:5px}.wardrobe-action{padding:7px 9px;font-size:11px}}
+  </style>
+    <link rel="stylesheet" href="/community/rnc/employee-card.css?v=face-crop-20261027">
+  <script src="/community/rnc/employee-photo.js?v=face-default-20261027" defer></script>
+  <script src="/community/rnc/employee-card-nationality.js?v=employee-card-nationality-20261027" defer></script>
+  <script src="/community/rnc/employee-card.js?v=back-pearl-20261027" defer></script>
+  <script src="/community/rnc/character.js?v=weapon-sync-skill-20261027-v10" defer></script>
+<style>
+  .character-scene > .wardrobe-signature{position:absolute;z-index:3;top:var(--signature-y,85%);left:var(--signature-x,53%);right:auto;bottom:auto;width:var(--signature-width,148px);height:var(--signature-height,48px);padding:4px 6px;transform:translate(-50%,-50%);background:transparent;color:#ed6656;border:0;backdrop-filter:none;pointer-events:auto;touch-action:manipulation;visibility:hidden;transition:color .18s,filter .18s;filter:drop-shadow(0 1px 2px #100808dd) drop-shadow(0 0 6px #e9564d55)}
+  .character-scene > .wardrobe-signature[data-positioned]{visibility:visible}
+  .character-scene > .wardrobe-signature:hover{transform:translate(-50%,-50%) scale(1.045);color:#ff8970;background:transparent;filter:drop-shadow(0 1px 2px #100808dd) drop-shadow(0 0 10px #ed66568c)}
+  .identity-caption-row{min-width:0}
+  .mobile-signature-dock{display:none}
+  @media(max-width:900px){
+    .identity-caption-row{display:flex;align-items:center;gap:10px;min-height:48px;margin:0 0 5px}
+    .identity-caption-row .identity-byname{flex:0 1 auto;min-width:0;margin:0;line-height:1.45;overflow-wrap:anywhere}
+    .mobile-signature-dock{display:flex;align-items:center;flex:0 0 auto}
+    .mobile-signature-dock .wardrobe-signature{position:relative;inset:auto;z-index:3;display:block;width:clamp(144px,38vw,168px);height:48px;padding:4px 6px;transform:none;background:transparent;border:0;color:#ed6656;visibility:visible;touch-action:manipulation;filter:drop-shadow(0 1px 2px #100808dd) drop-shadow(0 0 6px #e9564d55)}
+    .mobile-signature-dock .wardrobe-signature:hover{transform:scale(1.045);color:#ff8970;filter:drop-shadow(0 1px 2px #100808dd) drop-shadow(0 0 10px #ed66568c)}
+  }
+  .wardrobe-signature-count{display:none}
+  .scene-portrait.empty-portrait::after{content:"";pointer-events:none}
+  .wardrobe-signature:focus-visible{outline:1px solid #eea17e;outline-offset:4px;border-radius:2px}
+  .wardrobe-screen{position:fixed;z-index:60;inset:4px;display:grid;grid-template-columns:minmax(0,1fr) clamp(310px,27vw,390px);overflow:hidden;border:1px solid #bb4f28;border-radius:0 27px 0 27px;background:#171817;color:#e6dfd5;box-shadow:0 12px 44px #000a}
+  .wardrobe-screen[hidden]{display:none!important}
+  .wardrobe-left{position:relative;min-width:0;overflow:hidden;background:radial-gradient(ellipse 47% 70% at 58% 45%,#8a453455,transparent 78%),linear-gradient(110deg,#181818,#292421 64%,#171716)}
+  .wardrobe-left:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#121313a8,transparent 51%,#16161430),linear-gradient(0deg,#121313d9,transparent 43%)}
+  .wardrobe-stage-glow{position:absolute;inset:0;background:radial-gradient(ellipse 40% 44% at 57% 43%,#aa53312c,transparent 80%)}
+  .wardrobe-hero-image{position:absolute;z-index:1;left:5%;bottom:-10%;width:105%;height:120%;object-fit:contain;object-position:50% 50%;filter:var(--skin-filter,none);mask-image:linear-gradient(90deg,transparent 0,black 7%,black 86%,transparent 100%);pointer-events:none}
+  .wardrobe-hero-chibi{position:absolute;z-index:3;right:5%;bottom:38px;width:clamp(95px,14vw,175px);height:190px;object-fit:contain;filter:drop-shadow(0 8px 15px #000a)}
+  .wardrobe-toolbar{position:absolute;z-index:5;top:29px;left:35px;right:26px;display:flex;align-items:center;gap:24px}
+  .garment-icon{width:43px;height:44px;display:grid;place-items:center;color:#eee6d9;text-decoration:none;background:transparent;border:0;cursor:pointer}
+  .garment-icon svg{width:39px;height:39px;fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:square;stroke-linejoin:miter}
+  .garment-icon:hover{color:#e98c59}.garment-back svg{width:44px;height:44px}
+  .garment-label{margin-left:14px;color:#d7c7ae;font:16px Georgia,serif;letter-spacing:.18em}
+  .wardrobe-illustration-copy{position:absolute;z-index:4;left:4.4%;bottom:49px;max-width:56%;text-shadow:0 2px 16px #000b}
+  .wardrobe-illustration-kicker{display:flex;align-items:center;gap:14px;margin:0 0 13px;color:#d3b6a0;font:15px Georgia,serif;letter-spacing:.09em}
+  .wardrobe-illustration-kicker span{display:block;width:70px;height:1px;background:#e0c4aa;transform:rotate(-13deg)}
+  .wardrobe-character-name{margin:0 0 11px;color:#dfd6c9;font:24px Georgia,serif}
+  .wardrobe-skin-title{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .wardrobe-skin-title h2{margin:0;color:#ece2d4;font:400 clamp(30px,3.6vw,48px)/1.12 Georgia,"Noto Serif Thai",serif}
+  .wardrobe-skin-title span{padding:4px 9px;border-radius:4px;background:#7587a9;color:#161b23;font:700 12px/1.25 Arial,sans-serif}
+  .wardrobe-description{max-width:390px;margin:12px 0 0;color:#d0c6b8;font:16px/1.5 Georgia,"Noto Serif Thai",serif;white-space:pre-line}
+  .wardrobe-stage-mark{position:absolute;z-index:4;right:22px;bottom:17px;margin:0;color:#9a8877;font:9px Georgia,serif;letter-spacing:.2em}
+  .wardrobe-current-image-cache{display:none}
+  .wardrobe-side{position:relative;z-index:3;min-width:0;overflow-y:auto;padding:25px 22px 22px;background:linear-gradient(140deg,#e6e5df,#d6d4cc 75%,#e6e1d8);color:#33352f;scrollbar-color:#8d8172 transparent;scrollbar-width:thin}
+  .garment-side-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-height:162px}
+  .garment-title span{display:block;color:#30332f;font:clamp(37px,4vw,58px)/.84 Arial,sans-serif;letter-spacing:.02em}
+  .garment-title h1{margin:-2px 0 0;color:#30332f;font:italic 400 clamp(32px,3.5vw,49px)/1 Georgia,serif;letter-spacing:-.055em}
+  .language-select{position:relative;flex:0 0 138px;margin-top:9px}
+  .language-select select{width:100%;height:50px;padding:0 34px 0 14px;appearance:none;background:#171819;border:0;border-bottom:2px solid #c85025;color:#eee7dc;font:17px Georgia,serif}
+  .language-select>span:not(.sr-only){position:absolute;right:14px;top:14px;color:#eee7dc;pointer-events:none}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .wardrobe-side-content{min-height:calc(100% - 162px);display:flex;flex-direction:column}
+  .wardrobe-subhead{display:flex;align-items:center;justify-content:space-between;margin:8px 0 14px;padding-top:11px;border-top:1px solid #71716845;color:#9c8d7a;font:9px/1.4 Georgia,serif;letter-spacing:.19em}
+  .wardrobe-subhead span:last-child{color:#55493b;font-size:11px}
+  .wardrobe-list{display:flex;gap:12px;overflow-x:auto;padding:3px 2px 14px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#a07852 transparent}
+  .wardrobe-skin{position:relative;flex:0 0 clamp(112px,10.5vw,146px);height:clamp(205px,32vh,290px);overflow:hidden;padding:0;background:#494943;border:1px solid #756c5e;opacity:.6;scroll-snap-align:start;text-align:left;transition:opacity .2s,border-color .2s,transform .2s}
+  .wardrobe-skin:hover{opacity:.95;transform:translateY(-3px)}.wardrobe-skin[aria-pressed=true]{opacity:1;border:3px solid #c7582d;box-shadow:0 5px 15px #16151230}
+  .wardrobe-skin img.skin-art{width:100%;height:100%;object-fit:cover;object-position:50% 8%;filter:var(--skin-filter,none);transform:scale(1.12);transform-origin:50% 8%}
+  .wardrobe-skin:after{content:"";position:absolute;inset:42% 0 0;background:linear-gradient(0deg,#141613dc,transparent 68%);pointer-events:none}
+  .wardrobe-skin-mark{position:absolute;z-index:1;top:8px;left:8px;color:#f1dfc8;font:9px Georgia,serif;letter-spacing:.13em}
+  .wardrobe-skin-name{position:absolute;z-index:1;left:9px;right:6px;bottom:10px;color:#f0e7da;font:14px/1.2 Georgia,"Noto Serif Thai",serif;overflow-wrap:anywhere}
+  .wardrobe-skin-chibi{position:absolute;z-index:2;right:4px;bottom:37px;width:35px;height:42px;object-fit:contain;filter:drop-shadow(0 2px 4px #0009)}
+  .wardrobe-dressing-note{margin-top:auto;padding:15px 3px 8px;color:#8b8c85;font:11px/1.45 Arial,sans-serif}
+  .dressing-kicker{margin:0 0 6px;color:#9e9f98;font:700 14px Arial,sans-serif;letter-spacing:.12em}
+  .wardrobe-dressing-note p:not(.dressing-kicker){margin:0}.wardrobe-dressing-note span{display:block;margin-top:2px}
+  .wardrobe-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #77756b38}
+  .wardrobe-mini-action{width:34px;height:34px;display:grid;place-items:center;padding:5px;background:transparent;border:1px solid #77706270;color:#5b5449}
+  .wardrobe-mini-action:hover{background:#d2c6b3;color:#a9492a}.wardrobe-mini-action:disabled{opacity:.35}
+  .wardrobe-mini-action svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .wardrobe-mini-action.wardrobe-add{font:26px/1 Georgia,serif}
+  .wardrobe-form{margin-top:10px;padding:13px;border:1px solid #91847555;background:#eeece6}
+  .wardrobe-form h3{margin:0 0 10px;color:#393a35;font:19px Georgia,serif;font-weight:400}
+  .wardrobe-field{display:grid;gap:5px;margin:9px 0;color:#7c6c5b;font:11px Arial,sans-serif}
+  .wardrobe-field input[type=text],.wardrobe-field textarea{width:100%;min-height:34px;padding:8px;background:#f8f7f3;border:1px solid #bdb5a9;color:#333}
+  .wardrobe-field input[type=file]{width:100%;font-size:10px}.wardrobe-field textarea{min-height:60px;resize:vertical}
+  .wardrobe-form-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:11px}.wardrobe-action{padding:8px 11px;background:transparent;border:1px solid #827463;color:#51483e;font-size:11px}.wardrobe-action.primary{background:#a84d30;color:#f4e8d8;border-color:#a84d30}
+  .wardrobe-toast{position:absolute;z-index:9;left:50%;bottom:18px;margin:0;padding:8px 12px;background:#171716eF;border:1px solid #bd6b48;color:#edddca;font:12px Arial,sans-serif;transform:translateX(-50%)}
+  @media(max-width:900px){.wardrobe-screen{inset:4px;grid-template-columns:1fr;grid-template-rows:minmax(350px,58dvh) minmax(245px,1fr);overflow-y:auto}.wardrobe-left{min-height:350px}.wardrobe-hero-image{left:-1%;bottom:-18%;width:100%;height:125%;object-position:50% 42%}.wardrobe-toolbar{top:15px;left:15px;gap:13px}.garment-label{font-size:13px;margin-left:4px}.wardrobe-illustration-copy{left:18px;bottom:23px;max-width:72%}.wardrobe-illustration-kicker{font-size:12px;margin-bottom:6px}.wardrobe-illustration-kicker span{width:36px}.wardrobe-character-name{font-size:17px;margin-bottom:4px}.wardrobe-skin-title h2{font-size:27px}.wardrobe-description{font-size:12px;margin-top:5px}.wardrobe-stage-mark{display:none}.wardrobe-hero-chibi{right:4%;bottom:20px;width:80px;height:110px}.wardrobe-side{overflow:visible;padding:15px 17px 14px}.garment-side-head{min-height:87px}.garment-title span{font-size:34px}.garment-title h1{font-size:30px}.language-select{flex-basis:120px;margin-top:0}.language-select select{height:42px;font-size:15px}.language-select>span:not(.sr-only){top:11px}.wardrobe-side-content{min-height:0}.wardrobe-subhead{margin:0 0 7px;padding-top:8px}.wardrobe-skin{flex-basis:95px;height:126px}.wardrobe-dressing-note{display:none}.wardrobe-actions{margin-top:auto;padding-top:7px}.wardrobe-form{max-height:45vh;overflow:auto}}
+  @media(max-width:480px){.wardrobe-screen{grid-template-rows:minmax(310px,53dvh) minmax(260px,1fr)}.wardrobe-skin{flex-basis:82px;height:112px}.wardrobe-side{padding-left:12px;padding-right:12px}}
+  </style>
+
+</head>
+<body>
+  <main class="character-stage">
+    <article class="character-scene" id="characterScene">
+      <div class="scene-grain" aria-hidden="true"></div>
+      <div class="scene-portrait" id="scenePortrait"><img class="scene-portrait-image" id="scenePortraitImage" alt="" hidden>
+</div>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <button class="wardrobe-signature" id="cycleWardrobeSkin" type="button" aria-label="สลับสกิน" title="สลับสกิน"><svg viewBox="0 0 140 44" aria-hidden="true"><path class="signature-path" d="M7 29c7-1 10-13 14-17 2-2 3 0 1 5l-5 13c4-4 8-11 10-11 2 0-1 8-1 11 3-3 8-12 11-11 2 1-1 9-1 11 3-4 7-10 10-10 2 0-1 7-1 10 3-3 7-8 10-7 2 1-1 6-1 8 4-4 9-7 14-6 4 1 4 5 0 7-4 2-8 1-7-2 1-4 10-6 15-4 5 1 8 4 12 4 5 0 8-3 11-7"/><path class="signature-path" d="M84 34c8-3 14-6 20-5 5 0 8 3 12 3 4 0 8-2 14-7"/></svg></button>
+      <div class="scene-outline" aria-hidden="true">ARCHIVE<br>NO. <span id="fileNumber">001</span></div>
+
+      <header class="scene-toolbar">
+        <div class="toolbar-left">
+          <a href="/community/rnc" class="scene-icon" aria-label="กลับไปแกลเลอรี">◁</a>
+          <a href="/community/rnc" class="scene-icon scene-archive-icon" aria-label="ตัวละครทั้งหมด">▣</a>
+
+          <button class="scene-icon wardrobe-open-icon" id="openWardrobe" type="button" aria-label="เปิดตู้เสื้อผ้า" title="ตู้เสื้อผ้า"><svg viewBox="0 0 65 47" aria-hidden="true"><path fill-rule="evenodd" d="M24.00 1.75 L23.61 3.00 L23.60 7.00 L24.00 8.23 L25.00 8.71 L26.00 8.51 L26.45 8.00 L26.85 5.00 L28.00 4.45 L38.00 4.42 L38.89 5.00 L38.80 10.00 L38.00 10.53 L32.00 10.41 L31.19 11.00 L31.04 17.00 L30.21 19.00 L2.00 43.11 L1.50 44.00 L2.00 45.09 L63.00 45.10 L63.51 44.00 L63.00 42.35 L37.00 20.24 L34.57 18.00 L34.05 17.00 L34.00 14.81 L35.00 13.60 L41.00 13.44 L42.00 12.97 L42.29 3.00 L42.00 1.80 L40.00 1.37 L25.00 1.39Z M32.00 21.54 L10.43 40.00 L9.53 41.00 L9.90 42.00 L55.00 42.17 L56.00 41.74 L56.27 41.00 L55.43 40.00 L35.00 22.47 L33.00 21.07Z M27.00 30.86 L26.56 32.00 L26.99 33.00 L33.00 38.37 L38.83 33.00 L39.26 32.00 L38.00 30.19 L37.00 30.49 L33.00 33.88 L28.00 30.11Z"/></svg></button>
+          <button class="scene-icon scene-word-icon" id="openEmployeeCard" type="button" aria-label="บัตรพนักงาน" aria-haspopup="dialog" title="บัตรพนักงาน">ID</button>
+        </div>
+        <div class="toolbar-right"><span>R:NC · CHARACTER FILE</span></div>
+      </header>
+
+      <section class="scene-left" aria-label="ข้อมูลตัวละครและค่าสถานะ">
+        <div class="arcana-seal"><img id="arcanaIcon" src="" alt=""></div>
+        <div class="identity-panel">
+          <p class="scene-stars" id="rankStars"></p>
+          <h1 id="characterName"></h1>
+          <div class="identity-caption-row"><p class="identity-byname" id="characterByname"></p><span class="mobile-signature-dock" id="mobileSignatureDock"></span></div>
+          <div class="identity-meta">
+            <p class="identity-nickname" id="characterNickname"></p>
+            <p class="identity-era" id="characterEra"></p>
+          </div>
+
+          <p class="identity-employee" id="characterEmployee" hidden><span>EMPLOYEE ID</span><strong id="characterEmployeeId"></strong></p>
+        </div>
+        <div class="role-tags" id="roleTags"></div>
+        <div class="stat-head"><span>Base Stats</span><span class="stat-total" id="statTotal"></span></div>
+        <div class="stat-grid" id="statGrid"></div>
+        <section class="human-weapons-display" id="humanWeaponsDisplay" aria-label="รายการอาวุธของ Human" hidden></section>
+        <p class="owner-line">CREATOR <span id="ownerName"></span></p>
+      </section>
+
+      <section class="scene-right" aria-label="รายละเอียดตัวละคร">
+        <div class="detail-crest">
+          <button class="medium-info-trigger" id="mediumBadge" type="button" data-detail-section="medium" aria-label="อธิบายอาวุธประจำตัว" aria-controls="detailInfoPanel">
+            <img class="weapon-arcana-icon" id="weaponArcanaIcon" alt="" hidden>
+            <span class="medium-badge-name" id="mediumBadgeName">Medium</span>
+          </button>
+          <button class="skill-info-trigger" type="button" data-detail-section="ability" aria-label="อธิบาย Arcane Ability" aria-controls="detailInfoPanel">△</button>
+          <button class="skill-info-trigger" type="button" data-detail-section="limitations" aria-label="อธิบาย Limitations" aria-controls="detailInfoPanel">◬</button>
+          <div class="detail-info-panel" id="detailInfoPanel" role="tooltip" hidden>
+            <h2 id="mediumTooltipTitle">Medium</h2>
+            <div class="detail-info-scroll" tabindex="0" aria-label="รายละเอียด Medium อาวุธ และความสามารถ">
+              <section class="detail-info-entry" data-detail-entry="medium">
+                <span class="detail-info-mark detail-info-mark-medium" aria-hidden="true">M</span>
+                <div><h3>[Medium]</h3><p id="mediumTooltipText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="weapon" hidden>
+                <span class="detail-info-mark" aria-hidden="true">⚔</span>
+                <div><h3>[Weapon]</h3><p id="weaponTooltipText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="ability">
+                <span class="detail-info-mark" aria-hidden="true">△</span>
+                <div><h3>[Arcane Ability]</h3><p id="skillTooltipAbilityText"></p></div>
+              </section>
+              <section class="detail-info-entry" data-detail-entry="limitations">
+                <span class="detail-info-mark" aria-hidden="true">◬</span>
+                <div><h3>[Limitations]</h3><p id="skillTooltipLimitationsText"></p></div>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div class="detail-cards" role="group" aria-label="Character skills">
+          <figure class="skill-card ultimate-skill-card" data-skill-card="2" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Ultimate skill details">
+            <img class="skill-card-art" alt="" hidden><img class="skill-card-frame" src="/assets/RNCelement/Ult.png" alt="" aria-hidden="true"><figcaption>ULTIMATE</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="0" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 1 details">
+            <img class="skill-card-art" alt="" hidden><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE I</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="1" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 2 details">
+            <img class="skill-card-art" alt="" hidden><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE II</figcaption>
+          </figure>
+          <figure class="skill-card" data-skill-card="3" role="button" tabindex="0" aria-controls="skillReadDialog" aria-haspopup="dialog" aria-expanded="false" aria-label="Open Arcane Skill 3 details">
+            <img class="skill-card-art" alt="" hidden><img class="skill-card-frame" src="/assets/RNCelement/Arcane%20Skill.png" alt="" aria-hidden="true"><figcaption>ARCANE III</figcaption>
+          </figure>
+        </div>
+        <div class="panel-tabs" role="tablist" aria-label="หมวดข้อมูลตัวละคร">
+          <button type="button" role="tab" data-panel="profile" aria-selected="true">Profile</button>
+          <button type="button" role="tab" data-panel="contact" aria-selected="false">Contact</button>
+        </div>
+        <div class="detail-paper">
+          <section class="detail-pane" id="panel-profile" role="tabpanel">
+            <p class="paper-kicker">PERSONAL RECORD</p>
+            <p class="profile-quote" id="characterQuote"></p>
+            <div class="paper-rule"></div>
+            <dl class="identity-facts" id="identityFacts"></dl>
+            <div class="paper-rule"></div>
+            <h3>สิ่งที่ชอบ</h3><p id="likes"></p>
+            <h3>สิ่งที่ไม่ชอบ</h3><p id="dislikes"></p>
+            <h3>อุปนิสัย</h3><p id="personality"></p>
+          </section>
+          <section class="detail-pane" id="panel-story" role="tabpanel" hidden inert>
+            <p class="paper-kicker">PERSONAL HISTORY</p>
+            <h2>「 ประวัติส่วนตัว 」</h2>
+            <div class="paper-rule"></div>
+            <p class="story-text" id="history"></p>
+          </section>
+          <section class="detail-pane" id="panel-contact" role="tabpanel" hidden>
+            <p class="paper-kicker">CONTACT & OTHER</p>
+            <h2>「 Contact 」</h2>
+            <div class="paper-rule"></div>
+            <dl class="identity-facts" id="contactFacts"></dl>
+            <h3>ข้อมูลอื่น ๆ</h3><p id="other"></p>
+            <a class="edit-character" id="editCharacter" href="#" hidden>แก้ไขตัวละครของฉัน</a>
+          </section>
+        </div>
+      </section>
+    </article>
+    <section class="wardrobe-screen" id="wardrobeScreen" aria-label="Garments" hidden>
+      <div class="wardrobe-left">
+        <div class="wardrobe-stage-glow" aria-hidden="true"></div>
+        <img class="wardrobe-hero-image" id="wardrobeHeroImage" alt="ตัวอย่างสกินที่เลือก">
+        <img class="wardrobe-hero-chibi" id="wardrobeHeroChibi" alt="Chibi ของสกินนี้" hidden>
+        <header class="wardrobe-toolbar">
+          <button class="garment-icon garment-back" id="closeWardrobe" type="button" aria-label="กลับหน้า Character"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M32 20H8m0 0 12-12M8 20l12 12"/></svg></button>
+          <a class="garment-icon" href="/community/rnc" aria-label="กลับคลังตัวละคร"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="7" width="26" height="26"/><path d="M13 13h14v14H13z"/></svg></a>
+          <span class="garment-label">GARMENTS</span>
+        </header>
+        <div class="wardrobe-illustration-copy">
+          <p class="wardrobe-illustration-kicker"><span></span> ILLUSTRATION</p>
+          <p class="wardrobe-character-name" id="wardrobeCharacterName">Adele Euploea</p>
+          <div class="wardrobe-skin-title"><h2 id="wardrobeCurrentName">Default</h2><span id="wardrobeDefaultTag">Default</span></div>
+          <p class="wardrobe-description" id="wardrobeCurrentDescription"></p>
+        </div>
+        <p class="wardrobe-stage-mark">R:NC &nbsp; / &nbsp; PERSONAL WARDROBE</p>
+        <img class="wardrobe-current-image-cache" id="wardrobeCurrentImage" alt="" hidden>
+        <p class="wardrobe-toast" id="wardrobeToast" role="status" aria-live="polite" hidden></p>
+      </div>
+      <aside class="wardrobe-side">
+        <header class="garment-side-head">
+          <div class="garment-title"><span>ROLE</span><h1>GARMENT</h1></div>
+          <label class="language-select"><span class="sr-only">Language</span><select aria-label="Language"><option>English</option><option>ไทย</option></select><span aria-hidden="true">▾</span></label>
+        </header>
+        <div class="wardrobe-side-content">
+          <div class="wardrobe-subhead"><span>COLLECTION</span><span id="wardrobeSkinCount">03</span></div>
+          <div class="wardrobe-list" id="wardrobeSkinList" role="listbox" aria-label="เลือกสกิน"></div>
+          <div class="wardrobe-dressing-note"><p class="dressing-kicker">DRESSING ROOM</p><p>You can have anything you want in life<br>if you dress for it.</p><span>— Edith Head</span></div>
+          <div class="wardrobe-actions" aria-label="จัดการสกิน"><button class="wardrobe-mini-action" id="editWardrobeSkin" type="button" aria-label="แก้ไขสกิน" title="แก้ไขสกิน"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16.5-.8 4.3 4.3-.8L19.7 7.8a2.1 2.1 0 0 0-3-3L4 16.5zM14.9 6.6l2.8 2.8"/></svg></button><button class="wardrobe-mini-action" id="deleteWardrobeSkin" type="button" aria-label="ลบสกิน" title="ลบสกิน"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 3v7m4-7v7"/></svg></button><button class="wardrobe-mini-action wardrobe-add" id="addWardrobeSkin" type="button" aria-label="เพิ่มสกิน" title="เพิ่มสกิน">+</button></div>
+          <form class="wardrobe-form" id="wardrobeSkinForm" hidden><h3 id="wardrobeFormTitle">เพิ่มสกิน</h3><label class="wardrobe-field">ชื่อสกิน *<input id="wardrobeSkinName" type="text" maxlength="60" required placeholder="ชื่อสกิน"></label><label class="wardrobe-field">ภาพสกิน *<input id="wardrobeSkinImage" type="file" accept="image/*"></label><label class="wardrobe-field">รายละเอียด<textarea id="wardrobeSkinDescription" maxlength="500" placeholder="รายละเอียดสกิน (ไม่บังคับ)"></textarea></label><label class="wardrobe-field">Chibi · ไม่บังคับ<input id="wardrobeSkinChibi" type="file" accept="image/*"></label><div class="wardrobe-form-actions"><button class="wardrobe-action" id="cancelWardrobeEdit" type="button">ยกเลิก</button><button class="wardrobe-action primary" type="submit">บันทึก</button></div></form>
+        </div>
+      </aside>
+    </section>
+
+    <dialog class="skill-read-dialog" id="skillReadDialog" aria-labelledby="skillReadTitle" aria-describedby="skillReadDescription">
+      <article class="skill-read-sheet">
+        <button class="skill-read-close" type="button" aria-label="ปิดรายละเอียดสกิล">×</button>
+        <div class="skill-read-art" aria-hidden="true">
+          <img id="skillReadArtwork" class="skill-read-artwork" alt="" hidden>
+          <img id="skillReadFrame" class="skill-read-frame" alt="">
+        </div>
+        <p class="skill-read-kicker" id="skillReadKind">ULTIMATE</p>
+        <h2 id="skillReadTitle">Ultimate</h2>
+        <div class="skill-read-rule" aria-hidden="true"></div>
+        <p class="skill-read-description" id="skillReadDescription"></p>
+      </article>
+    </dialog>
+    <dialog class="skill-read-dialog weapon-read-dialog" id="weaponReadDialog" aria-labelledby="weaponReadTitle" aria-describedby="weaponReadDescription">
+      <article class="skill-read-sheet">
+        <button class="skill-read-close" type="button" aria-label="ปิดรายละเอียดอาวุธ">×</button>
+        <div class="weapon-read-art" id="weaponReadArt" aria-hidden="true" hidden>
+          <img id="weaponReadArtwork" alt="" hidden>
+        </div>
+        <div class="weapon-read-heading">
+          <img id="weaponReadElementIcon" alt="" hidden>
+          <h2 id="weaponReadTitle">Weapon</h2>
+        </div>
+        <blockquote class="weapon-read-quote">
+          <span class="weapon-quote-mark weapon-quote-open" aria-hidden="true">“</span>
+          <p class="skill-read-description" id="weaponReadDescription"></p>
+          <span class="weapon-quote-mark weapon-quote-close" aria-hidden="true">”</span>
+        </blockquote>
+        <div class="skill-read-rule weapon-read-stat-rule" aria-hidden="true"></div>
+        <dl class="weapon-read-stats" aria-label="ค่าสถานะอาวุธ">
+          <div><dt>CORE</dt><dd id="weaponReadCORE">0</dd></div>
+          <div><dt>MNF</dt><dd id="weaponReadMNF">0</dd></div>
+          <div><dt>SCR</dt><dd id="weaponReadSCR">0</dd></div>
+        </dl>
+      </article>
+    </dialog>
+    <dialog class="employee-card-dialog" id="employeeCardDialog" aria-label="บัตรพนักงาน" aria-describedby="employeeCardHint">
+      <button class="employee-card-close" id="closeEmployeeCard" type="button" aria-label="ปิดบัตรพนักงาน">×</button>
+      <div class="employee-card-view">
+        <div class="employee-card-stage">
+          <button class="employee-card-object" id="employeeCardFlip" type="button" aria-label="พลิกดูด้านหลังบัตร" aria-pressed="false">
+            <span class="employee-card-face employee-card-front"><canvas id="employeeCardFront" width="1968" height="1240" role="img" aria-label="ด้านหน้าบัตรพนักงาน"></canvas></span>
+            <span class="employee-card-face employee-card-back"><canvas id="employeeCardBack" width="1968" height="1240" role="img" aria-label="ด้านหลังบัตรพนักงาน"></canvas></span>
+          </button>
+        </div>
+        <p class="employee-card-hint" id="employeeCardHint">คลิกที่บัตรเพื่อพลิกดูด้านหลัง</p>
+      </div>
+      <div class="employee-card-controls" aria-label="จัดการบัตรพนักงาน">
+        <button id="chooseEmployeeCardPhoto" type="button" hidden>เพิ่มรูปติดบัตร</button>
+        <button id="openEmployeeSignature" type="button" hidden>เซ็นหลังบัตร</button>
+        <button class="employee-card-download" id="downloadEmployeeCard" type="button" disabled>ดาวน์โหลดบัตร</button>
+      </div>
+      <input id="employeeCardFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+      <p class="employee-card-status" id="employeeCardStatus" role="status" aria-live="polite"></p>
+      <section class="employee-photo-panel" id="employeePhotoPanel" aria-label="จัดรูปติดบัตร" hidden>
+        <header><h2>จัดรูปติดบัตร</h2><button id="cancelEmployeePhoto" type="button" aria-label="ปิดการจัดรูป">×</button></header>
+        <p>ลากรูปให้เห็นใบหน้า แล้วปรับขยายให้พอดีกรอบ</p>
+        <div class="employee-photo-preview"><canvas id="employeePhotoCrop" width="1047" height="1340" aria-label="ลากเพื่อจัดตำแหน่งรูปติดบัตร" tabindex="0"></canvas><span class="employee-photo-guides" aria-hidden="true"></span></div>
+        <label class="employee-photo-zoom">ขยายรูป <input id="employeePhotoZoom" type="range" min="100" max="800" step="1" value="100"><output id="employeePhotoZoomValue">100%</output></label>
+        <div class="employee-photo-shortcuts"><button id="chooseNewEmployeePhoto" type="button">เลือกรูปใหม่</button><button id="resetEmployeePhoto" type="button">จัดภาพเริ่มต้น</button></div>
+        <footer><button id="saveEmployeePhoto" type="button" disabled>ใช้รูปนี้บนบัตร</button></footer>
+      </section>
+      <section class="employee-signature-panel" id="employeeSignaturePanel" aria-label="เซ็นหลังบัตร" hidden>
+        <header><h2>ลายเซ็นเจ้าของบัตร</h2><button id="cancelEmployeeSignature" type="button" aria-label="ปิดช่องเซ็น">×</button></header>
+        <p>เซ็นด้วยเมาส์ นิ้ว หรือปากกา แล้วบันทึกลายเซ็นลงบัตร</p>
+        <div class="employee-signature-paper"><canvas id="employeeSignaturePad" width="1200" height="360" aria-label="พื้นที่วาดลายเซ็น" tabindex="0"></canvas><span id="employeeSignaturePlaceholder">เซ็นตรงนี้</span></div>
+        <footer><button id="clearEmployeeSignature" type="button">ล้างลายเซ็น</button><button id="saveEmployeeSignature" type="button" disabled>บันทึกลายเซ็น</button><button class="employee-signature-delete" id="deleteEmployeeSignature" type="button" hidden>ลบลายเซ็นจากบัตร</button></footer>
+      </section>
+    </dialog>
+    <article class="enemy-scene" id="enemyScene" hidden>
+      <div class="enemy-scene-grain" aria-hidden="true"></div>
+      <header class="enemy-toolbar"><a href="/community/rnc" class="enemy-back">◁ &nbsp; Character Gallery</a><span>R:NC &nbsp; / &nbsp; ENEMY ARCHIVE</span></header>
+      <section class="enemy-record-sheet" aria-label="Enemy record">
+        <header class="enemy-nameplate"><p class="enemy-subtype" id="enemySubtype">Critter</p><h1 id="enemyName">Enemy</h1></header>
+        <div class="enemy-table-heading"><span class="enemy-hp" id="enemyHP">HP: 0</span><span class="enemy-title-cell" id="enemyTitleCell">Enemy</span><span class="enemy-element"><img id="enemyElementIcon" alt=""><span id="enemyElementLabel">No element</span></span><span class="enemy-stat-heading">Stat</span></div>
+        <div class="enemy-table-content">
+          <div class="enemy-art" id="enemyArt"><img id="enemyImage" alt="" hidden></div>
+          <div class="enemy-right-panel"><div class="enemy-stat-grid" role="table" aria-label="Enemy stats">
+            <div class="enemy-stat-label">CORE</div><div class="enemy-stat-label">MNF</div><div class="enemy-stat-label">RFX</div><div class="enemy-stat-label">SCR</div><div class="enemy-stat-label">DEF</div>
+            <strong id="enemyCORE">0</strong><strong id="enemyMNF">0</strong><strong id="enemyRFX">0</strong><strong id="enemySCR">0</strong><strong id="enemyDEF">0</strong>
+          </div><section class="enemy-notes"><h2>Field Notes</h2><p id="enemyDescription"></p></section></div>
+        </div>
+      </section>
+    </article>
+  </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const screen = document.getElementById("wardrobeScreen");
+    const characterScene = document.getElementById("characterScene");
+    const list = document.getElementById("wardrobeSkinList");
+    const portrait = document.getElementById("scenePortraitImage");
+    const portraitFrame = document.getElementById("scenePortrait");
+    const signature = document.getElementById("cycleWardrobeSkin");
+    const form = document.getElementById("wardrobeSkinForm");
+    const nameInput = document.getElementById("wardrobeSkinName");
+    const imageInput = document.getElementById("wardrobeSkinImage");
+    const descriptionInput = document.getElementById("wardrobeSkinDescription");
+    const chibiInput = document.getElementById("wardrobeSkinChibi");
+    const toast = document.getElementById("wardrobeToast");
+    const source = "/assets/seren-vey-fullbody-mockup.png";
+    const skins = [
+      { id: "default", name: "Default", description: "ชุดประจำตัว", image: source, filter: "none", chibi: "" },
+      { id: "night", name: "Night Archive", description: "โทนราตรี · คอลเลกชันพิเศษ", image: source, filter: "hue-rotate(26deg) saturate(.78) brightness(.82)", chibi: "" },
+      { id: "dawn", name: "Dawn Reverie", description: "โทนอุ่น · คอลเลกชันพิเศษ", image: source, filter: "hue-rotate(-18deg) saturate(.9) brightness(1.08)", chibi: "" }
+    ];
+    let activeId = skins[0].id;
+    let editingId = null;
+    let pendingImage = "";
+    let pendingChibi = "";
+    let toastTimer;
+    let signatureLayoutFrame = 0;
+    function scheduleSignaturePosition() {
+      cancelAnimationFrame(signatureLayoutFrame);
+      signatureLayoutFrame = requestAnimationFrame(positionSignature);
+    }
+    function positionSignature() {
+      if (characterScene.hidden) return;
+      const mobile = matchMedia("(max-width:900px)").matches;
+      const dock = document.getElementById("mobileSignatureDock");
+      if (mobile) {
+        if (signature.parentElement !== dock) dock.append(signature);
+        signature.dataset.positioned = "mobile-name";
+        return;
+      }
+      if (signature.parentElement !== characterScene) characterScene.insertBefore(signature, characterScene.querySelector(".scene-outline"));
+      const scene = characterScene.getBoundingClientRect();
+      const roleTags = document.getElementById("roleTags");
+      const roles = roleTags.getBoundingClientRect();
+      if (!scene.width || !roles.width) return;
+      const race = roleTags.lastElementChild?.getBoundingClientRect() || roles;
+      const width = Math.min(212, Math.max(176, roles.width * .37));
+      const detailLeft = characterScene.querySelector(".scene-right").getBoundingClientRect().left;
+      const x = Math.min(detailLeft - width / 2 - 12, Math.max(roles.left + roles.width * .84, race.right + 12 + width / 2));
+      const y = race.top + race.height / 2;
+      signature.style.setProperty("--signature-x", (x - scene.left - characterScene.clientLeft).toFixed(1) + "px");
+      signature.style.setProperty("--signature-y", (y - scene.top - characterScene.clientTop).toFixed(1) + "px");
+      signature.style.setProperty("--signature-width", width.toFixed(1) + "px");
+      signature.style.setProperty("--signature-height", "56px");
+      signature.dataset.positioned = "desktop-roles";
+    }
+    function activeIndex() { return Math.max(0, skins.findIndex(item => item.id === activeId)); }
+    function activeSkin() { return skins[activeIndex()] || skins[0]; }
+    function showToast(message) { toast.textContent = message; toast.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { toast.hidden = true; }, 2100); }
+    function updateWardrobePreview(skin) {
+      if (!skin) return;
+      document.getElementById("wardrobeCurrentName").textContent = skin.name;
+      document.getElementById("wardrobeCurrentDescription").textContent = skin.description || "";
+      document.getElementById("wardrobeCurrentImage").src = skin.image;
+      const hero = document.getElementById("wardrobeHeroImage");
+      hero.src = skin.image;
+      hero.style.setProperty("--skin-filter", skin.filter || "none");
+      const heroChibi = document.getElementById("wardrobeHeroChibi");
+      heroChibi.hidden = !skin.chibi;
+      if (skin.chibi) heroChibi.src = skin.chibi;
+      const chibiThumb = document.getElementById("wardrobeChibiPreview");
+      if (chibiThumb) { chibiThumb.hidden = !skin.chibi; if (skin.chibi) chibiThumb.src = skin.chibi; }
+      signature.setAttribute("aria-label", "สลับสกิน");
+      document.getElementById("wardrobeSkinCount").textContent = String(skins.length).padStart(2, "0");
+    }
+    function applySkin(skin, animate) {
+      if (!skin) return;
+      activeId = skin.id;
+      portrait.src = skin.image;
+      portrait.hidden = false;
+      portrait.style.filter = skin.filter || "none";
+      portraitFrame.classList.remove("empty-portrait");
+      portraitFrame.style.backgroundImage = "none";
+      portraitFrame.style.setProperty("--portrait-ratio", "2 / 3");
+      if (animate) { portrait.classList.remove("skin-changing"); void portrait.offsetWidth; portrait.classList.add("skin-changing"); setTimeout(() => portrait.classList.remove("skin-changing"), 330); }
+      updateWardrobePreview(skin);
+      renderList();
+      scheduleSignaturePosition();
+    }
+    function renderList() {
+      list.replaceChildren();
+      skins.forEach((skin, index) => {
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "wardrobe-skin"; button.setAttribute("role", "option");
+        button.setAttribute("aria-pressed", String(skin.id === activeId));
+        button.setAttribute("aria-label", skin.name + (skin.chibi ? " · มี Chibi" : ""));
+        const image = document.createElement("img"); image.className = "skin-art"; image.src = skin.image; image.alt = ""; image.style.setProperty("--skin-filter", skin.filter || "none");
+        const indexMark = document.createElement("span"); indexMark.className = "wardrobe-skin-mark"; indexMark.textContent = String(index + 1).padStart(2, "0");
+        const label = document.createElement("span"); label.className = "wardrobe-skin-name"; label.textContent = skin.name;
+        button.append(image, indexMark, label);
+        if (skin.chibi) { const chibi = document.createElement("img"); chibi.className = "wardrobe-skin-chibi"; chibi.src = skin.chibi; chibi.alt = ""; button.append(chibi); }
+        button.addEventListener("click", () => applySkin(skin, true)); list.append(button);
+      });
+      document.getElementById("deleteWardrobeSkin").disabled = skins.length <= 1;
+      document.getElementById("editWardrobeSkin").disabled = skins.length === 0;
+    }
+    function openWardrobe() { updateWardrobePreview(activeSkin()); renderList(); screen.hidden = false; characterScene.hidden = true; document.body.classList.add("wardrobe-open"); }
+    function closeWardrobe() { form.hidden = true; screen.hidden = true; characterScene.hidden = false; document.body.classList.remove("wardrobe-open"); scheduleSignaturePosition(); }
+    function resetForm() { form.reset(); pendingImage = ""; pendingChibi = ""; imageInput.required = !editingId; document.getElementById("wardrobeFormTitle").textContent = editingId ? "แก้ไขสกิน" : "เพิ่มสกิน"; form.hidden = false; nameInput.focus(); }
+    function readFile(file) { return new Promise((resolve, reject) => { if (!file) return resolve(""); const reader = new FileReader(); reader.onload = () => resolve(String(reader.result || "")); reader.onerror = reject; reader.readAsDataURL(file); }); }
+    document.getElementById("openWardrobe").addEventListener("click", openWardrobe);
+    document.getElementById("closeWardrobe").addEventListener("click", closeWardrobe);
+    signature.addEventListener("click", () => { const next = portrait.hidden ? activeSkin() : skins[(activeIndex() + 1) % skins.length]; applySkin(next, true); });
+    document.getElementById("addWardrobeSkin").addEventListener("click", () => { editingId = null; resetForm(); });
+    document.getElementById("editWardrobeSkin").addEventListener("click", () => { const skin = activeSkin(); if (!skin) return; editingId = skin.id; resetForm(); nameInput.value = skin.name; descriptionInput.value = skin.description || ""; pendingImage = skin.image; pendingChibi = skin.chibi || ""; });
+    document.getElementById("deleteWardrobeSkin").addEventListener("click", () => { if (skins.length <= 1) return; const index = activeIndex(); skins.splice(index, 1); applySkin(skins[Math.min(index, skins.length - 1)], true); showToast("ลบสกินออกจากตัวอย่างแล้ว"); });
+    document.getElementById("cancelWardrobeEdit").addEventListener("click", () => { form.hidden = true; editingId = null; });
+    imageInput.addEventListener("change", async () => { if (imageInput.files?.[0]) pendingImage = await readFile(imageInput.files[0]); });
+    chibiInput.addEventListener("change", async () => { pendingChibi = chibiInput.files?.[0] ? await readFile(chibiInput.files[0]) : ""; });
+    form.addEventListener("submit", async event => {
+      event.preventDefault(); const name = nameInput.value.trim(); if (!name || !pendingImage) { if (!pendingImage) imageInput.focus(); return; }
+      if (editingId) { const skin = skins.find(item => item.id === editingId); if (!skin) return; skin.name = name; skin.description = descriptionInput.value.trim(); skin.image = pendingImage; skin.chibi = pendingChibi; }
+      else { const skin = { id: "skin-" + Date.now(), name, description: descriptionInput.value.trim(), image: pendingImage, filter: "none", chibi: pendingChibi }; skins.push(skin); activeId = skin.id; }
+      const selected = activeSkin(); form.hidden = true; editingId = null; applySkin(selected, true); showToast("บันทึกสกินในต้นแบบแล้ว");
+    });
+    const signatureObserver = new ResizeObserver(scheduleSignaturePosition);
+    [characterScene, portraitFrame, characterScene.querySelector(".scene-left"), characterScene.querySelector(".scene-right")].forEach(element => { if (element) signatureObserver.observe(element); });
+    window.addEventListener("resize", scheduleSignaturePosition, {passive:true});
+    portrait.addEventListener("load", scheduleSignaturePosition);
+    portrait.addEventListener("error", scheduleSignaturePosition);
+    portraitFrame.addEventListener("animationend", scheduleSignaturePosition);
+    portraitFrame.addEventListener("animationcancel", scheduleSignaturePosition);
+    characterScene.querySelector(".scene-left")?.addEventListener("scroll", scheduleSignaturePosition, {passive:true});
+    document.fonts?.ready.then(scheduleSignaturePosition);
+    applySkin(activeSkin(), false);
+  });
+  </script>
+  </body>
+</html>

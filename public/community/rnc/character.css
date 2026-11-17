@@ -1,0 +1,458 @@
+body { overflow: hidden; }
+.character-stage { height: 100dvh; min-height: 590px; padding: 7px 12px 12px; }
+.character-scene { height: 100%; position: relative; overflow: hidden; border: 1px solid #bc4c27; border-radius: 0 26px; background: radial-gradient(circle at 59% 44%, #703c31 0%, #2c2524 38%, #151516 76%); box-shadow: 0 12px 38px #0009; }
+.scene-grain { position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, transparent 0 3px, #0002 4px), linear-gradient(90deg,#0008,transparent 30%,transparent 70%,#0008); opacity: .46; }
+.scene-portrait { position: absolute; top: 0; bottom: 0; left: 53%; width: auto; aspect-ratio: var(--portrait-ratio, 1 / 2); transform: translateX(-50%); background-image: none; background-size: 500% 100%; background-position: 0% center; background-repeat: no-repeat; filter: saturate(.92); }
+.scene-portrait-image { display: block; width: 100%; height: 100%; object-fit: contain; object-position:var(--rnc-image-x,50%) var(--rnc-image-y,50%); transform:translate(var(--wardrobe-image-offset-x,0%),var(--wardrobe-image-offset-y,0%)) scale(var(--rnc-image-scale,1)) scale(var(--wardrobe-image-scale,1)); transform-origin:var(--rnc-image-origin,50% 50%); pointer-events: none; }
+.scene-portrait-image[hidden] { display: none; }
+.scene-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #181719c9 0%, #231c1b94 27%, transparent 43%, transparent 62%, #12131598 75%, #101113de 100%), linear-gradient(0deg,#111114ab,transparent 33%); }
+.scene-outline { position: absolute; top: -15px; left: 45%; color: #de74400d; font: 110px/.84 Georgia,serif; letter-spacing: .14em; white-space: nowrap; }
+.scene-toolbar { position: absolute; z-index: 2; inset: 0 0 auto; height: 90px; display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 40px 0; }
+.toolbar-left { display: flex; align-items: center; gap: clamp(12px, 2vw, 30px); }
+.scene-icon { width: 50px; height: 48px; display: grid; place-items: center; padding: 0; color: #e6e0d7; background: transparent; border: 0; text-decoration: none; font: 48px/1 Georgia,serif; text-shadow: 0 2px 6px #000; cursor: pointer; }
+.scene-icon:hover { color: #e88955; }
+.scene-word-icon { width: 49px; height: 34px; margin-top: 5px; border: 3px solid currentColor; font: 700 18px Georgia,serif; }
+.toolbar-right { display: flex; align-items: center; gap: 22px; color: #b58369; font-size: 12px; letter-spacing: .2em; }
+.scene-left { position:absolute; z-index:2; left:3%; top:clamp(84px,10vh,108px); bottom:24px; width:min(40%,560px); min-width:0; display:flex; flex-direction:column; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:#8d6c4f55 transparent; }
+.scene-left > * { flex-shrink:0; }
+.arcana-seal { width:clamp(132px,18vh,172px); height:clamp(132px,18vh,172px); display:grid; place-items:center; border-radius:50%; background:radial-gradient(circle,#3e222594,#211d1a55 70%,transparent 72%); text-align:center; }
+.arcana-seal img { width:84%; height:84%; object-fit:contain; filter:drop-shadow(0 0 12px #b17f5c38); }
+.identity-panel { margin-top:18px; padding:15px 14px; background:linear-gradient(90deg,#1a1919c4 0%,#1a19197a 68%,transparent); }
+.scene-stars { display:flex; align-items:center; gap:clamp(6px,.8vw,12px); min-height:32px; margin:0 0 5px; white-space:nowrap; }
+.scene-stars:empty { display:none; }
+.scene-stars img { display:block; width:clamp(24px,2.2vw,33px); height:clamp(28px,2.6vw,38px); object-fit:contain; filter:drop-shadow(0 0 8px #f4dcaa7d); }
+.identity-panel h1 { margin:0; color:#d8d2cb; font:400 clamp(32px,3vw,42px)/1.15 Georgia,"Noto Serif Thai",serif; overflow-wrap:break-word; }
+.identity-byname { margin:6px 0 0; color:#c0a48f; font:14px/1.5 "Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif; }
+.identity-byname:empty { display:none; }
+.identity-meta { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 18px; margin-top:10px; }
+.identity-nickname { min-width:0; max-width:100%; margin:0; color:#d6c1b2; font:16px/1.6 Sarabun,"Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif; overflow-wrap:anywhere; }
+.identity-nickname:empty { display:none; }
+.identity-era { margin:0; color:#ca9c7d; font:14px/1.6 Georgia,serif; letter-spacing:.1em; }
+.identity-employee { display:flex; flex-wrap:wrap; align-items:baseline; gap:3px 10px; margin:10px 0 0; color:#d9b990; }
+.identity-employee > span { font:10px/1.5 Sarabun,sans-serif; letter-spacing:.1em; }
+.identity-employee > strong { font:400 14px/1.5 Consolas,"Courier New",monospace; overflow-wrap:anywhere; }
+.role-tags { display:flex; flex-wrap:wrap; align-items:center; gap:0 6px; align-self:stretch; margin:16px 0; padding:3px 4px; background:linear-gradient(90deg,#1a1919d9,#1a1919a8); border-radius:0 10px 10px 0; }
+.role-tags:empty { display:none; }
+.role-tags span { min-width:0; padding:12px 10px; color:#c7c3c0; font:400 clamp(17px,1.5vw,22px)/1.3 Georgia,"Noto Serif Thai",serif; overflow-wrap:break-word; }
+.stat-head { display:flex; justify-content:space-between; align-items:center; gap:14px; margin:0 0 10px; padding:10px 12px; color:#b18a68; background:linear-gradient(90deg,#1a19199e,transparent); font:400 26px/1.2 Georgia,serif; }
+.stat-total { color:#a98b73; font:11px/1.5 Sarabun,sans-serif; white-space:nowrap; }
+.stat-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; }
+.stat-grid div { display:flex; justify-content:space-between; align-items:center; gap:12px; min-width:0; min-height:42px; padding:8px 12px; color:#b69275; background:#1a191999; font:400 clamp(18px,1.6vw,22px)/1.25 Georgia,serif; }
+.stat-grid div:last-child:nth-child(odd) { grid-column:1/-1; }
+.stat-grid strong { color:#d8d2cb; font-weight:400; font-variant-numeric:tabular-nums; }
+.owner-line { margin:14px 0 0; padding-left:12px; color:#987e6e; font:11px/1.5 Sarabun,sans-serif; letter-spacing:.12em; }
+.owner-line span { margin-left:8px; color:#d6b8a7; letter-spacing:0; }
+.scene-right { position: absolute; z-index: 2; top: 93px; right: 3.4%; bottom: 25px; width: 34%; min-width: 0; display: flex; flex-direction: column; }
+.detail-crest { position: relative; z-index: 4; display: flex; align-items: center; justify-content: flex-end; gap: 24px; height: 60px; color: #ede6de; font-size: 29px; }
+.medium-info-trigger { position: relative; flex: 0 1 auto; max-width: 65%; display: flex; align-items: center; gap: 8px; margin-right: 6px; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: inherit; cursor: help; }
+.medium-badge-name { display: block; overflow: hidden; padding: 12px 18px; background: #28302b; color: #f0e9de; font: 20px Georgia,serif; text-overflow: ellipsis; white-space: nowrap; }
+.weapon-arcana-icon { flex: 0 0 32px; width: 32px; height: 32px; object-fit: contain; }
+.medium-info-trigger:hover .medium-badge-name { background: #354038; }
+.medium-info-trigger:focus-visible .medium-badge-name { outline: 1px solid #c7835a; outline-offset: 2px; }
+.skill-info-trigger { position: relative; flex: 0 0 34px; display: grid; place-items: center; height: 42px; padding: 0; border: 0; background: transparent; color: #ede6de; font: inherit; text-shadow: 0 2px 6px #000; cursor: help; }
+.skill-info-trigger:hover, .skill-info-trigger:focus-visible { color: #e88955; }
+.skill-info-trigger:focus-visible { outline: 1px solid #c7835a; outline-offset: 2px; }
+.detail-info-panel { position: absolute; z-index: 20; top: 100%; right: 0; width: min(575px, calc(100vw - 44px)); max-height: min(575px, calc(100dvh - 150px)); box-sizing: border-box; display: flex; flex-direction: column; padding: 13px; border: 1px solid #b67d5c; background: linear-gradient(110deg, #d4d4d0, #d9d3ce 72%, #dfc8bb); box-shadow: 0 18px 48px #000b; color: #373934; text-align: left; cursor: default; animation: detail-info-in .16s ease both; }
+.detail-info-panel[hidden] { display: none; }
+.detail-info-panel h2 { flex: 0 0 auto; width: 68%; box-sizing: border-box; margin: 0 0 16px; padding: 11px 16px; background: #2e3b33; color: #f2eee6; font: 700 23px/1.25 Georgia,serif; text-align: center; }
+.detail-info-scroll { min-height: 0; overflow-y: auto; padding: 0 4px 2px; scrollbar-width: thin; scrollbar-color: #aaa8a3 transparent; }
+.detail-info-scroll:focus-visible { outline: 1px solid #a75e3b; outline-offset: -1px; }
+.detail-info-entry { display: grid; grid-template-columns: 34px minmax(0,1fr); gap: 9px; margin: 0 0 20px; color: #3c3e39; }
+.detail-info-mark { color: #31463b; text-align: center; font: 29px/1.2 Georgia,serif; }
+.detail-info-mark-medium { justify-self: center; width: 24px; height: 24px; box-sizing: border-box; border: 2px solid #31463b; border-radius: 50%; font: 700 15px/20px Georgia,serif; }
+.detail-info-entry h3 { margin: 0 0 2px; color: #343b35; font: 21px/1.35 Georgia,serif; }
+.detail-info-entry p { margin: 0; color: #393b38; font: 18px/1.55 Georgia,Sarabun,serif; white-space: pre-line; overflow-wrap: anywhere; }
+@keyframes detail-info-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.detail-cards { height: 145px; display: flex; align-items: flex-end; justify-content: flex-end; gap: 8px; padding: 12px 2px 5px; }
+.skill-card { position: relative; flex: 0 1 auto; width: auto; max-width: 84px; height: 100%; aspect-ratio: 168 / 236; min-width: 0; margin: 0; overflow: hidden; cursor: help; }
+.skill-card:focus-visible { outline: 2px solid #e7a16c; outline-offset: 3px; }
+.ultimate-skill-card { height: 132%; max-width: 100px; align-self: flex-end; aspect-ratio: 194 / 314; }
+.skill-art-window { position:absolute; z-index:0; inset:6.779661% 1.785714% 1.271186% .595238%; overflow:hidden; -webkit-mask:url("/assets/RNCelement/arcane-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; mask:url("/assets/RNCelement/arcane-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; }
+.skill-art-window[hidden] { display:none; }
+.skill-art-window > .skill-card-art,
+.skill-art-window > .skill-read-artwork { position:absolute; inset:auto; max-width:none; max-height:none; object-fit:fill; transform:none; }
+.ultimate-skill-card .skill-card-art-window,
+.skill-read-dialog[data-skill="ultimate"] .skill-read-window { inset:6.69% 8.76% 5.41%; -webkit-mask:url("/assets/RNCelement/ultimate-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; mask:url("/assets/RNCelement/ultimate-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; }
+.skill-card-art[hidden], .skill-read-artwork[hidden] { display:none; }
+.skill-card-frame { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: fill; mix-blend-mode: screen; pointer-events: none; }
+.skill-card figcaption { position: absolute; z-index: 2; right: 4px; bottom: 9%; left: 4px; color: #f1d3ad; font: 9px Georgia,serif; letter-spacing: .1em; text-align: center; text-shadow: 0 1px 5px #000; pointer-events: none; }
+.panel-tabs { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; margin: 12px 0; }
+.panel-tabs button { padding: 12px 4px; color: #cfc4b8; background: #e6dbc5ee; border: 0; font: 18px Georgia,serif; color: #333330; box-shadow: 0 4px 10px #0005; }
+.panel-tabs button[aria-selected="true"] { background: #f5e8cf; border-bottom: 3px solid #d05b2d; }
+.panel-tabs button:hover { background: #fff1d6; }
+.detail-paper { min-height: 0; flex: 1; overflow-y: auto; padding: 18px 22px; background: #171719dc; border: 1px solid #704a39; scrollbar-width: thin; scrollbar-color: #a87554 transparent; }
+.detail-pane { color: #dfd3c8; font: 16px/1.75 Sarabun,"Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif; }
+.detail-pane p { margin: 0 0 13px; white-space: pre-line; }
+.detail-pane h2 { margin: 16px 0 10px; color: #e6d1be; font: 26px/1.3 Georgia,"Noto Serif Thai",serif; }
+.detail-pane h3 { margin: 16px 0 7px; color: #c29a7a; font: 18px/1.5 Georgia,"Noto Serif Thai",serif; }
+.paper-kicker { color: #cd8055; font: 12px/1.5 Georgia,serif !important; letter-spacing: .25em; }
+.profile-quote { color: #f0dcc6; font: italic 19px/1.45 Georgia,serif !important; white-space: pre-line; }
+.scene-portrait.empty-portrait { background-image: none; }
+.scene-portrait.empty-portrait::after { content: "NO PORTRAIT"; position: absolute; inset: 14% 5% 15%; display: grid; place-items: center; border: 1px dashed #ad7b5d77; color: #c1a78f; font: 13px Georgia,serif; letter-spacing: .25em; }
+.paper-rule { width: 100%; height: 1px; margin: 17px 0; background: linear-gradient(90deg,#b45a37,transparent); }
+.identity-facts { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px 18px; margin: 0; }
+.identity-facts div { min-width: 0; padding: 10px 0; border-bottom: 1px solid #6c514267; }
+.identity-facts dt { color: #b89c86; font-size: 13px; font-weight: 500; line-height: 1.5; }
+.identity-facts dd { margin: 5px 0 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+.story-text { line-height: 1.9; }
+.edit-character { display: inline-block; margin-top: 20px; padding: 9px 13px; border: 1px solid #b6633c; color: #efc6aa; text-decoration: none; }
+.edit-character:hover { background: #5d382b; }
+.missing-character { height: 100%; display: grid; place-content: center; gap: 18px; color: #eee1d6; text-align: center; font: 26px Georgia,serif; }
+.missing-character a { color: #e3a27d; font: 14px Sarabun,sans-serif; }
+@media (min-width:901px) and (max-width:1100px) {
+  .scene-left { left:2.4%; width:42%; }
+  .scene-right { right:2.4%; width:38%; }
+  .identity-panel h1 { font-size:34px; }
+  .role-tags span { padding:10px 8px; font-size:17px; }
+  .stat-grid div { font-size:18px; }
+  .detail-cards { height:140px; }
+}
+@media (min-width:901px) and (max-height:760px) {
+  .scene-left { top:82px; bottom:16px; }
+  .arcana-seal { width:122px; height:122px; }
+  .identity-panel { margin-top:12px; padding:11px 12px; }
+  .identity-panel h1 { font-size:34px; }
+  .scene-stars img { width:26px; height:30px; }
+  .role-tags { margin:12px 0; }
+  .role-tags span { padding:9px 10px; font-size:18px; }
+  .stat-head { padding:8px 12px; font-size:23px; }
+  .stat-grid { gap:8px 12px; }
+  .stat-grid div { min-height:36px; padding:7px 12px; font-size:18px; }
+}
+@media (max-width:900px) {
+  body { overflow:auto; }
+  .character-stage { height:auto; min-height:0; padding:8px; }
+  .character-scene { display:grid; grid-template-columns:minmax(0,1fr); min-height:0; height:auto; padding:0 16px 24px; gap:20px; }
+  .scene-toolbar { position:relative; inset:auto; min-height:54px; height:auto; padding:14px 0 0; }
+  .toolbar-left { gap:9px; }
+  .scene-icon { width:34px; height:36px; font-size:30px; }
+  .scene-word-icon { width:36px; height:25px; font-size:12px; border-width:2px; }
+  .toolbar-right { display:none; }
+  .scene-portrait { top:55px; bottom:auto; left:69%; height:500px; width:min(78vw,340px); }
+  .scene-shade { background:linear-gradient(0deg,#171719 0%,#171719e6 32%,transparent 70%,#17171955 100%); }
+  .scene-left { position:relative; inset:auto; width:100%; min-height:0; overflow:visible; }
+  .arcana-seal { width:116px; height:116px; }
+  .identity-panel { margin-top:16px; padding:14px 12px; }
+  .identity-panel h1 { font-size:34px; }
+  .scene-stars { gap:6px; }
+  .scene-stars img { width:25px; height:29px; }
+  .role-tags { margin:14px 0; }
+  .role-tags span { padding:10px 8px; font-size:17px; }
+  .stat-head { padding:9px 12px; font-size:24px; }
+  .stat-grid { gap:8px 10px; }
+  .stat-grid div { min-height:39px; padding:8px 12px; font-size:18px; }
+  .scene-right { position:relative; inset:auto; width:100%; min-height:540px; }
+  .scene-right .detail-crest { height:52px; gap:16px; animation:none; transform:none; }
+  .medium-badge-name { padding:9px 12px; font-size:17px; }
+  .detail-info-panel:not([hidden]) { position:fixed; top:auto; right:14px; bottom:16px; left:14px; width:auto; max-height:65dvh; }
+  .detail-cards { height:128px; justify-content:flex-start; gap:12px; margin-top:12px; }
+  .skill-card { width:64px; height:90px; flex:0 1 64px; }
+  .ultimate-skill-card { width:74px; height:118px; flex-basis:74px; }
+  .skill-card figcaption { font-size:7px; }
+  .panel-tabs { margin:16px 0 12px; }
+  .detail-paper { min-height:300px; max-height:65dvh; padding:16px; }
+}
+
+/* The frame appears first; the portrait and both information panels follow. */
+.scene-portrait { animation: scenePortraitArrive .95s .14s cubic-bezier(.16,.8,.22,1) both; }
+.from-gallery .scene-portrait { animation: none; }
+.has-arrival-art body::after {
+  content: "";
+  position: fixed;
+  z-index: 100;
+  left: var(--arrival-left);
+  top: var(--arrival-top);
+  width: var(--arrival-width);
+  height: var(--arrival-height);
+  box-sizing: border-box;
+  border: 1px solid var(--arrival-edge);
+  border-radius: 4px;
+  background-image: var(--arrival-image);
+  background-size: var(--arrival-size);
+  background-position: var(--arrival-position);
+  background-repeat: no-repeat;
+  box-shadow: 0 12px 32px #000b;
+  filter: var(--arrival-filter);
+  pointer-events: none;
+  transform-origin: center;
+}
+.has-arrival-art.arrival-running body::after { animation: arrivalCardTravel .72s cubic-bezier(.22,.75,.25,1) both; }
+.from-gallery.has-arrival-art .scene-portrait { animation: arrivalPortraitIn .58s .26s ease-out both; }
+@keyframes arrivalCardTravel {
+  from { opacity: 1; transform: translate(0, 0) scale(1); }
+  35% { opacity: .94; }
+  72% { opacity: .18; }
+  to { opacity: 0; transform: translate(var(--arrival-dx), var(--arrival-dy)) scale(var(--arrival-scale)); }
+}
+@keyframes arrivalPortraitIn { from { opacity: 0; } to { opacity: 1; } }
+.scene-outline { animation: sceneFadeIn .8s .18s ease both; }
+.arcana-seal { animation: sceneSealArrive .65s .2s cubic-bezier(.18,.85,.3,1.2) both; }
+.identity-panel { transform-origin: left center; animation: sceneOpenLeft .62s .33s cubic-bezier(.16,.8,.22,1) both; }
+.role-tags { transform-origin: left center; animation: sceneOpenLeft .62s .43s cubic-bezier(.16,.8,.22,1) both; }
+.stat-head { transform-origin: left center; animation: sceneOpenLeft .62s .51s cubic-bezier(.16,.8,.22,1) both; }
+.stat-grid { transform-origin: left center; animation: sceneOpenLeft .62s .58s cubic-bezier(.16,.8,.22,1) both; }
+.owner-line { animation: sceneFadeUp .52s .7s ease both; }
+.detail-crest { animation:none; transform:none; }
+.detail-cards { animation:none; transform:none; }
+.panel-tabs { transform-origin: right center; animation: sceneOpenRight .62s .62s cubic-bezier(.16,.8,.22,1) both; }
+.detail-paper { transform-origin: right center; animation: sceneOpenRight .72s .69s cubic-bezier(.16,.8,.22,1) both; }
+@keyframes scenePortraitArrive {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(.92); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+@keyframes sceneSealArrive {
+  from { opacity: 0; transform: scale(.65) rotate(-16deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes sceneOpenLeft {
+  from { opacity: 0; transform: perspective(800px) translateX(-22px) rotateY(-27deg) scaleX(.94); }
+  to { opacity: 1; transform: perspective(800px) translateX(0) rotateY(0) scaleX(1); }
+}
+@keyframes sceneOpenRight {
+  from { opacity: 0; transform: perspective(800px) translateX(22px) rotateY(27deg) scaleX(.94); }
+  to { opacity: 1; transform: perspective(800px) translateX(0) rotateY(0) scaleX(1); }
+}
+@keyframes sceneFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sceneFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .has-arrival-art body::after { display: none; }
+  .scene-portrait, .scene-outline, .arcana-seal, .identity-panel, .role-tags,
+  .stat-head, .stat-grid, .owner-line, .detail-crest, .detail-cards,
+  .panel-tabs, .detail-paper { animation: none; }
+}
+
+
+/* Skill readout: one illustrated card and its full description at a time. */
+.skill-card { cursor: pointer; }
+.skill-read-dialog {
+  width: min(650px, calc(100vw - 28px));
+  max-width: none;
+  max-height: calc(100dvh - 28px);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: #353730;
+}
+.skill-read-dialog::backdrop { background: #080909bd; backdrop-filter: blur(7px); }
+.skill-read-sheet {
+  position: relative;
+  box-sizing: border-box;
+  max-height: calc(100dvh - 28px);
+  overflow: auto;
+  padding: 30px clamp(22px, 5vw, 48px) 38px;
+  border: 1px solid #9d765e;
+  background:
+    radial-gradient(ellipse at 50% 18%, #d8b29b70, transparent 44%),
+    repeating-linear-gradient(0deg, #594b3d05 0 2px, transparent 2px 5px),
+    linear-gradient(135deg, #e9e4da, #d9d9d3 62%, #e4d0c4);
+  box-shadow: 0 28px 90px #000c, inset 0 0 0 5px #fff2;
+  text-align: center;
+}
+.skill-read-close {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #746d6255;
+  border-radius: 50%;
+  background: #f3eee5a8;
+  color: #343831;
+  font: 24px/1 Georgia,serif;
+  cursor: pointer;
+}
+.skill-read-close:hover { background: #fff9ee; }
+.skill-read-close:focus-visible { outline: 2px solid #b76a43; outline-offset: 3px; }
+.skill-read-art {
+  position: relative;
+  width: 142px;
+  aspect-ratio: 194 / 314;
+  margin: 0 auto 22px;
+  filter: drop-shadow(0 12px 15px #23241f4d);
+}
+.skill-read-dialog:not([data-skill="ultimate"]) .skill-read-art { aspect-ratio:168 / 236; }
+.skill-read-window { position:absolute; z-index:0; inset:6.779661% 1.785714% 1.271186% .595238%; overflow:hidden; -webkit-mask:url("/assets/RNCelement/arcane-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; mask:url("/assets/RNCelement/arcane-inner-art-mask.svg") 0 0 / 100% 100% no-repeat; }
+.skill-read-artwork[hidden] { display: none; }
+.skill-read-frame { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: fill; mix-blend-mode: screen; pointer-events: none; }
+.skill-read-dialog[data-skill="ultimate"] .skill-read-art { filter: drop-shadow(0 0 22px #e9d28eaa) drop-shadow(0 12px 15px #23241f4d); }
+.skill-read-kicker { margin: 0 0 5px; color: #a66c4b; font: 11px/1.5 Georgia,serif; letter-spacing: .24em; }
+.skill-read-sheet h2 { margin: 0; color: #343630; font: 400 clamp(30px, 5vw, 42px)/1.2 Georgia,"Noto Serif Thai",serif; }
+.skill-read-rule { width: min(130px, 32%); height: 1px; margin: 17px auto 20px; background: linear-gradient(90deg, transparent, #a66c4b, transparent); }
+.skill-read-description { max-width: 560px; margin: 0 auto; color: #373a35; font: 19px/1.65 Sarabun,Georgia,serif; text-align: left; white-space: pre-line; overflow-wrap: anywhere; }
+.skill-read-dialog[open] { animation: skillReadEnter .44s cubic-bezier(.18,.78,.22,1) both; }
+.skill-read-dialog[open]::backdrop { animation: skillReadBackdrop .28s ease both; }
+@keyframes skillReadEnter {
+  from { opacity: 0; transform: translateY(18px) scale(.965) rotateX(-3deg); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); filter: blur(0); }
+}
+@keyframes skillReadBackdrop { from { opacity: 0; } to { opacity: 1; } }
+@media(max-width:600px) {
+  .skill-read-sheet { padding: 27px 21px 30px; }
+  .skill-read-art { width: 116px; margin-bottom: 17px; }
+  .skill-read-description { font-size: 17px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .skill-read-dialog[open], .skill-read-dialog[open]::backdrop { animation: none; }
+}
+
+/* Skill card motion: staggered arrival, quiet float and a single hover sheen. */
+:is(.detail-cards, .enemy-skills) .skill-card {
+  --skill-delay:.45s;
+  --skill-float:-2.5px;
+  --skill-cycle:5.4s;
+  --skill-glow:#d4b88a;
+  --skill-mask:url("/assets/RNCelement/Arcane%20Skill.png");
+  isolation:isolate;
+  transform-origin:50% 100%;
+  filter:drop-shadow(0 3px 5px #0006);
+  transition:translate .24s ease,scale .24s ease,filter .24s ease;
+  animation:rnc-skill-deal-in .62s var(--skill-delay) cubic-bezier(.16,.8,.22,1) both,
+    rnc-skill-float var(--skill-cycle) calc(var(--skill-delay) + .62s) ease-in-out infinite;
+}
+:is(.detail-cards, .enemy-skills) .skill-card:nth-child(2) { --skill-delay:.55s; }
+:is(.detail-cards, .enemy-skills) .skill-card:nth-child(3) { --skill-delay:.65s; }
+:is(.detail-cards, .enemy-skills) .skill-card:nth-child(4) { --skill-delay:.75s; }
+:is(.detail-cards, .enemy-skills) .ultimate-skill-card {
+  --skill-float:-4px;
+  --skill-cycle:5.8s;
+  --skill-glow:#f0db9f;
+  --skill-mask:url("/assets/RNCelement/Ult.png");
+}
+.ultimate-skill-card .skill-card-frame { animation:rnc-ultimate-aura 4.8s 1.1s ease-in-out infinite; }
+.skill-card::after {
+  content:"";
+  position:absolute;
+  z-index:3;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  background:linear-gradient(110deg,transparent 38%,#fff5d73d 47%,#fff8dfb3 50%,#fff5d73d 53%,transparent 62%);
+  background-size:300% 100%;
+  background-position:100% 50%;
+  -webkit-mask-image:var(--skill-mask);
+  mask-image:var(--skill-mask);
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  mix-blend-mode:screen;
+}
+:is(.detail-cards, .enemy-skills) .skill-card:focus-visible {
+  translate:0 -6px;
+  scale:1.035;
+  filter:drop-shadow(0 5px 7px #0008) drop-shadow(0 0 8px var(--skill-glow));
+  animation-play-state:running,paused;
+}
+.skill-card:focus-visible::after { animation:rnc-skill-sheen .8s ease-out both; }
+:is(.detail-cards, .enemy-skills) .skill-card:active { scale:.98; }
+.medium-badge-name { transition:background .2s ease,box-shadow .2s ease; }
+.skill-info-trigger { transition:color .2s ease,text-shadow .2s ease,scale .2s ease; }
+.skill-info-trigger:focus-visible { text-shadow:0 0 12px #e8ba88a6; }
+@media (hover:hover) and (pointer:fine) {
+  :is(.detail-cards, .enemy-skills) .skill-card:hover {
+    translate:0 -6px;
+    scale:1.035;
+    filter:drop-shadow(0 5px 7px #0008) drop-shadow(0 0 8px var(--skill-glow));
+    animation-play-state:running,paused;
+  }
+  .skill-card:hover::after { animation:rnc-skill-sheen .8s ease-out both; }
+  .medium-info-trigger:hover .medium-badge-name { box-shadow:0 0 14px #afc6ab26; }
+  .skill-info-trigger:hover { scale:1.08; text-shadow:0 0 12px #e8ba88a6; }
+}
+@keyframes rnc-skill-deal-in {
+  from { opacity:0; transform:translateY(22px) rotate(-3deg) scale(.94); }
+  to { opacity:1; transform:translateY(0) rotate(0) scale(1); }
+}
+@keyframes rnc-skill-float {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(var(--skill-float)); }
+}
+@keyframes rnc-ultimate-aura {
+  0%,100% { filter:brightness(1) drop-shadow(0 0 3px #e5d3a038); }
+  50% { filter:brightness(1.12) drop-shadow(0 0 8px #e5d3a080); }
+}
+@keyframes rnc-skill-sheen {
+  0% { opacity:0; background-position:100% 50%; }
+  18%,65% { opacity:.7; }
+  100% { opacity:0; background-position:0% 50%; }
+}
+@media (prefers-reduced-motion:reduce) {
+  :is(.detail-cards, .enemy-skills) .skill-card,
+  .ultimate-skill-card .skill-card-frame,
+  .skill-card::after { animation:none !important; }
+  :is(.detail-cards, .enemy-skills) .skill-card { translate:none !important; scale:none !important; transition:none; }
+  .medium-badge-name,.skill-info-trigger { transition:none; scale:none; }
+}
+
+/* Human weapons share the base-stat area and open the same readout style as skills. */
+.stat-head[hidden], .stat-grid[hidden], .detail-crest[hidden], .human-weapons-display[hidden] { display:none !important; }
+.human-weapons-display { min-width:0; }
+.human-weapon-tiles { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; width:min(100%,308px); margin-inline:auto; }
+.human-weapon-tile { appearance:none; display:grid; place-items:center; width:100%; height:clamp(128px,20vh,180px); min-width:0; padding:0; border:0; background:transparent; box-shadow:none; color:#d9c2a9; cursor:pointer; transition:transform .2s,filter .2s; }
+.human-weapons-display:not(.is-ready) .human-weapon-tile { visibility:hidden; }
+.human-weapons-display.is-ready .human-weapon-tile { --weapon-delay:.45s; transform-origin:50% 100%; filter:drop-shadow(0 3px 5px #0006); animation:rnc-skill-deal-in .62s var(--weapon-delay) cubic-bezier(.16,.8,.22,1) backwards; }
+.human-weapons-display.is-ready .human-weapon-tile:nth-child(2) { --weapon-delay:.55s; }
+.human-weapon-tile:hover, .human-weapon-tile:focus-visible { transform:translateY(-2px); filter:drop-shadow(0 0 12px #deb98788); }
+.human-weapon-tile:focus-visible { outline:none; }
+.human-weapon-tile-art { display:grid; place-items:center; width:100%; height:100%; min-height:0; }
+.human-weapon-tile-image { display:block; width:100%; height:100%; min-height:0; object-fit:contain; padding:0 10px; filter:drop-shadow(0 6px 10px #0008); }
+.human-weapon-tile-image { transition:opacity .24s ease; }
+.human-weapon-tile-image:not(.is-loaded) { opacity:0; }
+.human-weapon-tile-image.is-loaded { opacity:1; }
+.human-weapon-placeholder { color:#c7ac8d; font:18px/1.4 Georgia,"Noto Serif Thai",serif; text-align:center; overflow-wrap:anywhere; }
+.human-weapon-tile-image[hidden], .human-weapon-placeholder[hidden], .weapon-read-art[hidden], .weapon-read-art > [hidden], .weapon-read-heading > img[hidden] { display:none; }
+.weapon-read-dialog { width:min(560px,calc(100vw - 28px)); }
+.weapon-read-dialog .skill-read-sheet { padding:24px 30px 26px; }
+.weapon-read-art { display:grid; place-items:center; width:min(230px,58vw); aspect-ratio:1; margin:0 auto 6px; overflow:hidden; }
+.weapon-read-art img { display:block; width:100%; height:100%; min-height:0; object-fit:contain; }
+.weapon-read-dialog h2 { overflow-wrap:anywhere; }
+.weapon-read-heading { display:flex; align-items:center; justify-content:center; gap:8px; }
+.weapon-read-heading > img { flex:0 0 28px; width:28px; height:38px; object-fit:contain; }
+.weapon-read-heading h2 { min-width:0; font-size:clamp(26px,4vw,32px); }
+.weapon-read-quote { display:grid; grid-template-columns:22px minmax(0,1fr) 22px; align-items:start; gap:6px; max-width:440px; margin:18px auto 0; padding:0; }
+.weapon-read-quote .skill-read-description { max-width:none; margin:0; font-size:17px; line-height:1.65; text-align:center; }
+.weapon-quote-mark { color:#bf6539; font:58px/.75 Georgia,serif; user-select:none; }
+.weapon-quote-close { align-self:end; transform:translateY(10px); }
+.weapon-read-stat-rule { width:88px; margin:18px auto 12px; }
+.weapon-read-stats { display:flex; justify-content:center; gap:clamp(20px,6vw,48px); margin:0; }
+.weapon-read-stats > div { display:flex; align-items:baseline; gap:8px; padding:0; }
+.weapon-read-stats dt { color:#8c6449; font:10px/1.4 Georgia,serif; letter-spacing:.1em; }
+.weapon-read-stats dd { margin:0; color:#36382f; font:16px/1.1 Georgia,serif; font-variant-numeric:tabular-nums; }
+@media (min-width:901px) {
+  .human-record-page .detail-cards { margin-top:42px; }
+  .human-record-page .human-weapon-tile:first-child { translate:var(--weapon-offset-x,0px) 0; }
+}
+@media (max-width:900px) {
+  .human-weapon-tile { height:160px; }
+}
+@media (max-width:600px) {
+  .weapon-read-dialog .skill-read-sheet { padding:24px 20px 26px; }
+  .weapon-read-heading > img { flex-basis:24px; width:24px; height:32px; }
+  .weapon-read-quote { grid-template-columns:18px minmax(0,1fr) 18px; gap:4px; }
+  .weapon-quote-mark { font-size:50px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .human-weapon-tile { transition:none; animation:none; }
+  .human-weapon-tile-image { transition:none; }
+}
+
+/* Keep the emblem as an empty-card placeholder; custom artwork uses its own fitted window. */
+.skill-card.has-art:not(.ultimate-skill-card) .skill-card-frame,
+.skill-read-dialog[data-has-art="true"]:not([data-skill="ultimate"]) .skill-read-frame {
+  -webkit-mask:url("/assets/RNCelement/arcane-frame-mask.svg") 0 0 / 100% 100% no-repeat;
+  mask:url("/assets/RNCelement/arcane-frame-mask.svg") 0 0 / 100% 100% no-repeat;
+}
+.ultimate-skill-card.has-art .skill-card-frame,
+.skill-read-dialog[data-has-art="true"][data-skill="ultimate"] .skill-read-frame {
+  -webkit-mask:url("/assets/RNCelement/ultimate-frame-mask.svg") 0 0 / 100% 100% no-repeat;
+  mask:url("/assets/RNCelement/ultimate-frame-mask.svg") 0 0 / 100% 100% no-repeat;
+}

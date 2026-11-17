@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#252523">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Height Chart | RNC</title>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/height-chart.css?v=height-pan-triangle-clean-20261107">
+  <script src="/community/rnc/character-data.js?v=height-weight-20261023" defer></script>
+  <script src="/community/rnc/height-chart.js?v=height-horizontal-pan-20261107" defer></script>
+</head>
+<body>
+  <nav class="top-nav" aria-label="Main navigation">
+    <a class="community-brand" href="/community/rnc" aria-label="RNC - Reverse : Noir Chronicle"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links">
+      <a href="/community/rnc" aria-current="page">ARCHIVE</a>
+      <a class="hide-small" href="https://docs.google.com/document/d/1yL9UAzhE4H2L6t0bjRZRbtq90enrofSSXoSLqfeIWaA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">WORLD</a>
+      <a class="hide-small" href="/community">COMMUNITY</a>
+      <a class="labuu-nav-mark" href="/community/rnc/arcade" aria-label="Arcade" title="Arcade">!</a>
+    </div>
+  </nav>
+
+  <main class="height-app">
+    <section class="height-toolbar" aria-label="Chart controls">
+      <div class="toolbar-row toolbar-primary">
+        <label class="range-control" for="zoomRange">
+          <span>Zoom</span>
+          <input id="zoomRange" type="range" min="20" max="100" value="50">
+          <output id="zoomValue" for="zoomRange">50%</output>
+        </label>
+        <label class="range-control" for="spacingRange">
+          <span>Spacing</span>
+          <input id="spacingRange" type="range" min="50" max="160" value="100">
+          <output id="spacingValue" for="spacingRange">100%</output>
+        </label>
+        <label class="select-control" for="unitSelect"><span>Units</span>
+          <select id="unitSelect"><option value="in">Inches</option><option value="cm">Centimeters</option></select>
+        </label>
+        <label class="select-control sort-control" for="sortSelect"><span>Sort</span>
+          <select id="sortSelect"><option value="height">Height</option><option value="name">Name</option></select>
+        </label>
+        <button class="direction-button" id="sortDirection" type="button" aria-label="Switch to descending order" title="Reverse sort order">&#9650;</button>
+      </div>
+
+      <div class="toolbar-row toolbar-secondary">
+        <form class="find-control" id="searchForm">
+          <label for="characterSearch">Find</label>
+          <input id="characterSearch" type="search" placeholder="Character name" autocomplete="off">
+          <button class="accent-button" type="submit">Go</button>
+        </form>
+        <div class="selection-control">
+          <span>Selection</span>
+          <button class="accent-button" id="openSelection" type="button">Open</button>
+          <button class="accent-button" id="clearSelection" type="button">Clear</button>
+        </div>
+      </div>
+      <div class="height-staff-tools" id="staffHeightTools" hidden>
+        <div class="height-staff-instructions">
+          <p class="height-staff-eyebrow">STAFF / CHARACTER HEIGHT</p>
+          <strong id="heightActiveName">เลือกตัวละครเพื่อเริ่มปรับ</strong>
+          <span>ลากรูปเพื่อจัดตำแหน่งและให้เท้าตรงเส้นพื้น · ลากจุดมุมเพื่อยืด/หด โดยคงสัดส่วนภาพ</span>
+        </div>
+        <div class="height-staff-controls">
+          <label><span>ขนาดรูป <output id="staffScaleOutput">100%</output></span><input id="staffScaleControl" type="range" min="50" max="150" step="1" value="100"></label>
+          <label><span>ระดับเท้า <output id="staffOffsetOutput">0%</output></span><input id="staffOffsetControl" type="range" min="-60" max="60" step="1" value="0"></label>
+          <button class="accent-button" id="resetStaffCalibration" type="button">คืนค่าตัวที่เลือก</button>
+          <button class="accent-button staff-save-button" id="saveStaffCalibration" type="button" disabled>บันทึกการปรับ</button>
+          <span class="staff-save-status" id="staffCalibrationStatus" role="status" aria-live="polite">ไม่มีรายการค้างบันทึก</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chart-stage" aria-label="Character height comparison chart">
+      <div class="chart-scroll" id="chartScroll" tabindex="0" role="region" aria-label="Character height chart. Use the side controls, Shift and the mouse wheel, or the left and right arrow keys to scroll horizontally.">
+        <div class="chart-canvas" id="chartCanvas">
+          <aside class="height-ruler" id="heightRuler" aria-hidden="true"></aside>
+          <div class="height-track" id="heightTrack"></div>
+        </div>
+        <p class="chart-empty" id="chartEmpty" hidden>No height data</p>
+      </div>
+      <button class="height-pan-edge height-pan-left" id="heightPanLeft" type="button" aria-label="เลื่อนกราฟไปทางซ้าย"></button>
+      <button class="height-pan-edge height-pan-right" id="heightPanRight" type="button" aria-label="เลื่อนกราฟไปทางขวา"></button>
+    </section>
+
+    <p class="sr-only" id="chartStatus" role="status" aria-live="polite"></p>
+  </main>
+
+  <dialog class="selection-dialog" id="selectionDialog" aria-labelledby="selectionTitle">
+    <div class="dialog-heading">
+      <h2 id="selectionTitle">Characters</h2>
+      <button class="close-dialog" id="closeSelection" type="button" aria-label="Close">&#215;</button>
+    </div>
+    <div class="selection-list" id="selectionList"></div>
+    <div class="dialog-actions">
+      <span id="selectionCount"></span>
+      <button class="accent-button" id="applySelection" type="button">Done</button>
+    </div>
+  </dialog>
+</body>
+</html>

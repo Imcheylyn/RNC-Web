@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171616">
+  <link rel="icon" type="image/png" href="/assets/RNCelement/Number%20Star.png">
+  <title>Character Gallery | RNC &mdash; Reverse : Noir Chronicle</title>
+  <script>
+    try {
+      if (sessionStorage.getItem("rnc-screen-power-on") === "1") {
+        sessionStorage.removeItem("rnc-screen-power-on");
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          const root = document.documentElement;
+          const finish = event => {
+            if (event.target === document.body && event.animationName === "rnc-screen-power-on-content") {
+              root.classList.remove("rnc-screen-powering-on");
+              root.removeEventListener("animationend", finish);
+            }
+          };
+          root.addEventListener("animationend", finish);
+          root.classList.add("rnc-screen-powering-on");
+        }
+      }
+    } catch {}
+  </script>
+  <link rel="stylesheet" href="/community/rnc/profiles.css?v=profiles-shared-20261103-v1">
+  <link rel="stylesheet" href="/community/rnc/rnc-gallery-mobile.css?v=card-names-20261030">
+  <link rel="stylesheet" href="/community/rnc/enemy.css?v=enemy-archive-20261111-v1">
+  <script src="/community/rnc/image-layout.js?v=image-layout-20261026" defer></script>
+  <script src="/community/rnc/character-data.js?v=height-weight-20261023" defer></script>
+  <script src="/community/rnc/profiles.js?v=arcanist-spelling-20261116-v1" defer></script>
+</head>
+<body>
+  <nav class="top-nav" aria-label="เมนูหลัก">
+    <a class="community-brand" href="/community/rnc" aria-label="RNC - Reverse : Noir Chronicle"><img class="community-wordmark" src="/assets/Title_White.png" alt="Reverse : Noir Chronicle" width="1818" height="156"></a>
+    <div class="top-links">
+      <div class="archive-nav-menu">
+        <button class="archive-trigger" id="archiveFilterButton" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="archiveFilterMenu">ARCHIVE</button>
+      </div>
+      <a class="hide-small" href="https://docs.google.com/document/d/1yL9UAzhE4H2L6t0bjRZRbtq90enrofSSXoSLqfeIWaA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">WORLD</a>
+      <button class="hide-small community-trigger" type="button" data-community-open aria-haspopup="dialog" aria-controls="communityAnnouncement" aria-label="COMMUNITY" aria-expanded="false">COMMUNITY<span class="community-notification-mark" data-community-notification role="img" aria-label="New staff notice" hidden><img src="/assets/RNCelement/Number%20Star.png" alt=""></span></button>
+      <a class="labuu-nav-mark" href="/community/rnc/arcade" aria-label="Arcade" title="Arcade">!</a>
+      <div class="member-menu" id="memberMenu">
+        <button class="member-pill" id="memberButton" type="button" aria-expanded="false" aria-controls="memberMenuPanel"><span id="memberButtonName">DISCORD LOGIN</span></button>
+        <div class="member-menu-panel" id="memberMenuPanel" role="group" aria-label="เมนูบัญชี" hidden>
+          <button id="myCharactersButton" type="button">ตัวละครของฉัน</button>
+          <form action="/auth/discord/logout" method="post">
+            <button class="member-logout" type="submit">ออกจากระบบ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <dialog class="archive-filter-menu" id="archiveFilterMenu" aria-labelledby="archiveMenuTitle">
+    <div class="archive-menu-shell">
+      <header class="archive-menu-header">
+        <div>
+          <p class="archive-menu-label">RNC ARCHIVE</p>
+          <h2 id="archiveMenuTitle">Browse the archive</h2>
+        </div>
+        <button class="archive-menu-close" type="button" data-archive-close aria-label="Close archive menu">&times;</button>
+      </header>
+      <div class="archive-menu-options" role="group" aria-label="Archive categories">
+        <button type="button" class="archive-view-option" data-archive-view="character-index" aria-pressed="false"><span class="archive-option-number">01</span><span class="archive-option-copy"><strong>Arcanist Index</strong><small>Arcanist profiles</small></span></button>
+        <button type="button" class="archive-view-option" data-archive-view="npc" aria-pressed="false"><span class="archive-option-number">02</span><span class="archive-option-copy"><strong>NPC</strong><small>Staff and NPC profiles</small></span></button>
+        <button type="button" class="archive-view-option" data-archive-view="magus-enemy" aria-pressed="false"><span class="archive-option-number">03</span><span class="archive-option-copy"><strong>Magus / Enemy</strong><small>Magus and enemy profiles</small></span></button>
+      </div>
+    </div>
+  </dialog>
+
+  <main class="atlas-stage rnc-gallery">
+    <div class="archive-stage">
+      <nav class="archive-star-rail" id="archiveIndexTabs" aria-label="Archive sections">
+        <div class="archive-star-track">
+          <button type="button" class="archive-star-button" data-archive-target="President" data-archive-label="President" aria-label="President" aria-current="location"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="Director" data-archive-label="Director" aria-label="Director"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="Arcanist" data-archive-label="Arcanist" aria-label="Arcanist"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="Human" data-archive-label="Human" aria-label="Human"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="NPC" data-archive-label="NPC" aria-label="NPC"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="Magus" data-archive-label="Magus" aria-label="Magus"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+          <button type="button" class="archive-star-button" data-archive-target="Enemy" data-archive-label="Enemy" aria-label="Enemy"><img src="/assets/RNCelement/Number%20Star.png" alt="" aria-hidden="true"></button>
+        </div>
+      </nav>
+      <section class="profiles-panel" aria-label="Character profiles">
+      <header class="panel-header">
+        <div class="panel-title-group">
+          <a class="icon-link" href="/community/rnc/relationships" aria-label="ความสัมพันธ์รวมของคอมมู">◁</a>
+          <a title="Compare character heights" class="icon-link height-chart-link" href="/community/rnc/height" aria-label="Character height comparison"><svg class="height-chart-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="4" y="4" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3.5"/><rect x="17" y="17" width="14" height="14" fill="currentColor"/></svg></a>
+          <button class="title-button" type="button" id="titleButton">Character Gallery</button>
+        </div>
+        <div class="filter-panel" aria-label="ตัวกรองตัวละคร">
+          <div class="filter-group" data-filter-group="arcana">
+            <button type="button" aria-expanded="false">ARCANA <span>▼</span></button>
+            <div class="filter-popover" hidden>
+              <button type="button" data-option="all" class="selected">RESET</button>
+              <button type="button" data-option="NATURAL"><img src="/assets/RNCelement/Neutral%20Full.png" alt=""> Natural</button>
+              <button type="button" data-option="BEAST"><img src="/assets/RNCelement/Beast%20Full.png" alt=""> Beast</button>
+              <button type="button" data-option="PLANT"><img src="/assets/RNCelement/Plant%20Full.png" alt=""> Plant</button>
+              <button type="button" data-option="STAR"><img src="/assets/RNCelement/Star%20Full.png" alt=""> Star</button>
+              <button type="button" data-option="MINERAL"><img src="/assets/RNCelement/Mineral%20Full.png" alt=""> Mineral</button>
+              <button type="button" data-option="SPIRIT"><img src="/assets/RNCelement/Spirit%20Full.png" alt=""> Spirit</button>
+              <button type="button" data-option="INTELLECT"><img src="/assets/RNCelement/Intel%20Full.png" alt=""> Intellect</button>
+              <button type="button" data-option="UNKNOWN"><img src="/assets/RNCelement/Spirit_Unknown.png" alt=""> Unknown</button>
+            </div>
+          </div>
+          <div class="filter-group" data-filter-group="race">
+            <button type="button" aria-expanded="false">CHARACTERISTICS <span>▼</span></button>
+            <div class="filter-popover" hidden>
+              <button type="button" data-option="all" class="selected">RESET</button>
+              <button type="button" data-option="Pure blood">Pure blood</button>
+              <button type="button" data-option="The Mixed">The Mixed</button>
+              <button type="button" data-option="The Awaken">The Awaken</button>
+              <button type="button" data-option="The Cursed">The Cursed</button>
+              <button type="button" data-option="Human">Human</button>
+            </div>
+          </div>
+          <div class="filter-group" data-filter-group="rank">
+            <button type="button" aria-expanded="false">RANK <span>▼</span></button>
+            <div class="filter-popover" hidden>
+              <button type="button" data-option="all" class="selected">RESET</button>
+              <button type="button" data-option="1">1 ✦</button>
+              <button type="button" data-option="2">2 ✦</button>
+              <button type="button" data-option="3">3 ✦</button>
+              <button type="button" data-option="4">4 ✦</button>
+              <button type="button" data-option="5">5 ✦</button>
+              <button type="button" data-option="6">6 ✦</button>
+                <button type="button" data-option="7">7 ✦</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-tools" aria-label="เครื่องมือโปรไฟล์">
+          <div class="tool-row">
+            <button type="button" id="searchButton" title="ค้นหา" aria-label="ค้นหา" aria-expanded="false" aria-controls="searchField">⌕</button>
+          </div>
+        </div>
+      </header>
+      <input class="search-field" id="searchField" type="search" placeholder="Search character name..." aria-label="ค้นหาชื่อตัวละคร" hidden>
+      <div class="archive-layout">
+        <div class="card-scroll" id="cardScroll" tabindex="0" aria-label="Archive entries">
+          <div class="archive-sections" id="archiveSections" aria-live="polite">
+            <section class="archive-section" id="archive-president" data-archive-section="President">
+              <header class="archive-section-heading" data-index="01"><span class="archive-section-index">01</span><h2>President</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-director" data-archive-section="Director">
+              <header class="archive-section-heading" data-index="02"><span class="archive-section-index">02</span><h2>Director</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-character" data-archive-section="Arcanist">
+              <header class="archive-section-heading" data-index="03"><span class="archive-section-index">03</span><h2>Arcanist</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-human" data-archive-section="Human">
+              <header class="archive-section-heading" data-index="04"><span class="archive-section-index">04</span><h2>Human</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-npc" data-archive-section="NPC">
+              <header class="archive-section-heading" data-index="05"><span class="archive-section-index">05</span><h2>NPC</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-magus" data-archive-section="Magus">
+              <header class="archive-section-heading" data-index="06"><span class="archive-section-index">06</span><h2>Magus</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+            <section class="archive-section" id="archive-enemy" data-archive-section="Enemy">
+              <header class="archive-section-heading" data-index="07"><span class="archive-section-index">07</span><h2>Enemy</h2><span class="archive-section-count" data-section-count>0</span></header>
+              <div class="enemy-type-filters" role="group" aria-label="กรอง Enemy"><button type="button" data-enemy-filter="all" aria-pressed="true">ทั้งหมด</button><button type="button" data-enemy-filter="boss" aria-pressed="false">Boss</button></div>
+              <div class="card-grid" data-card-grid></div><p class="archive-section-empty">No profiles in this section yet.</p>
+            </section>
+          </div>
+        </div>
+      </div>
+      </section>
+    </div>
+    <footer class="panel-footer">Reverse : Noir Chronicle &nbsp;|&nbsp; Character Gallery &nbsp;|&nbsp; <a href="/community/rnc/arcade">Arcade</a></footer>
+  </main>
+
+  <div class="overlay" id="modalOverlay" hidden>
+    <section class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" hidden>
+      <p class="modal-kicker">Reverse : Noir Chronicle</p>
+      <h2 class="modal-title" id="loginTitle">Enter Character Gallery</h2>
+      <div class="modal-rule"></div>
+      <p class="modal-copy">เข้าสู่ระบบด้วย Discord เพื่อยืนยันสมาชิกในเซิร์ฟเวอร์ แล้วเลือกตัวละครของคุณ</p>
+      <button class="primary-action" id="discordButton" type="button">Continue with Discord</button>
+      <p class="modal-note">ปุ่มนี้จำลองการล็อกอินใน mockup</p>
+    </section>
+
+    <section class="modal" id="deniedModal" role="dialog" aria-modal="true" aria-labelledby="deniedTitle" hidden>
+      <p class="modal-kicker">Access to Community</p>
+      <h2 class="modal-title" id="deniedTitle">ยังไม่พบคุณในคอมมูนิตี้</h2>
+      <div class="modal-rule"></div>
+      <p class="modal-copy">บัญชี Discord นี้ยังไม่ได้อยู่ในเซิร์ฟเวอร์ Reverse : Noir Chronicle กรุณาเข้าร่วมคอมมูนิตี้ก่อน แล้วกลับมาตรวจสอบอีกครั้ง</p>
+      <button class="secondary-action" type="button" id="deniedBackButton">กลับไปดูหน้าแกลเลอรี</button>
+    </section>
+
+    <section class="modal" id="chooseModal" role="dialog" aria-modal="true" aria-labelledby="chooseTitle" hidden>
+      <button class="modal-close" type="button" data-close aria-label="ปิด">×</button>
+      <p class="modal-kicker">Your Character Files</p>
+      <h2 class="modal-title" id="chooseTitle">Choose Your Character</h2>
+      <div class="modal-rule"></div>
+      <p class="modal-copy" id="chooseCopy"></p>
+      <div class="slot-grid" id="slotGrid"></div>
+      <button class="secondary-action" type="button" data-close>ดูตัวละครของคนอื่น</button>
+    </section>
+
+  </div>
+  <dialog class="community-dialog" id="communityAnnouncement" aria-labelledby="communityDialogTitle" data-notice-unread="false" data-notice-id="latest">
+    <div class="community-dialog-shell">
+      <header class="community-dialog-header">
+        <div>
+          <p class="community-eyebrow">RNC / COMMUNITY NOTICE</p>
+          <h2 id="communityDialogTitle">Latest Staff Notice</h2>
+        </div>
+        <button class="community-dialog-close" type="button" data-community-close aria-label="Close announcements">&times;</button>
+      </header>
+      <div class="community-dialog-grid">
+        <section class="community-dialog-card" aria-label="Latest Staff Notice"><p class="card-kicker">LATEST FROM STAFF</p><p class="dialog-empty">No new staff announcements yet.</p></section>
+      </div>
+    </div>
+  </dialog>
+<script src="/community/rnc/community-popup.js" defer></script>
+</body>
+</html>

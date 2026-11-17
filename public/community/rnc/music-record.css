@@ -1,0 +1,25 @@
+.rnc-record {
+  position: relative; display: grid; place-items: center; aspect-ratio: 1;
+  border: 1px solid #575552; border-radius: 50%; overflow: hidden;
+  background: repeating-radial-gradient(circle at center, #111214 0 1px, #27282b 1.5px 2px, #101113 2.5px 4px);
+  box-shadow: 0 8px 18px #0008, inset 0 0 0 3px #151618, inset 0 0 8px #000;
+  animation: rnc-record-turn 9s linear infinite; animation-play-state: paused;
+}
+.rnc-record::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: conic-gradient(from 25deg, transparent 0deg, #fff2 36deg, transparent 63deg 163deg, #fff3 210deg, transparent 238deg);
+  pointer-events: none;
+}
+.rnc-record-label {
+  position: relative; display: grid; place-items: center; width: 31%; aspect-ratio: 1;
+  border: 2px solid #18191a; border-radius: 50%; overflow: hidden;
+  background: #aa7752; box-shadow: 0 0 0 2px #73706a55;
+}
+.rnc-record-label::after {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 14%; aspect-ratio: 1;
+  transform: translate(-50%, -50%); border: 1px solid #d4cbbc; border-radius: 50%; background: #101112;
+}
+.rnc-record-label img { width: 100%; height: 100%; object-fit: cover; }
+.is-playing .rnc-record { animation-play-state: running; }
+@keyframes rnc-record-turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .rnc-record { animation: none; } }

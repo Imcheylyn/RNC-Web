@@ -1,0 +1,43 @@
+/* The notice board shares the archive's ink, paper, fine rules and serif titles. */
+.community-record { min-width:0; color:#b6b3a5; padding:8px 30px 22px 0; border-right:1px solid #b5a78935; font:13px/1.8 Sarabun,Arial,sans-serif; }
+.community-record-kicker { margin:0 0 24px; color:#bba783; font:10px/1.5 Georgia,serif; letter-spacing:.2em; }
+.community-record h3 { margin:0 0 26px; color:#e3dfd2; font:400 30px/1.2 Georgia,"Noto Serif Thai",serif; overflow-wrap:anywhere; }
+.community-record h4 { color:#d6ccb4; font:500 17px/1.7 Sarabun,Arial,sans-serif; margin:24px 0 12px; }
+.community-record-facts { margin:0; border-top:1px solid #b5a78935; }
+.community-record-facts>div { padding:14px 0; border-bottom:1px solid #b5a78925; }
+.community-record-facts dt { color:#868e80; font-size:11px; }.community-record-facts dd { margin:5px 0 0; color:#d5cfbf; }
+.community-live-body { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.95; }
+.community-record-footer { margin:30px 0 0; padding-top:18px; border-top:1px solid #b5a78935; color:#787f72; font:9px Georgia,serif; letter-spacing:.18em; }
+.community-world-link { display:inline-block; color:#c9b18b; text-underline-offset:5px; margin-top:12px; }
+.community-notice-feed { min-width:0; }
+.community-feed-heading { display:flex; justify-content:space-between; gap:12px; padding:8px 0 18px; color:#a9a38e; font:10px/1.5 Georgia,serif; letter-spacing:.16em; }
+.community-notice-sheet { position:relative; margin:0 0 22px; padding:26px 30px 30px; color:#383b32; background:linear-gradient(120deg,#fff9e619,transparent 60%),#d5cfbd; border:1px solid #ece2c180; box-shadow:3px 3px 0 #0003; font:14px/1.8 Sarabun,Arial,sans-serif; }
+.community-notice-sheet::after { content:""; position:absolute; left:8px; right:8px; bottom:7px; height:1px; background:#73766035; }
+.community-notice-meta { display:flex; flex-wrap:wrap; align-items:center; gap:12px; border-bottom:1px solid #666a514f; padding-bottom:14px; margin-bottom:22px; color:#686b58; font:10px/1.5 Georgia,serif; letter-spacing:.12em; }
+.community-notice-meta .community-pin { margin-left:auto; font:11px Sarabun,Arial,sans-serif; letter-spacing:0; color:#846548; }
+.community-notice-sheet h3 { margin:0 0 10px; color:#2d322b; font:400 clamp(23px,2.2vw,31px)/1.5 Georgia,"Noto Serif Thai",serif; overflow-wrap:anywhere; }
+.community-notice-sheet time { display:block; color:#777866; font-size:11px; }
+.community-notice-sheet .community-live-body { margin:22px 0 0; }
+.community-live-empty { color:#a6a799; }
+.community-empty-record { min-height:240px; border-block:1px solid #b5a78935; display:grid; place-content:center; text-align:center; padding:24px; color:#8e9585; font:13px/1.8 Sarabun,Arial,sans-serif; }
+.community-empty-mark { font:44px Georgia,serif; color:#9e987e; }.community-empty-record h3 { color:#c2c2b3; font-size:18px; font-weight:400; margin:10px 0 0; }.community-empty-record p { margin:8px 0 0; }
+.community-dialog { width:min(1000px,calc(100vw - 48px)); max-height:86dvh; border:1px solid #a59a7a80; border-radius:0; background:linear-gradient(120deg,#91927209,transparent),#20251ff5; box-shadow:0 24px 80px #000a; }
+.community-dialog-shell { padding:clamp(22px,3vw,38px); }
+.community-dialog-header { border-bottom:1px solid #b5a7894a; padding-bottom:26px; }
+.community-dialog-header .community-eyebrow { color:#bba783; font:10px/1.5 Georgia,serif; letter-spacing:.2em; }
+.community-dialog-header h2 { color:#e3dfd2; font:400 clamp(26px,3.5vw,40px)/1.15 Georgia,serif; letter-spacing:-.02em; }
+.community-dialog-close { width:34px; height:34px; flex-basis:34px; border:1px solid #99977a70; border-radius:0; color:#d6d2c3; background:transparent; font:23px Georgia,serif; }
+.community-dialog-close:hover { color:#f0e7ce; border-color:#c9b18b; background:#c9b18b12; }
+.community-dialog-grid { display:grid; grid-template-columns:minmax(0,.75fr) minmax(0,1.5fr); gap:30px; padding-top:28px; }
+.community-dialog,.community-panel { scrollbar-width:none; }.community-dialog::-webkit-scrollbar,.community-panel::-webkit-scrollbar{display:none;}
+.card-role-badges,.character-role-badges { display:flex; flex-wrap:wrap; gap:4px 10px; margin-top:8px; }
+.character-role-badge { display:inline-flex; align-items:center; gap:5px; color:#e7dfce; font:11px/1.5 Sarabun,Arial,sans-serif; }
+.character-role-badge::before { content:"◇"; color:var(--role-color,#bba783); font:12px Georgia,serif; }
+.card-role-badges { justify-content:center; }.card-role-badges .character-role-badge { font-size:9px; gap:3px; }
+.card-review-state { display:block; margin-top:6px; color:#d3c1a1; font:11px Sarabun,Arial,sans-serif; }
+.character-card .card-name { color:#f0e8db; }
+.character-review-banner { width:min(1160px,100%); box-sizing:border-box; padding:12px 20px; margin:0 auto 15px; border-block:1px solid #a5936d80; color:#d9caad; background:#b5a4780c; font:13px/1.7 Sarabun,Arial,sans-serif; }
+.editor-management p { color:#b4af9e; line-height:1.8; }.editor-role-options { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:16px; padding:18px; border:1px solid #8a86664d; }
+.editor-role-options label { display:flex; flex-direction:row; align-items:center; gap:8px; color:#d9d2c0; }.editor-role-options input { width:16px; height:16px; accent-color:var(--role-color,#bba783); }
+.owner-line[hidden] { display:none; }
+@media(max-width:700px){ .community-dialog-grid{grid-template-columns:1fr;gap:24px}.community-record{border-right:0;border-bottom:1px solid #b5a78935;padding:0 0 24px}.community-record h3{font-size:26px}.community-record-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}.community-record-footer{display:none}.community-notice-sheet{padding:22px 20px 26px}.community-dialog{width:calc(100vw - 24px);max-height:90dvh}.community-dialog-header{gap:12px}.community-record-kicker{margin-bottom:16px} }

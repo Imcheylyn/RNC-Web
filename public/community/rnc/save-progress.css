@@ -1,0 +1,16 @@
+/* Shared astral save animation for the Community pages. */
+.wardrobe-saving-dialog{width:min(360px,calc(100vw - 36px));max-width:none;margin:auto;padding:0;overflow:visible;border:0;background:transparent;color:#f3dfbc;outline:0;box-shadow:none;font-family:Sarabun,"Noto Sans Thai",sans-serif}
+.wardrobe-saving-dialog::backdrop{background:#080909e8;backdrop-filter:blur(10px)}
+.wardrobe-saving-content{position:relative;display:flex;flex-direction:column;align-items:center;padding:27px 12px 31px;isolation:isolate;text-align:center}
+.wardrobe-saving-content::before{position:absolute;z-index:-1;inset:0 -20%;border-radius:50%;background:radial-gradient(ellipse,#ba713f22,transparent 68%);content:"";pointer-events:none}
+.rnc-saving-mark{--ink:#d2ad79;position:relative;display:grid;width:100px;height:100px;margin:15px 0 18px;place-items:center;color:var(--ink)}
+.rnc-saving-mark .ld-gyro{position:relative;width:74px;height:74px;perspective:140px}
+.rnc-saving-mark .ld-gyro i{position:absolute;inset:0;border:1.4px solid var(--ink);border-radius:50%}
+.rnc-saving-mark .ld-gyro i:nth-child(1){animation:rnc-save-gyro-x 1.8s linear infinite}
+.rnc-saving-mark .ld-gyro i:nth-child(2){animation:rnc-save-gyro-y 1.8s linear infinite;opacity:.55}
+.rnc-saving-mark .ld-spark{position:absolute;width:22px;height:22px;background:var(--ink);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 8px #d9b98366);animation:rnc-save-spark 1.2s ease-in-out infinite}
+.wardrobe-saving-label{margin:0;color:#f1ddbc;font:500 clamp(21px,5vw,24px)/1.5 Sarabun,"Noto Sans Thai",sans-serif;letter-spacing:.015em;text-align:center;text-shadow:0 2px 20px #d3955230}
+@keyframes rnc-save-gyro-x{to{transform:perspective(140px) rotateX(360deg)}}
+@keyframes rnc-save-gyro-y{to{transform:perspective(140px) rotateY(360deg)}}
+@keyframes rnc-save-spark{0%,100%{transform:scale(.64) rotate(0);opacity:.56}50%{transform:scale(1) rotate(45deg);opacity:1}}
+@media(prefers-reduced-motion:reduce){.wardrobe-saving-dialog::backdrop{backdrop-filter:none}.rnc-saving-mark .ld-gyro i,.rnc-saving-mark .ld-spark{animation:none}.rnc-saving-mark .ld-gyro i:nth-child(1){transform:perspective(140px) rotateX(56deg)}.rnc-saving-mark .ld-gyro i:nth-child(2){transform:perspective(140px) rotateY(56deg);opacity:.55}.rnc-saving-mark .ld-spark{opacity:.9;transform:none}}

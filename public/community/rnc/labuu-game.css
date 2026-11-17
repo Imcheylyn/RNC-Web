@@ -1,0 +1,406 @@
+:root { --gold:#c9a96e; --gold-d:#8a6830; --gold-l:#e8cf9a; --text-dim:rgba(232,224,208,.58); }
+body.dark-mode * { cursor:none !important; }
+    body.labuu-round-active { overflow: hidden; }
+    #labuu-field {
+      display: none; position: fixed; inset: 0; z-index: 9980;
+      background: #18171e;
+    }
+    body.labuu-round-active #labuu-field { display: block; }
+
+    #flashlight {
+      --beam-x: 50%;
+      --beam-y: 50%;
+      position: fixed; inset: 0; z-index: 9990;
+      pointer-events: none; opacity: 0;
+      background: radial-gradient(circle 220px at var(--beam-x) var(--beam-y),
+        transparent 30%, rgba(5,5,10,.58) 65%, #05050a 100%);
+      transition: opacity .28s ease;
+    }
+    body.dark-mode #flashlight { opacity: 1; }
+    body.dark-mode #cursor-dot,
+    body.dark-mode #cursor-ring { visibility: hidden; }
+    @media (any-pointer: fine) {
+      #flashlight::after {
+        content: ""; position: absolute; left: var(--beam-x); top: var(--beam-y);
+        width: 4px; height: 4px; border-radius: 50%;
+        background: #e3c894; transform: translate(-50%, -50%);
+      }
+    }
+
+    /* ════════════════════════════════════════
+       MINI-GAME: FIND THE LABUU
+    ════════════════════════════════════════ */
+    #labuu-intro {
+      position: fixed; inset: 0; z-index: 9995;
+      width: 100vw; min-height: 100vh; box-sizing: border-box; margin: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(2,2,8,0.92);
+      animation: labuuIntroIn .32s ease-out both;
+    }
+    @keyframes labuuIntroIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #labuu-intro.exiting {
+      animation: labuuIntroOut .26s ease-in both;
+    }
+    @keyframes labuuIntroOut {
+      to { opacity: 0; }
+    }
+    .labuu-intro-box {
+      box-sizing: border-box; width: min(360px, calc(100vw - 32px)); max-width: min(360px, calc(100vw - 32px));
+      flex: 0 1 360px; min-width: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 0.65rem;
+      text-align: center; padding: clamp(18px, 3vh, 28px) clamp(16px, 4vw, 24px);
+      border: 1px solid rgba(201,169,110,0.5);
+      background: linear-gradient(145deg, rgba(17,16,21,0.98), rgba(7,8,15,0.98));
+      box-shadow: 0 22px 64px #000b, inset 0 0 42px rgba(201,169,110,0.025);
+      position: relative;
+      animation: labuuBoxIn .36s cubic-bezier(.2,.65,.3,1) both;
+    }
+    @keyframes labuuBoxIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .labuu-intro-eyebrow {
+      margin: 0; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.38em;
+      color: var(--gold); text-transform: uppercase;
+    }
+    .labuu-intro-title {
+      margin: 0; font-family: 'Cinzel', serif; font-size: clamp(1.35rem, 5vw, 1.8rem);
+      font-weight: 700; letter-spacing: 0.12em; color: #f2dfbb;
+      text-shadow: 0 0 32px rgba(201,169,110,0.35);
+    }
+    .labuu-intro-img {
+      width: 62px; height: 62px; object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(201,169,110,0.4));
+      animation: labuuBob 1.8s ease-in-out infinite;
+    }
+    @keyframes labuuBob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+    .labuu-intro-desc {
+      margin: 0; font-family: 'Sarabun', sans-serif; font-size: 0.98rem;
+      color: rgba(240,232,221,0.9); line-height: 1.8;
+    }
+    .labuu-intro-desc strong { color: #f0cf91; font-weight: 700; }
+    .labuu-intro-hint {
+      margin: -3px 0 0; color: rgba(232,224,208,0.74);
+      font: 12px/1.6 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif;
+    }
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+    }
+
+    /* ลาบู้ปลอม */
+    .labuu-fake { filter: drop-shadow(0 0 4px rgba(255,100,100,0.0)); }
+    .labuu.fake-laugh {
+      pointer-events: none;
+      animation: fakeLaugh 0.5s ease both;
+    }
+    @keyframes fakeLaugh {
+      0%   { transform: scale(1) rotate(0deg); }
+      20%  { transform: scale(1.4) rotate(-15deg); filter: drop-shadow(0 0 12px rgba(255,80,80,0.8)); }
+      40%  { transform: scale(1.5) rotate(15deg); }
+      60%  { transform: scale(1.35) rotate(-10deg); }
+      80%  { transform: scale(1.4) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    .labuu.fake-fleeing {
+      transition: left 0.35s cubic-bezier(0.2,1.6,0.5,1), top 0.35s cubic-bezier(0.2,1.6,0.5,1) !important;
+    }
+
+    /* Labuu elements */
+    .labuu {
+      position: fixed; z-index: 9985; cursor: pointer;
+      width: 46px; height: 46px;
+      transition: left 0.22s cubic-bezier(0.34,1.4,0.64,1), top 0.22s cubic-bezier(0.34,1.4,0.64,1);
+      filter: drop-shadow(0 0 6px rgba(255,220,180,0.08));
+    }
+    .labuu img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .labuu:hover { transform: scale(1.12) rotate(-4deg); }
+
+    /* คลิกจับได้ — หัวเราะ */
+    .labuu.caught {
+      pointer-events: none;
+      animation: labuuLaugh 0.55s cubic-bezier(0.36,0.07,0.19,0.97) forwards;
+    }
+    @keyframes labuuLaugh {
+      0%   { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 0px #fff); }
+      15%  { transform: scale(1.4) rotate(-12deg); filter: drop-shadow(0 0 14px #ffe8a0); }
+      30%  { transform: scale(1.5) rotate(14deg); filter: drop-shadow(0 0 22px #ffd060); }
+      45%  { transform: scale(1.35) rotate(-10deg); }
+      60%  { transform: scale(1.6) rotate(8deg); filter: drop-shadow(0 0 28px #fff8c0); }
+      80%  { transform: scale(1.2) rotate(0deg); opacity: 0.8; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* แอบมอง — peek จากขอบ */
+    .labuu.peeking {
+      transition: left 0.45s cubic-bezier(0.34,1.2,0.64,1), top 0.45s cubic-bezier(0.34,1.2,0.64,1),
+                  opacity 0.3s ease;
+    }
+    .labuu.peek-hidden { opacity: 0; pointer-events: none; }
+
+    /* หลบเมาส์ — กระโดด */
+    .labuu.dodging {
+      transition: left 0.18s cubic-bezier(0.2,1.6,0.6,1), top 0.18s cubic-bezier(0.2,1.6,0.6,1);
+      filter: drop-shadow(0 0 10px rgba(255,220,180,0.3));
+    }
+
+    #labuu-hud {
+      position: fixed; top: max(12px, env(safe-area-inset-top)); left: 50%; z-index: 9993;
+      transform: translateX(-50%); pointer-events: none;
+      box-sizing: border-box; width: min(300px, calc(100% - 24px)); padding: 8px 0;
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      background: #111015; border: 1px solid #4d4338; border-radius: 6px;
+      text-align: center;
+    }
+    .labuu-hud-stat + .labuu-hud-stat { border-inline-start: 1px solid #393138; }
+    .labuu-hud-label { display: block; color: #c7b9a9; font: 600 12px/1.25 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif; }
+    .labuu-hud-value { display: block; margin-top: 3px; color: #fff0d0; font: 700 18px/1 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif; font-variant-numeric: tabular-nums; }
+    .labuu-hud-value small { color: #c7b9a9; font-size: 12px; }
+    #labuu-timer.urgent .labuu-hud-value,
+    #labuu-timer.urgent .labuu-hud-value small { color: #ffafa6; }
+    #labuu-feedback {
+      position: fixed; top: calc(max(12px, env(safe-area-inset-top)) + 58px); left: 50%; z-index: 9993;
+      max-width: calc(100vw - 24px); box-sizing: border-box; padding: 4px 10px;
+      color: #ffcec8; background: #211316; border-radius: 4px;
+      font: 600 13px/1.35 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif; text-align: center;
+      pointer-events: none; opacity: 0; transform: translateX(-50%);
+    }
+    #labuu-feedback.is-visible { animation: gameFeedback 1.45s ease both; }
+    @keyframes gameFeedback {
+      0% { opacity: 0; transform: translate(-50%, -10px) scale(0.94); }
+      12%, 76% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -5px) scale(0.98); }
+    }
+    .labuu.caught { filter: drop-shadow(0 0 15px rgba(121,215,160,0.95)); }
+    .labuu-fake.fake-laugh { filter: drop-shadow(0 0 16px rgba(255,75,75,0.95)); }
+    /* Flash */
+    #labuu-flash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #fff;
+      animation: flashBurst 0.18s ease forwards;
+      pointer-events: none;
+    }
+    @keyframes flashBurst {
+      0%   { opacity: 1; }
+      60%  { opacity: 0.7; background: #e00; }
+      100% { opacity: 0; }
+    }
+
+    /* Jumpscare — ลาบู้ตัวเดียวพุ่งเข้ากลางจอ */
+    .scare-labuu {
+      position: fixed;
+      width: min(130vw, 130vh);
+      height: min(130vw, 130vh);
+      top: 50%; left: 50%;
+      z-index: 9998;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.05);
+      animation: scareAttack 0.42s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+    }
+    .scare-labuu img {
+      width: 100%; height: 100%; object-fit: contain;
+      filter: drop-shadow(0 0 40px rgba(255,60,60,0.9)) drop-shadow(0 0 80px rgba(255,60,60,0.5));
+      animation: scareWiggle 0.12s ease-in-out infinite alternate;
+    }
+    .scare-labuu.laughing img { animation: scareLaugh 0.18s ease-in-out infinite alternate; }
+    @keyframes scareLaugh {
+      from { transform: rotate(-8deg) scale(1); }
+      to   { transform: rotate(8deg) scale(1.08); }
+    }
+    @keyframes scareAttack {
+      0%   { transform: translate(-50%, -50%) scale(0.05); opacity: 0.2; }
+      70%  { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+      85%  { transform: translate(-50%, -50%) scale(0.96); }
+      100% { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+    }
+    @keyframes scareWiggle {
+      from { transform: rotate(-6deg) scale(1); }
+      to   { transform: rotate(6deg)  scale(1.06); }
+    }
+    .scare-labuu.dripping {
+      animation: scareDrip 0.9s ease-in forwards;
+    }
+    @keyframes scareDrip {
+      0%   { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+      100% { transform: translate(-50%,  80vh) scale(0.8); opacity: 0; }
+    }
+
+    @keyframes scareFade { to { opacity: 0; } }
+
+    /* Jumpscare body shake */
+    @keyframes shakebody {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px) rotate(-1deg); }
+      40% { transform: translateX(10px) rotate(1deg); }
+      60% { transform: translateX(-10px) rotate(-0.5deg); }
+      80% { transform: translateX(8px) rotate(0.5deg); }
+    }
+    body.jumpscare-shake { animation: shakebody 0.18s ease-in-out 4; }
+
+
+
+/* End scene choreography */
+body.labuu-result-open #cursor-dot,
+body.labuu-result-open #cursor-ring { opacity: 0 !important; }
+body.labuu-result-open * { cursor: auto !important; }
+body.has-site-cursor.site-cursor-visible.labuu-result-open,
+body.has-site-cursor.site-cursor-visible.labuu-result-open * { cursor: auto !important; }
+
+#labuu-scare-backdrop {
+  position: fixed; inset: 0; z-index: 9997;
+  background: radial-gradient(ellipse at center, rgba(22, 5, 9, .94), rgba(2, 2, 8, .98));
+  animation: labuuScareBackdropIn .38s ease both;
+}
+@keyframes labuuScareBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+#labuu-result {
+  --result-accent: #c9a96e;
+  --result-glow: rgba(201, 169, 110, .15);
+  position: fixed; inset: 0; z-index: 10010;
+  display: grid; place-items: center; overflow-y: auto;
+  padding: 24px 16px;
+  background: radial-gradient(ellipse at 50% 45%, rgba(27, 21, 19, .94), rgba(3, 3, 9, .97));
+  opacity: 0;
+  animation: labuuResultBackdropIn .46s ease forwards;
+}
+#labuu-result[data-outcome="loss"] {
+  --result-accent: #c66a68;
+  --result-glow: rgba(157, 49, 58, .16);
+  background: radial-gradient(ellipse at 50% 45%, rgba(40, 16, 19, .94), rgba(3, 3, 9, .98));
+}
+@keyframes labuuResultBackdropIn { to { opacity: 1; } }
+.labuu-result-card {
+  position: relative; width: min(440px, 100%); box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center;
+  padding: clamp(28px, 7vw, 46px) clamp(20px, 6vw, 38px) 30px;
+  border: 1px solid color-mix(in srgb, var(--result-accent) 58%, transparent);
+  background: linear-gradient(145deg, rgba(32, 27, 25, .98), rgba(13, 13, 17, .98));
+  box-shadow: 0 24px 80px #000a, 0 0 45px var(--result-glow), inset 0 0 35px rgba(255,255,255,.018);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px) scale(.975);
+  animation: labuuResultCardIn .56s cubic-bezier(.16, 1, .3, 1) .06s forwards;
+}
+.labuu-result-card::before {
+  content: ""; position: absolute; top: -5px; left: 50%; width: 8px; height: 8px;
+  border: 1px solid var(--result-accent); background: #181514; transform: translateX(-50%) rotate(45deg);
+}
+.labuu-result-card::after {
+  content: ""; width: 74px; height: 1px; margin-top: 23px;
+  background: linear-gradient(90deg, transparent, var(--result-accent), transparent);
+}
+@keyframes labuuResultCardIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.labuu-result-mark {
+  width: 68px; height: 68px; margin-bottom: 10px;
+  border: 1px solid color-mix(in srgb, var(--result-accent) 35%, transparent);
+  border-radius: 50%; box-shadow: 0 0 26px var(--result-glow);
+  display: grid; place-items: center;
+}
+.labuu-result-mark::after {
+  content: "\2726"; color: var(--result-accent);
+  font: 30px/1 Georgia, serif; text-shadow: 0 0 18px var(--result-glow);
+}
+.labuu-result-eyebrow {
+  margin: 0 0 7px; color: var(--result-accent);
+  font: 600 11px/1.5 'Cinzel', Georgia, serif; letter-spacing: .24em;
+}
+.labuu-result-art {
+  width: 76px; height: 76px; margin: 5px 0 2px; object-fit: contain;
+  filter: drop-shadow(0 0 18px var(--result-glow));
+  animation: labuuResultArt 2.2s ease-in-out infinite;
+}
+body.labuu-result-open .labuu-result-art[role="button"] { cursor: pointer !important; }
+.labuu-result-art[role="button"] { transform-origin: center bottom; }
+.labuu-result-art[role="button"]:hover { filter: brightness(1.1) drop-shadow(0 0 24px var(--result-accent)); }
+.labuu-result-art[role="button"]:focus-visible { outline: 2px solid var(--result-accent); outline-offset: 4px; }
+.labuu-result-art.is-laughing { animation: labuuResultLaugh .58s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes labuuResultLaugh {
+  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
+  18% { transform: translateY(-4px) rotate(-12deg) scale(1.12); }
+  38% { transform: translateY(0) rotate(12deg) scale(1.17); }
+  58% { transform: translateY(-3px) rotate(-10deg) scale(1.12); }
+  78% { transform: translateY(0) rotate(10deg) scale(1.15); }
+}
+@keyframes labuuResultArt {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.labuu-result-title {
+  margin: 8px 0 0; color: #f1e1d0;
+  font: 700 clamp(25px, 7vw, 34px)/1.35 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif;
+  letter-spacing: .02em; text-shadow: 0 0 26px var(--result-glow);
+}
+.labuu-result-copy {
+  margin: 9px 0 0; max-width: 34ch; color: rgba(232, 224, 208, .76);
+  font: 15px/1.75 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif;
+}
+.labuu-result-scores {
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--result-accent) 36%, transparent);
+  background: #111014;
+}
+
+.labuu-result-values { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.labuu-result-values div { display: grid; gap: 3px; }
+.labuu-result-values span { font: 700 11px/1.2 "Courier New", monospace; color: #d6b6a1; }
+.labuu-result-values strong { font: 700 clamp(21px, 6vw, 30px)/1.15 "Courier New", monospace; color: #f7d49a; }
+.labuu-save-status { margin: 5px 0 0; color: #d8c6b8; font: 12px/1.5 Sarabun, Tahoma, sans-serif; }
+.labuu-result-scores button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--result-accent);
+  color: #f5dec8;
+  background: #3a2a2b;
+  font: 13px/1.3 Sarabun, Tahoma, sans-serif;
+}
+.labuu-result-scores button:focus-visible { outline: 2px solid #f3dfbe; outline-offset: 3px; }
+
+.labuu-result-actions {
+  width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-top: 26px;
+}
+.labuu-result-actions button {
+  min-height: 46px; padding: 10px 14px;
+  border: 1px solid var(--result-accent);
+  font: 600 14px/1.4 'Sarabun', 'Noto Sans Thai', Tahoma, sans-serif;
+  cursor: pointer;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.labuu-result-primary { color: #171311; background: var(--result-accent); }
+.labuu-result-primary:hover { background: #e2c48c; transform: translateY(-1px); }
+.labuu-result-secondary { color: #ead9c7; background: transparent; border-color: rgba(226, 207, 184, .35) !important; }
+.labuu-result-secondary:hover { background: rgba(226, 207, 184, .08); border-color: rgba(226, 207, 184, .72) !important; }
+.labuu-result-actions button:focus-visible { outline: 2px solid #f3dfbe; outline-offset: 3px; }
+.labuu-result-actions button:disabled { cursor: default; }
+#labuu-result.is-closing { animation: labuuResultBackdropOut .3s ease forwards; }
+#labuu-result.is-closing .labuu-result-card { animation: labuuResultCardOut .3s ease forwards; }
+@keyframes labuuResultBackdropOut { to { opacity: 0; } }
+@keyframes labuuResultCardOut { to { opacity: 0; transform: translateY(8px) scale(.985); } }
+@media (max-width: 420px) {
+  .labuu-result-actions { grid-template-columns: 1fr; }
+  .labuu-result-card { padding-left: 22px; padding-right: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #labuu-result, .labuu-result-card, .labuu-result-art, #labuu-scare-backdrop,
+  #labuu-result.is-closing, #labuu-result.is-closing .labuu-result-card,
+  #labuu-intro, .labuu-intro-box, .labuu-intro-img, .labuu-intro-hint,
+  #labuu-flash, .scare-labuu, .scare-labuu img {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+  }
+  body.jumpscare-shake { animation: none !important; }
+  #flashlight { transition: none; }
+  #labuu-flash { display: none !important; }
+  #labuu-intro.exiting { opacity: 0; }
+  .scare-labuu { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .scare-labuu img { transform: none; }
+  .labuu-result-actions button { transition: none; }
+}
