@@ -13,6 +13,9 @@
   const staffCalibrationStatus = document.getElementById("staffCalibrationStatus");
   const dirtyCharacterIds = new Set();
   let activeCharacterId = "";
+  let savingCalibrations = false;
+  let calibrationSaveMessage = "";
+  let calibrationSaveError = false;
 
   const allRecords = Array.isArray(window.__RNC_BOOTSTRAP__?.characters)
     ? window.__RNC_BOOTSTRAP__.characters.filter(character => !["Monster", "Enemy"].includes(character.characterType))
@@ -121,10 +124,12 @@
       staffOffsetOutput.textContent = (calibration.offset > 0 ? "+" : "") + Math.round(calibration.offset) + "%";
     }
     const count = dirtyCharacterIds.size;
-    staffSaveButton.disabled = count === 0;
-    staffSaveButton.textContent = count ? "บันทึกการปรับ (" + count + ")" : "บันทึกการปรับ";
-    staffCalibrationStatus.textContent = count ? "มี " + count + " ตัวละครที่ยังไม่บันทึก" : "ไม่มีรายการค้างบันทึก";
-    staffCalibrationStatus.removeAttribute("data-error");
+    staffSaveButton.disabled = savingCalibrations || count === 0;
+    staffSaveButton.textContent = savingCalibrations ? "กำลังบันทึก…" : count ? "บันทึกการปรับ (" + count + ")" : "บันทึกการปรับ";
+    const pendingMessage = count ? "มี " + count + " ตัวละครที่ยังไม่บันทึก" : "ไม่มีรายการค้างบันทึก";
+    staffCalibrationStatus.textContent = savingCalibrations ? "กำลังบันทึกการปรับ…" : calibrationSaveMessage || pendingMessage;
+    if (!savingCalibrations && calibrationSaveError) staffCalibrationStatus.dataset.error = "true";
+    else staffCalibrationStatus.removeAttribute("data-error");
   }
 
   function selectStaffCharacter(id) {
@@ -139,6 +144,8 @@
 
   function markCalibrationDirty(character) {
     dirtyCharacterIds.add(String(character.id));
+    calibrationSaveMessage = "";
+    calibrationSaveError = false;
     updateStaffControls();
   }
 
@@ -163,7 +170,7 @@
   }
 
   async function saveCalibrations() {
-    if (!staffMode || dirtyCharacterIds.size === 0) return;
+    if (!staffMode || savingCalibrations || dirtyCharacterIds.size === 0) return;
     const updates = [...dirtyCharacterIds].map(id => {
       const item = calibrationItem(id);
       if (!item) return null;
@@ -177,34 +184,61 @@
       };
     }).filter(Boolean);
     if (!updates.length) return;
-    staffSaveButton.disabled = true;
-    staffSaveButton.textContent = "กำลังบันทึก…";
+    savingCalibrations = true;
+    calibrationSaveMessage = "";
+    calibrationSaveError = false;
+    updateStaffControls();
+    let savedCount = 0;
+    const conflicts = [];
     try {
-      const response = await fetch("/api/community/staff/height", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        cache: "no-store",
-        body: JSON.stringify({ updates }),
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || "บันทึกการปรับไม่สำเร็จ");
-      for (const saved of result.characters || []) {
-        const item = calibrationItem(saved.id);
-        if (!item) continue;
-        item.character.heightChartScale = saved.heightChartScale;
-        item.character.heightChartOffset = saved.heightChartOffset;
-        item.character.heightChartXOffset = saved.heightChartXOffset;
-        item.character.updatedAt = saved.updatedAt;
-        dirtyCharacterIds.delete(String(saved.id));
+      // The API accepts up to 300 characters per request.
+      for (let offset = 0; offset < updates.length; offset += 300) {
+        const batch = updates.slice(offset, offset + 300);
+        const response = await fetch("/api/community/staff/height", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          cache: "no-store",
+          body: JSON.stringify({ updates: batch }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || "บันทึกการปรับไม่สำเร็จ");
+        if (!Array.isArray(result.characters)) throw new Error("ไม่ได้รับผลการบันทึก กรุณาลองอีกครั้ง");
+        const submitted = new Map(batch.map(item => [item.id, item]));
+        for (const saved of result.characters) {
+          const item = calibrationItem(saved.id);
+          const sent = submitted.get(String(saved.id));
+          if (!item || !sent) continue;
+          const current = getCalibration(item.character);
+          const editedWhileSaving = current.scale !== sent.heightChartScale
+            || current.offset !== sent.heightChartOffset || current.xOffset !== sent.heightChartXOffset;
+          item.character.updatedAt = saved.updatedAt;
+          if (!editedWhileSaving) {
+            item.character.heightChartScale = saved.heightChartScale;
+            item.character.heightChartOffset = saved.heightChartOffset;
+            item.character.heightChartXOffset = saved.heightChartXOffset;
+            dirtyCharacterIds.delete(String(saved.id));
+          }
+          savedCount++;
+          updateLiveCalibration(item.character);
+        }
+        conflicts.push(...(result.conflicts || []));
       }
-      staffCalibrationStatus.textContent = "บันทึกการปรับเรียบร้อยแล้ว";
-      render();
-      announce("บันทึกการจัดวางตัวละครในหน้า Height แล้ว");
+      calibrationSaveMessage = "บันทึกแล้ว " + savedCount + " ตัวละคร";
+      if (conflicts.length) {
+        const names = conflicts.map(conflict => calibrationItem(conflict.id)?.character.name || conflict.id);
+        calibrationSaveMessage += " · " + names.join(", ") + " มีข้อมูลเปลี่ยนแปลง กรุณาโหลดหน้าใหม่ก่อนปรับตัวละครเหล่านี้";
+        calibrationSaveError = true;
+      } else if (dirtyCharacterIds.size) {
+        calibrationSaveMessage += " · มี " + dirtyCharacterIds.size + " ตัวละครที่ปรับเพิ่มและยังไม่บันทึก";
+      }
+      announce(calibrationSaveMessage);
     } catch (error) {
-      staffCalibrationStatus.textContent = error instanceof Error ? error.message : "บันทึกการปรับไม่สำเร็จ";
-      staffCalibrationStatus.dataset.error = "true";
+      const message = error instanceof Error ? error.message : "บันทึกการปรับไม่สำเร็จ";
+      calibrationSaveMessage = (savedCount ? "บันทึกแล้ว " + savedCount + " ตัวละคร · " : "") + message;
+      calibrationSaveError = true;
     } finally {
+      savingCalibrations = false;
       updateStaffControls();
     }
   }
@@ -482,9 +516,13 @@
   chartScroll.addEventListener("scroll", updatePanControls, { passive: true });
   window.addEventListener("blur", stopEdgePan);
   chartScroll.addEventListener("wheel", event => {
-    if (!event.shiftKey || event.deltaY === 0 || chartScroll.scrollWidth <= chartScroll.clientWidth) return;
+    if (event.ctrlKey || event.metaKey || event.deltaY === 0
+      || Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      || chartScroll.scrollWidth <= chartScroll.clientWidth) return;
+    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? chartScroll.clientWidth : 1;
     event.preventDefault();
-    chartScroll.scrollLeft += event.deltaY;
+    chartScroll.scrollLeft += event.deltaY * unit;
+    updatePanControls();
   }, { passive: false });
   chartScroll.addEventListener("keydown", event => {
     if (event.target !== chartScroll || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;

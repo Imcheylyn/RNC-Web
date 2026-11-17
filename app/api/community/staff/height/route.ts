@@ -52,11 +52,14 @@ export async function POST(request: NextRequest) {
 
     return prisma.$transaction(async tx => {
       const saved = []
-      for (const item of updates) {
+      const conflicts = []
+      // Lock in the same order across requests to avoid deadlocks between batches.
+      for (const item of updates.sort((left, right) => left.id.localeCompare(right.id))) {
+        await tx.$queryRaw`SELECT "id" FROM "CommunityCharacter" WHERE "id" = ${item.id} FOR UPDATE`
         const before = await tx.communityCharacter.findUnique({ where: { id: item.id } })
-        if (!before) throw new CommunityHttpError("ไม่พบตัวละครในคลังแล้ว กรุณาโหลดหน้าใหม่", 404)
-        if (before.updatedAt.toISOString() !== item.expectedUpdatedAt) {
-          throw new CommunityHttpError("มีข้อมูลตัวละครถูกแก้ไขแล้ว กรุณาโหลดหน้าใหม่ก่อนบันทึก", 409)
+        if (!before || before.updatedAt.toISOString() !== item.expectedUpdatedAt) {
+          conflicts.push({ id: item.id, error: before ? "ข้อมูลตัวละครถูกแก้ไขแล้ว" : "ไม่พบตัวละครในคลังแล้ว" })
+          continue
         }
         const after = await tx.communityCharacter.update({
           where: { id: item.id },
@@ -64,6 +67,7 @@ export async function POST(request: NextRequest) {
             heightChartScale: item.heightChartScale,
             heightChartOffset: item.heightChartOffset,
             heightChartXOffset: item.heightChartXOffset,
+            updatedAt: new Date(Math.max(Date.now(), before.updatedAt.getTime() + 1)),
           },
           select: {
             id: true,
@@ -85,7 +89,7 @@ export async function POST(request: NextRequest) {
         )
         saved.push(after)
       }
-      return { characters: saved }
+      return { characters: saved, conflicts }
     }, { maxWait: 10_000, timeout: 30_000 })
   })
 }
