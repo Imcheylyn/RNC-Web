@@ -991,3 +991,11 @@
 @media (max-width: 680px) {
   .voice-line-copy .voice-line-credit { grid-column: 1; margin-top: 0; }
 }
+
+/* Keep HTML inside foreignObject unlayered: WebKit otherwise paints it outside
+   the SVG pan/zoom coordinates. Animate the SVG frame instead of its HTML. */
+.constellation-node > foreignObject{transform-box:fill-box;transform-origin:50% 8%;transform:rotate(var(--case-tilt,0deg));transition:transform .16s ease}
+.constellation-node:hover > foreignObject,.constellation-node:focus-visible > foreignObject{transform:rotate(0deg)}
+.case-thread-label{transform-box:fill-box;transform-origin:center;transform:rotate(var(--thread-tilt,-3deg))}
+.constellation-node foreignObject *,.case-thread-label *{position:static!important;transform:none!important;transition:none!important;will-change:auto!important}
+@media(prefers-reduced-motion:reduce){.constellation-node > foreignObject{transition:none}}

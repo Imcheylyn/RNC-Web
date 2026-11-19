@@ -1079,3 +1079,25 @@
     animation: none;
   }
 }
+
+/* WebKit must transform the SVG frame, not composited HTML within it. */
+.community-case-node > foreignObject{overflow:visible;transform-box:fill-box;transform-origin:50% 6%;transform:rotate(var(--case-tilt,0deg));transition:transform .18s ease}
+.community-case-node:hover > foreignObject,.community-case-node:focus-visible > foreignObject{transform:rotate(0deg) scale(1.06)}
+.community-case-node.is-selected > foreignObject{transform:rotate(0deg) scale(1.08)}
+.community-thread-label{transform-box:fill-box;transform-origin:center;transform:rotate(var(--tag-tilt,-2deg))}
+.community-case-node foreignObject *,.community-thread-label *{position:static!important;transform:none!important;transition:none!important;will-change:auto!important}
+.community-graph-canvas{overflow:hidden}
+.community-relationships-page,.community-relationships-content{min-width:0}
+@media(max-height:600px){
+  .community-relationships-body{height:auto;min-height:100dvh;overflow-y:auto}
+  .community-relationships-page{flex:none;overflow:visible}
+  .community-relationships-content{flex:none}
+  .community-relationships-board{flex:none;height:65dvh;min-height:260px}
+}
+@media(prefers-reduced-motion:reduce){.community-case-node > foreignObject{transition:none}}
+
+/* Keep the inspector and its close control within the board on short phones. */
+.community-dossier-card{box-sizing:border-box}
+.dossier-card-header{flex:none}
+.dossier-card-body{min-height:0;overscroll-behavior:contain}
+@media(max-width:760px){.community-dossier-card{max-height:min(60dvh,calc(100% - 8px))}}

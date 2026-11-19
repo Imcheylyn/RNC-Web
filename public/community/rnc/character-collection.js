@@ -262,7 +262,7 @@
       const hit=svgNode("path",{d,class:"case-thread-hit",stroke:"transparent","stroke-width":14,"vector-effect":"non-scaling-stroke","aria-hidden":"true"});hit.addEventListener("click",choose);edgeLayer.append(hit);line.addEventListener("click",choose);line.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();choose(event);}});edgeLayer.append(line);
       threads.fibers(curve).forEach((fiber,strand)=>edgeLayer.append(svgNode("path",{d:fiber,stroke:strand?"#3e2b20":"#e9dfc6","stroke-opacity":strand?.24:.36,"stroke-width":.4,class:"case-thread-fiber"+(muted?" is-muted":""),"aria-hidden":"true"})));
       const tag=svgNode("foreignObject",{x:label.x-label.width/2,y:label.y-label.height/2,width:label.width,height:label.height,"aria-hidden":"true",class:"case-thread-label"+(pair.person.id===selected?" is-selected":"")+(muted?" is-muted":""),"data-direction":direction,"data-person-id":pair.person.id});
-      const paper=node("span",text,"case-thread-tag");paper.title=(direction==="outgoing"?character.name:pair.person.name)+" มอง "+(direction==="outgoing"?pair.person.name:character.name)+" เป็น "+text;paper.style.setProperty("--thread-tilt",(index%2?3:-3)+"deg");tag.append(paper);tag.addEventListener("click",choose);labelLayer.append(tag);
+      const paper=node("span",text,"case-thread-tag");paper.title=(direction==="outgoing"?character.name:pair.person.name)+" มอง "+(direction==="outgoing"?pair.person.name:character.name)+" เป็น "+text;tag.style.setProperty("--thread-tilt",(index%2?3:-3)+"deg");tag.append(paper);tag.addEventListener("click",choose);tag.style.pointerEvents="none";const labelHit=svgNode("rect",{x:label.x-label.width/2,y:label.y-label.height/2,width:label.width,height:label.height,fill:"transparent",class:"case-thread-label","aria-hidden":"true"});labelHit.style.setProperty("--thread-tilt",tag.style.getPropertyValue("--thread-tilt"));labelHit.style.pointerEvents="all";labelHit.addEventListener("click",choose);labelLayer.append(labelHit,tag);
     });
     locations.forEach(({pair,x,y},index)=>addEvidencePerson(pair.person,x,y,false,index,pair));addEvidencePerson(data.character,0,0,true,-1,null);
     // The cords sit on the photographs; pins cap their ends above every layer.
@@ -277,10 +277,10 @@
     const width=center?236:212,height=center?326:290,isSelected=center?selected===null:person.id===selected;
     const group=svgNode("g",{transform:"translate("+x+" "+y+")",class:"constellation-node"+(center?" is-primary-node":"")+(isSelected?" is-selected":"")+(selected&&!center&&!isSelected?" is-muted":""),"data-person-id":center?"":person.id,"aria-pressed":String(isSelected),tabindex:0,role:"button","aria-label":(center?"ตัวละครหลัก: ":"ตัวละครที่เชื่อมโยง: ")+person.name});
     const foreign=svgNode("foreignObject",{x:-width/2,y:-height/2,width,height}),content=node("div",null,"case-person"+(center?" is-primary":""));
-    content.style.setProperty("--case-tilt",center?".4deg":(index%2?1.5:-1.5)+"deg");content.append(face(person));
+    foreign.style.setProperty("--case-tilt",center?".4deg":(index%2?1.5:-1.5)+"deg");content.append(face(person));
     const record=node("div",null,"case-person-record"),title=node("strong",person.name);title.title=person.name;
     const relationship=pair?.outgoing||pair?.incoming;record.append(title,node("span",center?"ตัวละครเจ้าของแฟ้ม":relationship?(relationship.label||relationType(relationship.type).label):person.characterType));
-    content.append(record);foreign.append(content);group.append(foreign);const choose=()=>selectPair(center?null:person.id);
+    content.append(record);foreign.append(content);foreign.style.pointerEvents="none";group.append(svgNode("rect",{x:-width/2,y:-height/2,width,height,fill:"transparent","pointer-events":"all","aria-hidden":"true"}),foreign);const choose=()=>selectPair(center?null:person.id);
     group.addEventListener("click",choose);group.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();choose();}});world.append(group);
   }
   function syncReport(){

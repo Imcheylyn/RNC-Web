@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server"
 import { getCommunitySession, hasStaffUnlock } from "@/lib/community-auth"
 import { prisma } from "@/lib/db"
-import { communityAssetSelect, communityAssetUrl } from "@/lib/community-asset-urls"
+import { communityAssetSelect, communityAssetDisplayUrl } from "@/lib/community-asset-urls"
 import { visibleCharacterWhere } from "@/lib/community-policy"
 import { listCommunityGallery } from "@/lib/community-gallery"
 import {
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
               id: character.id,
               name: character.name,
               characterType: character.characterType,
-              image: communityAssetUrl(image, character.updatedAt),
+              image: communityAssetDisplayUrl(image, character.updatedAt),
             }
           }),
           relationships,

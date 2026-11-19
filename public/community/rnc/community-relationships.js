@@ -38,6 +38,7 @@
   let nodesLayer = null;
   let pinsLayer = null;
   let boardBounds = null;
+  const layoutCache = new Map();
 
   const element = (tag, attrs = {}) => {
     const item = document.createElementNS(NS, tag);
@@ -153,6 +154,23 @@
       centerX: (left + right) / 2,
       centerY: (top + bottom) / 2
     };
+  }
+
+  function syncViewport() {
+    const rect = svg.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      svg.setAttribute("viewBox", `${-rect.width / 2} ${-rect.height / 2} ${rect.width} ${rect.height}`);
+    }
+  }
+
+  function applySearch() {
+    if (!rawData) return;
+    const query = activeSearch.trim().toLowerCase();
+    if (!query) { highlightCharacter(selectedNodeId); return; }
+    const matches = new Set(rawData.characters.filter(character => character.name.toLowerCase().includes(query)).map(character => character.id));
+    svg.querySelectorAll("[data-node-id]").forEach(node => { node.classList.remove("is-highlighted"); node.classList.toggle("is-dimmed", !matches.has(node.dataset.nodeId)); });
+    svg.querySelectorAll("[data-pin-id]").forEach(pin => pin.classList.toggle("is-dimmed", !matches.has(pin.dataset.pinId)));
+    svg.querySelectorAll("[data-edge-key]").forEach(edge => { edge.classList.remove("is-highlighted"); edge.classList.toggle("is-dimmed", !edge.dataset.edgeKey.split("::").some(id => matches.has(id))); });
   }
 
   function fitViewport() {
@@ -335,13 +353,6 @@
       allEdges = allEdges.filter(e => e.type === activeFilter);
     }
 
-    // Filter by character search query
-    let filteredNodes = allNodes;
-    if (activeSearch.trim()) {
-      const query = activeSearch.trim().toLowerCase();
-      filteredNodes = allNodes.filter(c => c.name.toLowerCase().includes(query));
-    }
-
     // Summary count
     summary.textContent = `${allNodes.length} DOSSIERS · ${allEdges.length} RELATIONSHIPS`;
 
@@ -363,10 +374,7 @@
     empty.hidden = true;
 
     // Viewport SVG coordinates
-    const rect = svg.getBoundingClientRect();
-    const vw = Math.max(300, rect.width || 1200);
-    const vh = Math.max(200, rect.height || 720);
-    svg.setAttribute("viewBox", `${-vw / 2} ${-vh / 2} ${vw} ${vh}`);
+    syncViewport();
 
     svg.replaceChildren();
 
@@ -388,7 +396,8 @@
     svg.append(defs);
 
     // Calculate layout
-    const positions = solveGraphLayout(allNodes, allEdges);
+    if (!layoutCache.has(activeFilter)) layoutCache.set(activeFilter, solveGraphLayout(allNodes, allEdges));
+    const positions = layoutCache.get(activeFilter);
     const posMap = new Map(positions.map(p => [p.id, p]));
     boardBounds = getBoardBounds(positions);
 
@@ -477,12 +486,17 @@
           const tagSpan = document.createElement("span");
           tagSpan.className = "community-thread-tag";
           tagSpan.textContent = text;
-          tagSpan.style.setProperty("--tag-tilt", (idx % 2 ? 3 : -3) + "deg");
+          foreign.style.setProperty("--tag-tilt", (idx % 2 ? 3 : -3) + "deg");
           tagSpan.title = text;
           tagSpan.addEventListener("click", chooseEdge);
 
           foreign.append(tagSpan);
-          cordGroup.append(foreign);
+          foreign.style.pointerEvents = "none";
+          const labelHit = element("rect", { x: tagX - tagW / 2, y: tagY - tagH / 2, width: tagW, height: tagH, fill: "transparent", class: "community-thread-label", "aria-hidden": "true" });
+          labelHit.style.setProperty("--tag-tilt", foreign.style.getPropertyValue("--tag-tilt"));
+          labelHit.style.pointerEvents = "all";
+          labelHit.addEventListener("click", chooseEdge);
+          cordGroup.append(labelHit, foreign);
         }
 
         cordsLayer.append(cordGroup);
@@ -514,7 +528,7 @@
       const cardBox = document.createElement("div");
       cardBox.className = "community-card-box";
       const tiltDeg = ((index % 5) - 2) * 1.2;
-      cardBox.style.setProperty("--case-tilt", `${tiltDeg}deg`);
+      foreign.style.setProperty("--case-tilt", `${tiltDeg}deg`);
 
       // Photo
       const photoBox = document.createElement("div");
@@ -544,7 +558,8 @@
 
       cardBox.append(photoBox, infoBox);
       foreign.append(cardBox);
-      nodeGroup.append(foreign);
+      foreign.style.pointerEvents = "none";
+      nodeGroup.append(element("rect", { x: -cardW / 2, y: -cardH / 2, width: cardW, height: cardH, fill: "transparent", "pointer-events": "all", "aria-hidden": "true" }), foreign);
 
       // Node Event Listeners
       nodeGroup.addEventListener("mouseenter", () => {
@@ -583,6 +598,7 @@
     } else {
       updateTransform();
     }
+    applySearch();
   }
 
   // Pointer panning & zoom handlers
@@ -605,6 +621,7 @@
 
     svg.addEventListener("pointermove", ev => {
       if (!pointers.has(ev.pointerId)) return;
+      const previousPoints = [...pointers.values()];
       const prev = pointers.get(ev.pointerId);
       pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
 
@@ -617,7 +634,7 @@
         updateTransform();
       } else if (pointers.size === 2) {
         const pts = [...pointers.values()];
-        const oldDist = Math.hypot(pts[1].x - prev.x, pts[1].y - prev.y);
+        const oldDist = Math.hypot(previousPoints[1].x - previousPoints[0].x, previousPoints[1].y - previousPoints[0].y);
         const newDist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
         if (oldDist > 0) {
           zoomAt((pts[0].x + pts[1].x) / 2, (pts[0].y + pts[1].y) / 2, pan.zoom * (newDist / oldDist));
@@ -660,7 +677,7 @@
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(() => {
         activeSearch = ev.target.value;
-        render();
+        applySearch();
       }, 200);
     });
 
@@ -678,6 +695,7 @@
     new ResizeObserver(() => {
       cancelAnimationFrame(resizeTimer);
       resizeTimer = requestAnimationFrame(() => {
+        syncViewport();
         if (!isManualView) fitViewport();
         else updateTransform();
       });
