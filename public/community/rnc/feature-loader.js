@@ -40,9 +40,9 @@
       script: "employee-card.js?v=lazy-features-20261117-v1",
     },
     collection: {
-      style: "character-collection.css?v=voice-notes-20261117-v2",
+      style: "character-collection.css?v=relationship-webkit-20261119-v1",
       dependencies: ["employee-photo.js?v=face-default-20261027", "relationship-portrait.js?v=relationships-20261107-v1", media, "relationship-map-layout.js?v=caseboard-cords-20261106-v3"],
-      script: "character-collection.js?v=voice-notes-20261117-v2",
+      script: "character-collection.js?v=relationship-webkit-20261119-v1",
     },
   };
   function load(name) {
