@@ -374,13 +374,14 @@ const cardScroll = document.getElementById("cardScroll");
 const archiveIndexTabs = document.getElementById("archiveIndexTabs");
 
 if ("IntersectionObserver" in window) {
+  // Long archives may never reach a percentage threshold; reveal as they enter.
   const archiveRevealObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (!entry.isIntersecting) return;
       entry.target.classList.add("is-visible");
       archiveRevealObserver.unobserve(entry.target);
     });
-  }, { root: cardScroll, threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+  }, { root: cardScroll, threshold: 0, rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".archive-section").forEach(function(section) {
     archiveRevealObserver.observe(section);
   });
