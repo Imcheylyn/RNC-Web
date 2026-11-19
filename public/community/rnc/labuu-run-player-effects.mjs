@@ -1,4 +1,4 @@
-import { GROUND, PLAYER_X, PLAYER_WIDTH, PLAYER_HEIGHT, playerClearance, SNEEZE_RETREAT_START, sneezeShots } from "./labuu-run-core.mjs?v=8"
+import { GROUND, PLAYER_X, PLAYER_WIDTH, PLAYER_HEIGHT, playerClearance, SNEEZE_RETREAT_START, sneezeShots } from "./labuu-run-core.mjs?v=9"
 
 const TAU = Math.PI * 2
 const SPIN_TICKS = 22
@@ -42,6 +42,10 @@ function bossReaction(run, tick) {
 
 export function playerPose(run, effects, tick, height, stride, reduced, crashProgress) {
   const pose = { x: PLAYER_X, bottom: GROUND - height - stride, angle: 0, scaleX: 1, scaleY: 1, cue: null }
+  if (run.diving && crashProgress == null) {
+    if (!reduced) { pose.angle = .14; pose.scaleX = 1.08; pose.scaleY = .88 }
+    return pose
+  }
   const spin = (tick - effects.spinAt) / SPIN_TICKS
   const glance = (tick - effects.glanceAt) / GLANCE_TICKS
   const reaction = bossReaction(run, tick)

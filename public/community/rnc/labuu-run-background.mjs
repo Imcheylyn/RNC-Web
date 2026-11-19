@@ -1,4 +1,4 @@
-import { WIDTH, HEIGHT, GROUND } from "./labuu-run-core.mjs?v=8"
+import { WIDTH, HEIGHT, GROUND } from "./labuu-run-core.mjs?v=9"
 
 function layer(paint) {
   const canvas = document.createElement("canvas")

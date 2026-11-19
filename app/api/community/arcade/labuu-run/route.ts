@@ -4,6 +4,8 @@ import { collectionBody, collectionRequest } from "@/lib/community-collection-ht
 import { CollectionError } from "@/lib/community-collection-policy"
 import { finishLabuuRun, labuuRunLeaderboard, startLabuuRun } from "@/lib/community-labuu-run"
 
+import { checkpointLabuuRun } from "@/lib/community-labuu-run-checkpoint"
+
 export const runtime = "nodejs"
 
 export function GET(request: NextRequest) {
@@ -15,6 +17,7 @@ export function POST(request: NextRequest) {
     const body = await collectionBody(request)
     const guildId = getCommunityGuildId()
     if (body.action === "start") return startLabuuRun(guildId, actor.userId, body.rulesVersion)
+    if (body.action === "checkpoint") return checkpointLabuuRun(guildId, actor.userId, body)
     if (body.action === "finish") return finishLabuuRun(guildId, actor.userId, body)
     throw new CollectionError("Invalid Labuu Run request")
   })

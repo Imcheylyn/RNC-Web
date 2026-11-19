@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
   <title>Labuu Run | Reverse : Noir Chronicle</title>
-  <link rel="stylesheet" href="/community/rnc/labuu-run.css?v=13">
-  <script src="/community/rnc/labuu-run.mjs?v=12" type="module"></script>
+  <link rel="stylesheet" href="/community/rnc/labuu-run.css?v=14">
+  <script src="/community/rnc/labuu-run.mjs?v=13" type="module"></script>
 </head>
 <body class="runner-page">
   <main class="runner-shell" inert>
     <h1 class="runner-visually-hidden">Labuu Run</h1>
-    <div class="runner-stage" id="runner-stage" tabindex="-1" role="group" aria-label="Labuu Run track. Press Space or Up, or tap the track to jump. Press again in the air to double jump.">
+    <div class="runner-stage" id="runner-stage" tabindex="-1" role="group" aria-label="Labuu Run track. Press Space or Up, or tap the track to jump. Press again in the air to double jump. Press Down or S, or the Dive button, to descend quickly.">
       <canvas id="runner-canvas" width="760" height="300" aria-hidden="true"></canvas>
       <div class="runner-scores">
         <span class="runner-hi"><abbr title="High score">HI</abbr> <b id="runner-best">—</b></span>
@@ -38,6 +38,11 @@
         </div>
         <p id="runner-status" role="status"></p>
       </section>
+    </div>
+    <div class="runner-controls">
+      <p class="runner-keyboard-guide">Space / Up: jump · Down / S: dive</p>
+      <p class="runner-touch-guide">Tap the track to jump. Tap again to double jump.</p>
+      <button id="runner-dive" class="runner-dive" type="button" aria-label="Dive: descend quickly while in the air" hidden>Dive</button>
     </div>
   </main>
 </body>

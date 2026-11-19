@@ -209,3 +209,10 @@ html.runner-document {
   .runner-touch-start { display: inline; }
 }
 .runner-page :is(button, a):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+.runner-controls { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:48px; color:#c8ad8d; font:12px/1.5 Arial,sans-serif; }
+.runner-controls p { margin:8px 0; }
+.runner-touch-guide, .runner-dive { display:none; }
+.runner-dive { flex:none; min-width:64px; min-height:44px; padding:8px 12px; border:1px solid #94734e; border-radius:4px; background:#f3dfba; color:#503b2a; font:700 14px/1 Arial,sans-serif; touch-action:manipulation; }
+.runner-dive:active { background:#fff0d2; }
+@media(pointer:coarse) { .runner-keyboard-guide { display:none; } .runner-touch-guide, .runner-dive { display:block; } }

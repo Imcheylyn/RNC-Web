@@ -3,7 +3,8 @@ import { CollectionError } from "@/lib/community-collection-policy"
 import { ARCADE_LEADERBOARD_LIMIT, rankArcadeScores } from "@/lib/community-arcade-leaderboard"
 import { prisma } from "@/lib/db"
 import { communityAssetSelect, communityAssetUrl } from "@/lib/community-asset-urls"
-import { MAX_TICKS, MONSTER_RULES_VERSION, FORMATION_RULES_VERSION, EXPANDED_RULES_VERSION, RUNNER_RULES_VERSION, STEP_MS, replayRun } from "@/public/community/rnc/labuu-run-core.mjs"
+import { MAX_TICKS, MONSTER_RULES_VERSION, FORMATION_RULES_VERSION, EXPANDED_RULES_VERSION, FAST_RULES_VERSION, RUNNER_RULES_VERSION, STEP_MS, replayRun } from "@/public/community/rnc/labuu-run-core.mjs"
+import { issueRunnerCheckpoint, verifyRunnerProgress } from "@/lib/community-labuu-run-checkpoint"
 import seedScores from "@/public/community/rnc/labuu-run-leaderboard-seeds.json"
 
 const ROUND_EXPIRY_MS = 60 * 60_000
@@ -13,9 +14,10 @@ const UUID = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/
 type RankingEntry = { rank: number; name: string; score: number; isMine: boolean }
 
 function roundRules(roundId: string, seed: number) {
+  if (roundId[14] === "9") return { seed: Number.parseInt(roundId.slice(0, 8), 16), rulesVersion: RUNNER_RULES_VERSION }
   if (roundId[14] !== "8") return { seed, rulesVersion: seed < 0 ? MONSTER_RULES_VERSION : 1 }
   // Older formation rounds never used zero. New rounds derive their seed from the UUID.
-  if (seed === 0) return { seed: Number.parseInt(roundId.slice(0, 8), 16), rulesVersion: RUNNER_RULES_VERSION }
+  if (seed === 0) return { seed: Number.parseInt(roundId.slice(0, 8), 16), rulesVersion: FAST_RULES_VERSION }
   return { seed, rulesVersion: seed < 0 ? EXPANDED_RULES_VERSION : FORMATION_RULES_VERSION }
 }
 
@@ -67,13 +69,13 @@ export async function startLabuuRun(guildId: string, userId: string, rulesVersio
   const monsters = await listRunnerMonsters()
   const seed = randomInt(1, 0x7fffffff)
   const uuid = randomUUID()
-  const version = rulesVersion === RUNNER_RULES_VERSION || rulesVersion === EXPANDED_RULES_VERSION
+  const version = rulesVersion === RUNNER_RULES_VERSION || rulesVersion === FAST_RULES_VERSION || rulesVersion === EXPANDED_RULES_VERSION
     || rulesVersion === FORMATION_RULES_VERSION || rulesVersion === MONSTER_RULES_VERSION ? rulesVersion : 1
   const formationsEnabled = version >= FORMATION_RULES_VERSION
-  const storedSeed = version === RUNNER_RULES_VERSION ? 0
+  const storedSeed = version >= FAST_RULES_VERSION ? 0
     : version === MONSTER_RULES_VERSION || version === EXPANDED_RULES_VERSION ? -seed : seed
   const round = {
-    roundId: formationsEnabled ? uuid.slice(0, 14) + "8" + uuid.slice(15) : uuid,
+    roundId: formationsEnabled ? uuid.slice(0, 14) + (version === RUNNER_RULES_VERSION ? "9" : "8") + uuid.slice(15) : uuid,
     seed: storedSeed,
     startedAt: new Date(),
     lastScore: null,
@@ -84,9 +86,11 @@ export async function startLabuuRun(guildId: string, userId: string, rulesVersio
     update: round,
     select: { bestScore: true },
   })
+  const rules = roundRules(round.roundId, round.seed)
   return {
+    ...(rules.rulesVersion === RUNNER_RULES_VERSION ? { checkpoint: issueRunnerCheckpoint(guildId, userId, round.roundId, rules.seed, round.startedAt) } : {}),
     roundId: round.roundId,
-    ...roundRules(round.roundId, round.seed),
+    ...rules,
     monsters,
     bestScore: saved.bestScore,
   }
@@ -95,7 +99,7 @@ export async function startLabuuRun(guildId: string, userId: string, rulesVersio
 export async function finishLabuuRun(guildId: string, userId: string, body: Record<string, unknown>) {
   const { roundId, finishTick, jumps } = body
   if (typeof roundId !== "string" || !UUID.test(roundId)
-    || typeof finishTick !== "number" || !Number.isInteger(finishTick) || finishTick < 1 || finishTick > MAX_TICKS
+    || typeof finishTick !== "number" || !Number.isSafeInteger(finishTick) || finishTick < 1
     || !Array.isArray(jumps)) {
     throw new CollectionError("Invalid run data")
   }
@@ -111,10 +115,17 @@ export async function finishLabuuRun(guildId: string, userId: string, body: Reco
     if (!round || round.roundId !== roundId) throw new CollectionError("This run has been replaced", 409)
     if (round.lastScore !== null) return { score: round.lastScore, bestScore: round.bestScore }
     const elapsed = receivedAt.getTime() - round.startedAt.getTime()
-    if (elapsed > ROUND_EXPIRY_MS) throw new CollectionError("This run has expired", 410)
-    if (elapsed < finishTick * STEP_MS - CLOCK_TOLERANCE_MS) throw new CollectionError("Invalid run timing")
     const rules = roundRules(round.roundId, round.seed)
-    const score = replayRun(rules.seed, finishTick, jumps, rules.rulesVersion)
+    let score
+    if (rules.rulesVersion === RUNNER_RULES_VERSION) {
+      const progress = verifyRunnerProgress(guildId, userId, body, true)
+      if (progress.seed !== rules.seed || progress.startedAt !== round.startedAt.getTime()) throw new CollectionError("Invalid run checkpoint")
+      score = progress.run.score
+    } else {
+      if (elapsed > ROUND_EXPIRY_MS) throw new CollectionError("This run has expired", 410)
+      if (finishTick > MAX_TICKS || elapsed < finishTick * STEP_MS - CLOCK_TOLERANCE_MS) throw new CollectionError("Invalid run timing")
+      score = replayRun(rules.seed, finishTick, jumps, rules.rulesVersion)
+    }
     if (score === null) throw new CollectionError("The score does not match this run")
 
     const improves = round.bestScore === null || score > round.bestScore

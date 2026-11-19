@@ -1,13 +1,13 @@
 import {
   WIDTH, HEIGHT, GROUND, PLAYER_WIDTH, PLAYER_HEIGHT, STEP_MS,
-  RUNNER_RULES_VERSION, DROP_WARNING_TICKS, CARGO_FALL_TICKS, BRAKE_HOLD_TICKS, BUS_WAVE_TICKS,
-  createRun, cueAge, jump, obstacleAltitude, obstacleBodyHeight, sneezeShots, stepRun,
-} from "./labuu-run-core.mjs?v=8"
-import { createRunnerBackground } from "./labuu-run-background.mjs?v=2"
-import { bossEntrance, bossRetreatPosition, drawBossGroundEffects, drawBossScreenEffects } from "./labuu-run-boss-effects.mjs?v=3"
+  RUNNER_RULES_VERSION, MAX_TICKS, CHECKPOINT_TICKS, DROP_WARNING_TICKS, CARGO_FALL_TICKS, BRAKE_HOLD_TICKS, BUS_WAVE_TICKS,
+  createRun, cueAge, jump, dive, obstacleAltitude, obstacleBodyHeight, sneezeShots, stepRun,
+} from "./labuu-run-core.mjs?v=9"
+import { createRunnerBackground } from "./labuu-run-background.mjs?v=3"
+import { bossEntrance, bossRetreatPosition, drawBossGroundEffects, drawBossScreenEffects } from "./labuu-run-boss-effects.mjs?v=4"
 import {
   CRASH_MS, createPlayerEffects, drawPlayerCue, markPlayerJump, playerPose, trackClosePasses,
-} from "./labuu-run-player-effects.mjs?v=1"
+} from "./labuu-run-player-effects.mjs?v=2"
 
 const endpoint = "/api/community/arcade/labuu-run"
 const canvas = document.getElementById("runner-canvas")
@@ -26,6 +26,7 @@ const restartButton = document.getElementById("runner-restart")
 const retryButton = document.getElementById("runner-retry")
 const leaderboard = document.getElementById("runner-leaderboard")
 const pauseButton = document.getElementById("runner-pause")
+const diveButton = document.getElementById("runner-dive")
 const scoreLabel = document.getElementById("runner-score")
 const bestLabel = document.getElementById("runner-best")
 const hero = new Image()
@@ -35,6 +36,13 @@ let run = createRun(1)
 let roundId
 let images = []
 let jumps = []
+let dives = []
+let lastActionTick = -1
+let checkpoint
+let checkpointTick = 0
+let checkpointWork = null
+let checkpointRetryTick = 0
+let checkpointSavedAt = 0
 let phase = "entering"
 let frame = 0
 let previousTime
@@ -56,7 +64,7 @@ async function request(body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
     keepalive: body.action === "finish",
-    signal: AbortSignal.timeout(6500),
+    signal: AbortSignal.timeout(12000),
   })
   if (!response.ok) {
     const error = new Error("Runner request failed")
@@ -354,6 +362,7 @@ function play() {
   phase = "playing"
   prompt.hidden = true
   pauseButton.hidden = false
+  diveButton.hidden = run.rulesVersion < RUNNER_RULES_VERSION
   stage.focus({ preventScroll: true })
   previousTime = undefined
   frame = requestAnimationFrame(tick)
@@ -362,6 +371,8 @@ function play() {
 function pause() {
   if (phase !== "playing") return
   phase = "paused"
+  heading.textContent = "Paused"
+  diveButton.hidden = true
   cancelAnimationFrame(frame)
   pauseButton.hidden = true
   heading.hidden = false
@@ -382,11 +393,34 @@ function tick(now) {
   }
   draw()
   if (run.ended) finish()
-  else frame = requestAnimationFrame(tick)
+  else {
+    if (checkpoint && run.tick - checkpointTick >= MAX_TICKS - 120) {
+      void saveCheckpoint(true)
+      pause()
+      heading.textContent = "Connection interrupted. Resume to retry."
+      return
+    }
+    void saveCheckpoint()
+    frame = requestAnimationFrame(tick)
+  }
 }
 
 async function start() {
-  if (phase === "paused") { play(); return }
+  if (phase === "paused") {
+    if (checkpoint && (run.tick - checkpointTick >= MAX_TICKS - 120 || Date.now() - checkpointSavedAt > 25 * 60_000)) {
+      phase = "reconnecting"
+      startButton.disabled = true
+      loading.hidden = false
+      const recovered = await saveCheckpoint(true)
+      startButton.disabled = false
+      loading.hidden = true
+      phase = "paused"
+      if (!recovered) { heading.textContent = "Could not reconnect. Please try again."; return }
+    }
+    play()
+    if (document.hidden) pause()
+    return
+  }
   if ((phase !== "ready" && phase !== "ended") || savePending) return
   phase = "loading"
   resultPanel.hidden = true
@@ -416,6 +450,12 @@ async function start() {
   previousDistance = previousHeight = 0
   accumulator = 0
   jumps = []
+  dives = []
+  lastActionTick = -1
+  checkpoint = data?.checkpoint
+  checkpointTick = checkpointRetryTick = 0
+  checkpointWork = null
+  checkpointSavedAt = Date.now()
   playerEffects = createPlayerEffects()
   crashProgress = null
   draw()
@@ -426,11 +466,40 @@ async function start() {
 }
 
 function performJump() {
-  if (phase !== "playing" || jumps.at(-1) === run.tick) return
+  if (phase !== "playing" || lastActionTick === run.tick) return
   if (jump(run)) {
     jumps.push(run.tick)
+    lastActionTick = run.tick
     markPlayerJump(playerEffects, run)
   }
+}
+
+function performDive() {
+  if (phase !== "playing" || lastActionTick === run.tick) return
+  if (dive(run)) { dives.push(run.tick); lastActionTick = run.tick }
+}
+
+function saveCheckpoint(force = false) {
+  if (!checkpoint || !roundId || run.ended || run.tick < checkpointTick || (!force && run.tick === checkpointTick)) return
+  if (checkpointWork) return checkpointWork
+  if (!force && (run.tick - checkpointTick < CHECKPOINT_TICKS || run.tick < checkpointRetryTick)) return
+  const target = run.tick, activeRound = roundId
+  const work = request({ action: "checkpoint", roundId, checkpoint, finishTick: target,
+    jumps: jumps.filter(tick => tick < target), dives: dives.filter(tick => tick < target) })
+    .then(data => {
+      if (activeRound !== roundId) return false
+      if (data.checkpointTick !== target || typeof data.checkpoint !== "string") throw new Error("Invalid progress response")
+      checkpoint = data.checkpoint
+      checkpointTick = target
+      jumps = jumps.filter(tick => tick >= target)
+      dives = dives.filter(tick => tick >= target)
+      checkpointSavedAt = Date.now()
+      return true
+    })
+    .catch(() => { checkpointRetryTick = run.tick + 900; return false })
+    .finally(() => { if (checkpointWork === work) checkpointWork = null })
+  checkpointWork = work
+  return work
 }
 
 async function save() {
@@ -441,7 +510,9 @@ async function save() {
   leaderboard.hidden = true
   status.textContent = "Saving score…"
   try {
-    const result = await request({ action:"finish", roundId, finishTick:run.tick, jumps })
+    await checkpointWork
+    const result = await request({ action:"finish", roundId, finishTick:run.tick, jumps,
+      ...(checkpoint ? { checkpoint, dives } : {}) })
     scoreLabel.textContent = format(result.score)
     bestLabel.textContent = format(result.bestScore)
     status.textContent = ""
@@ -471,6 +542,7 @@ function finishCrash() {
 
 function finish() {
   phase = "crashing"
+  diveButton.hidden = true
   pauseButton.hidden = true
   prompt.hidden = true
   retryButton.hidden = true
@@ -509,14 +581,22 @@ canvas.addEventListener("pointerdown", event => {
   if (phase === "ready") void start()
   else performJump()
 })
+diveButton.addEventListener("click", () => { performDive(); stage.focus({ preventScroll: true }) })
+
 document.addEventListener("keydown", event => {
   if (event.altKey || event.ctrlKey || event.metaKey) return
   if (event.code === "Escape" && (phase === "playing" || phase === "paused")) {
     event.preventDefault()
     if (!event.repeat) {
       if (phase === "playing") pause()
-      else play()
+      else void start()
     }
+    return
+  }
+  if (["ArrowDown", "KeyS"].includes(event.code)) {
+    if (event.target.closest("a, input, textarea, button")) return
+    event.preventDefault()
+    if (!event.repeat) performDive()
     return
   }
   if (!["Space", "ArrowUp"].includes(event.code)) return

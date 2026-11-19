@@ -5,12 +5,15 @@ export const PLAYER_X = 108
 export const PLAYER_WIDTH = 48
 export const PLAYER_HEIGHT = 48
 export const STEP_MS = 1000 / 60
+// Legacy round length and the maximum work accepted in one verified segment.
 export const MAX_TICKS = 36_000
+export const CHECKPOINT_TICKS = 18_000
 export const MAX_JUMPS = 2400
 export const MONSTER_RULES_VERSION = 2
 export const FORMATION_RULES_VERSION = 3
 export const EXPANDED_RULES_VERSION = 4
-export const RUNNER_RULES_VERSION = 5
+export const FAST_RULES_VERSION = 5
+export const RUNNER_RULES_VERSION = 6
 export const DROP_WARNING_TICKS = 17
 export const SNEEZE_FIRST_SHOT = 56
 export const SNEEZE_AFTERSHOCK = 95
@@ -88,7 +91,7 @@ export function createRun(seed, rulesVersion = seed < 0 ? MONSTER_RULES_VERSION 
     random: Math.abs(seed) >>> 0, rulesVersion,
     formationIndex: 0, lastFormation: -1, queuedFormation: null,
     tick: 0, distance: 0, score: 0,
-    y: 0, velocity: 0, jumps: 0, obstacles: [], nextSpawn: 20,
+    y: 0, velocity: 0, jumps: 0, diving: false, obstacles: [], nextSpawn: 20,
     ended: false, hit: false, hitMotion: null,
   }
 }
@@ -99,7 +102,7 @@ function nextRandom(run) {
 }
 
 export function jump(run) {
-  if (run.ended || run.jumps >= 2) return false
+  if (run.ended || run.diving || run.jumps >= 2) return false
   run.velocity = run.jumps === 0 ? 10.8 : 9.6
   run.jumps++
   const nearbyHopper = run.obstacles.find(obstacle => {
@@ -108,6 +111,13 @@ export function jump(run) {
       && obstacle.x >= PLAYER_X + PLAYER_WIDTH && obstacle.x <= PLAYER_X + reach
   })
   if (nearbyHopper) nearbyHopper.hopAt = run.tick + (nearbyHopper.hopDelay ?? 4)
+  return true
+}
+
+export function dive(run) {
+  if (run.rulesVersion < RUNNER_RULES_VERSION || run.ended || run.diving || run.y <= 0) return false
+  run.diving = true
+  run.velocity = Math.min(run.velocity, -12)
   return true
 }
 
@@ -145,13 +155,13 @@ export function obstacleAltitude(obstacle, tick) {
 }
 
 export function runnerSpeed(tick, rulesVersion) {
-  if (rulesVersion === RUNNER_RULES_VERSION) return Math.min(12.2, 5.65 + tick * .00245)
+  if (rulesVersion >= FAST_RULES_VERSION) return Math.min(12.2, 5.65 + tick * .00245)
   return Math.min(10.5, 5.1 + tick * .00135)
 }
 
 function pickFormation(run, formations, firstTime) {
   if (firstTime) return run.formationIndex
-  if (run.rulesVersion === RUNNER_RULES_VERSION && run.score >= CHALLENGE_SCORE && run.formationIndex % 3 !== 0) {
+  if (run.rulesVersion >= FAST_RULES_VERSION && run.score >= CHALLENGE_SCORE && run.formationIndex % 3 !== 0) {
     const random = Math.floor(nextRandom(run) * CHALLENGE_FORMATIONS.length)
     return EXPANDED_FORMATIONS.length + random
   }
@@ -159,7 +169,7 @@ function pickFormation(run, formations, firstTime) {
 }
 
 function spawnFormation(run, speed) {
-  const faster = run.rulesVersion === RUNNER_RULES_VERSION
+  const faster = run.rulesVersion >= FAST_RULES_VERSION
   const expanded = faster || run.rulesVersion === EXPANDED_RULES_VERSION
   const formations = faster && run.score >= CHALLENGE_SCORE ? ALL_FORMATIONS : expanded ? EXPANDED_FORMATIONS : FORMATIONS
   const firstTime = run.formationIndex < (expanded ? NEW_FORMATIONS.length : FORMATIONS.length)
@@ -294,6 +304,7 @@ export function stepRun(run) {
       run.y = 0
       run.velocity = 0
       run.jumps = 0
+      run.diving = false
     }
   }
 
@@ -330,7 +341,7 @@ export function stepRun(run) {
       run.obstacles.splice(index, 1)
     }
   }
-  if (run.tick >= MAX_TICKS) run.ended = true
+  if (run.rulesVersion < RUNNER_RULES_VERSION && run.tick >= MAX_TICKS) run.ended = true
 }
 
 /** Rebuild the round from the player's accepted jump inputs, including the terminal tick. */
@@ -352,4 +363,31 @@ export function replayRun(seed, finishTick, inputs, rulesVersion) {
     stepRun(run)
   }
   return run.ended && run.tick === finishTick && index === inputs.length ? run.score : null
+}
+
+/** Verify a bounded segment, starting from a server-signed checkpoint. */
+export function replaySegment(snapshot, finishTick, jumps, dives, terminal = false) {
+  if (!Number.isSafeInteger(finishTick) || finishTick < snapshot.tick || finishTick - snapshot.tick > MAX_TICKS
+    || !Array.isArray(jumps) || !Array.isArray(dives) || jumps.length > MAX_JUMPS || dives.length > MAX_JUMPS) return null
+  for (const inputs of [jumps, dives]) {
+    let previous = snapshot.tick - 1
+    for (const tick of inputs) {
+      if (!Number.isSafeInteger(tick) || tick <= previous || tick >= finishTick) return null
+      previous = tick
+    }
+  }
+  const run = structuredClone(snapshot)
+  let up = 0, down = 0
+  while (!run.ended && run.tick < finishTick) {
+    if (jumps[up] === run.tick) {
+      if (dives[down] === run.tick || !jump(run)) return null
+      up++
+    }
+    if (dives[down] === run.tick) {
+      if (!dive(run)) return null
+      down++
+    }
+    stepRun(run)
+  }
+  return run.tick === finishTick && run.ended === terminal && up === jumps.length && down === dives.length ? run : null
 }
