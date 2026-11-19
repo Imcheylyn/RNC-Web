@@ -37,6 +37,7 @@ type StoredSession = {
   accessToken: string
   roles?: string[]
   guildNickname?: string | null
+  syncedDisplayName?: string
   checkedAt: number
   expiresAt: number
 }
@@ -172,6 +173,7 @@ function openSession(value: string, secret: string): StoredSession | null {
       || typeof session.accessToken !== "string"
       || (session.roles !== undefined && (!Array.isArray(session.roles) || !session.roles.every(role => typeof role === "string")))
       || (session.guildNickname !== undefined && !(typeof session.guildNickname === "string" || session.guildNickname === null))
+      || (session.syncedDisplayName !== undefined && typeof session.syncedDisplayName !== "string")
       || !Number.isFinite(session.checkedAt)
       || !Number.isFinite(session.expiresAt)
     ) return null
@@ -197,6 +199,31 @@ function sessionCookie(request: NextRequest, session: StoredSession, settings: C
   const remaining = Math.floor((session.expiresAt - Date.now()) / 1000)
   const maxAge = Math.min(SESSION_MAX_AGE_SECONDS, remaining)
   return cookieHeader(request, SESSION_COOKIE, sealSession(session, settings.signingSecret), maxAge, "/")
+}
+
+// Persist the verified server name once per change so every owner's cards can
+// read it locally, without Discord lookups for each character or Gallery visit.
+async function sessionResult(
+  request: NextRequest,
+  stored: StoredSession,
+  settings: CommunityConfig,
+  renewCookie = false,
+): Promise<{ session: CommunitySession; cookie?: string }> {
+  const profile = sessionProfile(stored)
+  if (stored.guildNickname !== undefined && stored.syncedDisplayName !== profile.name) {
+    try {
+      await prisma.communityUser.updateMany({
+        where: { id: stored.userId, displayName: { not: profile.name } },
+        data: { displayName: profile.name },
+      })
+      stored.syncedDisplayName = profile.name
+      renewCookie = true
+    } catch {
+      // A display-name sync must not invalidate an otherwise verified login.
+      console.warn("[community-auth] Display name sync failed; keeping verified session")
+    }
+  }
+  return { session: profile, ...(renewCookie ? { cookie: sessionCookie(request, stored, settings) } : {}) }
 }
 
 async function discordJson<T extends Record<string, unknown>>(
@@ -338,7 +365,8 @@ export async function completeDiscordOAuth(request: NextRequest): Promise<NextRe
 
     phase = "database"
     const username = user.username?.trim() || "Discord member"
-    const displayName = user.global_name?.trim() || username
+    const globalName = user.global_name?.trim() || username
+    const displayName = guildMember.nickname || globalName
     const avatarHash = user.avatar || null
     const communityUser = await prisma.communityUser.upsert({
       where: { discordId: user.id },
@@ -356,10 +384,11 @@ export async function completeDiscordOAuth(request: NextRequest): Promise<NextRe
       discordId: communityUser.discordId,
       username: communityUser.username,
       avatarHash: communityUser.avatarHash,
-      name: communityUser.displayName,
+      name: globalName,
       accessToken: token.access_token,
       roles: guildMember.roles,
       guildNickname: guildMember.nickname,
+      syncedDisplayName: communityUser.displayName,
       checkedAt: now,
       expiresAt: now + Math.min(SESSION_MAX_AGE_SECONDS * 1000, tokenLifetime),
     }
@@ -415,7 +444,7 @@ export async function getCommunitySession(
       stored.roles = guildMember.roles
       stored.guildNickname = guildMember.nickname
       stored.checkedAt = Date.now()
-      return { session: sessionProfile(stored), cookie: sessionCookie(request, stored, settings) }
+      return sessionResult(request, stored, settings, true)
     } catch (error) {
       const status = error instanceof DiscordApiError ? error.status : null
       if (!shouldRetainCommunitySession(status)) {
@@ -428,11 +457,11 @@ export async function getCommunitySession(
         status,
         errorName: error instanceof Error ? error.name : "unknown",
       })
-      return { session: sessionProfile(stored), cookie: sessionCookie(request, stored, settings) }
+      return sessionResult(request, stored, settings, true)
     }
   }
 
-  return { session: sessionProfile(stored) }
+  return sessionResult(request, stored, settings)
 }
 
 const STAFF_COOKIE = "rnc_staff"
