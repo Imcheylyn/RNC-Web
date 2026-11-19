@@ -38,6 +38,7 @@
   let nodesLayer = null;
   let pinsLayer = null;
   let boardBounds = null;
+  const layoutCache = new Map();
 
   const element = (tag, attrs = {}) => {
     const item = document.createElementNS(NS, tag);
@@ -160,6 +161,16 @@
     if (rect.width > 0 && rect.height > 0) {
       svg.setAttribute("viewBox", `${-rect.width / 2} ${-rect.height / 2} ${rect.width} ${rect.height}`);
     }
+  }
+
+  function applySearch() {
+    if (!rawData) return;
+    const query = activeSearch.trim().toLowerCase();
+    if (!query) { highlightCharacter(selectedNodeId); return; }
+    const matches = new Set(rawData.characters.filter(character => character.name.toLowerCase().includes(query)).map(character => character.id));
+    svg.querySelectorAll("[data-node-id]").forEach(node => { node.classList.remove("is-highlighted"); node.classList.toggle("is-dimmed", !matches.has(node.dataset.nodeId)); });
+    svg.querySelectorAll("[data-pin-id]").forEach(pin => pin.classList.toggle("is-dimmed", !matches.has(pin.dataset.pinId)));
+    svg.querySelectorAll("[data-edge-key]").forEach(edge => { edge.classList.remove("is-highlighted"); edge.classList.toggle("is-dimmed", !edge.dataset.edgeKey.split("::").some(id => matches.has(id))); });
   }
 
   function fitViewport() {
@@ -342,13 +353,6 @@
       allEdges = allEdges.filter(e => e.type === activeFilter);
     }
 
-    // Filter by character search query
-    let filteredNodes = allNodes;
-    if (activeSearch.trim()) {
-      const query = activeSearch.trim().toLowerCase();
-      filteredNodes = allNodes.filter(c => c.name.toLowerCase().includes(query));
-    }
-
     // Summary count
     summary.textContent = `${allNodes.length} DOSSIERS · ${allEdges.length} RELATIONSHIPS`;
 
@@ -392,7 +396,8 @@
     svg.append(defs);
 
     // Calculate layout
-    const positions = solveGraphLayout(allNodes, allEdges);
+    if (!layoutCache.has(activeFilter)) layoutCache.set(activeFilter, solveGraphLayout(allNodes, allEdges));
+    const positions = layoutCache.get(activeFilter);
     const posMap = new Map(positions.map(p => [p.id, p]));
     boardBounds = getBoardBounds(positions);
 
@@ -593,6 +598,7 @@
     } else {
       updateTransform();
     }
+    applySearch();
   }
 
   // Pointer panning & zoom handlers
@@ -671,7 +677,7 @@
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(() => {
         activeSearch = ev.target.value;
-        render();
+        applySearch();
       }, 200);
     });
 
