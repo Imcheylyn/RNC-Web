@@ -34,15 +34,19 @@ export async function listCharacterThemeSongs(viewerId:string) {
 }
 
 export async function getCharacterCollection(characterId:string,actor:CommunitySession,staff:boolean) {
-  const current = await collectionCharacter(characterId,actor,staff)
   const visible = staff ? {} : visibleCharacterWhere(actor.userId)
-  const [character,relationships,voiceLines] = await Promise.all([
-    prisma.communityCharacter.findUniqueOrThrow({where:{id:characterId},select:faceSelect}),
+  // Authorize and read the face in the same query before loading the collection.
+  const character = await prisma.communityCharacter.findFirst({
+    where:{id:characterId,...visible},
+    select:{...faceSelect,ownerId:true,publicationState:true},
+  })
+  if (!character) throw new CollectionError("ไม่พบตัวละคร",404)
+  const [relationships,voiceLines] = await Promise.all([
     prisma.communityCharacterRelationship.findMany({where:{AND:[{OR:[{sourceId:characterId,target:{is:visible}},{targetId:characterId,source:{is:visible}}]},{source:{is:{characterType:{notIn:["Monster","Enemy"]}}}},{target:{is:{characterType:{notIn:["Monster","Enemy"]}}}}]},include:{source:{select:faceSelect},target:{select:faceSelect},evidence:{orderBy:[{sortOrder:"asc"},{createdAt:"asc"}]}},orderBy:{createdAt:"asc"}}),
     prisma.communityCharacterVoiceLine.findMany({where:{characterId},orderBy:[{sortOrder:"asc"},{createdAt:"asc"}]}),
   ])
   const canHaveRelationships = !isEnemyCharacterType(character.characterType)
-  const canEdit = canManageCollection(actor.userId,staff,current)
+  const canEdit = canManageCollection(actor.userId,staff,character)
   return {character:face(character),isStaff:staff,canEdit,canEditRelationships:canEdit && canHaveRelationships,canHaveRelationships,relationshipTargetTypes:relationshipTargetTypes(character.characterType,staff),types:RELATIONSHIP_TYPES,relationships:canHaveRelationships ? relationships.map(item=>({...item,source:face(item.source),target:face(item.target),evidence:item.evidence.map(entry=>({...entry,imageUrl:entry.imageAssetId ? "/api/community/media/assets/" + entry.imageAssetId : ""}))})) : [],voiceLines:voiceLines.map(serializeVoiceLine)}
 }
 
